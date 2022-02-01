@@ -4,6 +4,8 @@ import AppModel from '../AppModel';
 import AuthView from './AuthView';
 
 class AuthController extends AppController {
+  view: AuthView;
+
   constructor(view: AuthView, model: AppModel) {
     super(view, model);
     this.view = view;
