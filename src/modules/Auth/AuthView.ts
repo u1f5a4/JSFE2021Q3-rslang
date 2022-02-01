@@ -9,17 +9,10 @@ class AuthView extends AppView {
   }
 
   drawPage(): void {
-    AppView.clear();
-
     const p = AppView.createElement('p', 'paragraph');
     p.textContent = this.text;
 
-    const body = document.querySelector('body');
-
-    this.homeButton.textContent = 'На главную';
-    body?.appendChild(this.homeButton);
-
-    body?.append(p);
+    this.body?.append(p, this.homeLink);
   }
 }
 

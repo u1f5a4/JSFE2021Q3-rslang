@@ -3,23 +3,27 @@ class AppView {
 
   bookButton?: HTMLElement;
 
-  homeButton!: HTMLElement;
+  homeLink: HTMLLinkElement;
+
+  body = document.querySelector('body');
 
   constructor() {
-    this.homeButton = AppView.createElement('button', 'button');
+    this.homeLink = AppView.createElement('a', 'link') as HTMLLinkElement;
+    this.homeLink.textContent = 'На главную';
+    this.homeLink.href = '#';
   }
 
+  // eslint-disable-next-line class-methods-use-this
   drawPage() {
-    AppView.clear();
+    const bookLink = AppView.createElement('a', 'link') as HTMLLinkElement;
+    bookLink.textContent = 'Книга со словами';
+    bookLink.href = '#book';
 
-    this.authButton = AppView.createElement('button', 'button');
-    this.authButton.textContent = 'Регистрация/Авторизация';
+    const authLink = AppView.createElement('a', 'link') as HTMLLinkElement;
+    authLink.textContent = 'Регистрация/Авторизация';
+    authLink.href = '#auth';
 
-    this.bookButton = AppView.createElement('button', 'button');
-    this.bookButton.textContent = 'Книга со словами';
-
-    const body = document.querySelector('body');
-    body?.append(this.authButton, this.bookButton);
+    this.body?.append(bookLink, document.createElement('br'), authLink);
   }
 
   static clear() {

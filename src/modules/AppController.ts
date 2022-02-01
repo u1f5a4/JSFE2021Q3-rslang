@@ -17,27 +17,10 @@ class AppController {
   constructor(view: AppView, model: AppModel) {
     this.view = view;
     this.model = model;
-
-    this.init();
-  }
-
-  init() {
-    this.displayPage();
   }
 
   displayPage() {
     this.view.drawPage();
-    this.bindButton();
-  }
-
-  bindButton() {
-    this.view.authButton?.addEventListener('click', () =>
-      this.auth?.displayPage()
-    );
-
-    this.view.bookButton?.addEventListener('click', () =>
-      this.book?.displayPage()
-    );
   }
 }
 
