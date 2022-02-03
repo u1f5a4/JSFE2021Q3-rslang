@@ -1,14 +1,15 @@
 // eslint-disable-next-line import/no-cycle
 import AppController from '../../AppController';
-import AppModel, { Word } from '../../AppModel';
+import AppModel from '../../AppModel';
 import BookCardView from './BookCardView';
+import IWord from '../../models/word-model';
 
 class BookCardController extends AppController {
   view: BookCardView;
 
   page: number;
 
-  words!: Word[];
+  words!: IWord[];
 
   wordNumber: number;
 
