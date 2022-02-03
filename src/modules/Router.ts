@@ -1,5 +1,5 @@
-import AppController from './modules/AppController';
-import AppView from './modules/AppView';
+import AppController from './AppController';
+import AppView from './AppView';
 
 // TODO: посмотреть как можно сделать рабочими стрелочки в браузере
 
