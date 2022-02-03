@@ -14,7 +14,8 @@ class AuthController extends AppController {
 
   displayPage() {
     this.view.drawPage();
-    // вот здесь бинд кнопок к событиям
+    // вот здесь будет бинд кнопок к событиям
+    // события будут записаны здесь как методы
   }
 }
 
