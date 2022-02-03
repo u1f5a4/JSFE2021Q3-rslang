@@ -2,9 +2,13 @@
 import AppController from '../AppController';
 import AppModel from '../AppModel';
 import BookView from './BookView';
+// eslint-disable-next-line import/no-cycle
+import BookCardController from './Card/BookCardController';
 
 class BookController extends AppController {
   view: BookView;
+
+  card?: BookCardController;
 
   constructor(view: BookView, model: AppModel) {
     super(view, model);
@@ -14,20 +18,25 @@ class BookController extends AppController {
 
   async displayPage() {
     this.view.drawPage();
-    await this.genWords();
-
-    this.view.selectUnit?.addEventListener('change', this.genWords);
-    this.view.selectPage?.addEventListener('change', this.genWords);
+    this.bindButtons();
   }
 
-  genWords = async () => {
-    // TODO: переделать в обычную функцию, для этого нужно изменить контекст this
-    const unit = Number(this.view.selectUnit!.value);
-    const page = Number(this.view.selectPage!.value);
+  bindButtons() {
+    const buttons = document.querySelector('.app')?.childNodes as NodeList;
 
-    const words = await this.model.getWords(unit, page);
-    this.view.genWords(words);
-  };
+    Array.from(buttons).forEach((div) => {
+      div.addEventListener('click', (event) => {
+        const group = this.getData(event, 'group');
+        this.card?.displayPageCard(group);
+      });
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getData(event: Event, value: string) {
+    const element = event.currentTarget as HTMLDivElement;
+    return String(element.dataset[value]);
+  }
 }
 
 export default BookController;
