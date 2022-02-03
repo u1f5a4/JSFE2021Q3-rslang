@@ -28,7 +28,8 @@ class Router {
       const currentRoute = paths.find(
         (obj: Path) => obj.path === currentRoutName
       );
-      if (!currentRoute) throw Error('CurrentRoute root element not found');
+
+      if (!currentRoute) return;
 
       AppView.clear();
 
