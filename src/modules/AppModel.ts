@@ -1,4 +1,4 @@
-type Word = {
+interface Word {
   id: string;
   group: number;
   page: number;
@@ -13,7 +13,7 @@ type Word = {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
-};
+}
 
 class AppModel {
   domain = 'https://rslang-words.herokuapp.com';
