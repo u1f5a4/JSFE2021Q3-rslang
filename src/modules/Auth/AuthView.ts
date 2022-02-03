@@ -3,16 +3,18 @@ import AppView from '../AppView';
 class AuthView extends AppView {
   text: string;
 
+  titlePage = 'auth';
+
   constructor() {
     super();
-    this.text = 'auth view';
+    this.text = 'Auth View';
   }
 
-  drawPage(): void {
-    const p = AppView.createElement('p', 'paragraph');
-    p.textContent = this.text;
-
-    this.body?.append(p, this.homeLink);
+  getHtml() {
+    return `
+            <h1>${this.text}</h1>
+            <a href="#">home</a>
+        `;
   }
 }
 

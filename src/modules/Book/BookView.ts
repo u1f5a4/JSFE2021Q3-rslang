@@ -23,7 +23,7 @@ class BookView extends AppView {
     const form = this.genForm();
     this.words = AppView.createElement('div', 'app');
 
-    this.body?.append(p, this.homeLink, form, this.words);
+    this.body?.append(p, form, this.words);
   }
 
   genForm() {
