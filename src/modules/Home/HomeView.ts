@@ -15,11 +15,13 @@ class HomeView extends AppView {
 
   getHtml() {
     return `
+    <div class="content">
             ${renderHeaderTemplate()}
         <h1>${this.text}</h1>
           <a class="link" href="#book">Книга со словами</a>
           <br>
-          <a class="link" href="#auth">Регистрация/Авторизация</a>`;
+          <a class="link" href="#auth">Регистрация/Авторизация</a>
+          </div>`;
   }
 }
 
