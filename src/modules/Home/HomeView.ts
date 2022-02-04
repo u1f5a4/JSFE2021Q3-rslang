@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import AppView from '../AppView';
+import AppView from '../../core/View';
 import './HomeStyle.scss';
 import renderHeaderTemplate from '../../Components/Header/_renderHeaderTemplate';
 
@@ -8,11 +8,11 @@ export default class HomeView extends AppView {
 
   getHtml(): string {
     return `
-            ${renderHeaderTemplate()}
+
             <main>
             
             </main>
-            <h1>${this.text}</h1>
+            <h1></h1>
             <a class="link" href="#book">Книга со </a>
             <br>
             <a class="link" href="#auth">Регистрация/Авторизация</a>`;

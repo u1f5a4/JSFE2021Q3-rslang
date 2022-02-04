@@ -1,6 +1,6 @@
-import AppController from './modules/AppController';
+import AppController from './core/Controller';
 import AppModel from './modules/AppModel';
-import AppView from './modules/AppView';
+import AppView from './core/View';
 import AuthController from './modules/Auth/AuthController';
 import AuthView from './modules/Auth/AuthView';
 import BookController from './modules/Book/BookController';
@@ -11,7 +11,6 @@ import Router from './modules/Router';
 import HomeController from './modules/Home/HomeController';
 import HomeView from './modules/Home/HomeView';
 
-const home = new HomeController(new HomeView(), new AppModel());
 
 const auth = new AuthController(new AuthView(), new AppModel());
 
@@ -19,15 +18,10 @@ const book = new BookController(new BookView(), new AppModel());
 const bookCard = new BookCardController(new BookCardView(), new AppModel());
 book.card = bookCard;
 
-const app = new AppController(new AppView(), new AppModel());
-app.auth = auth;
-app.book = book;
-app.home = home;
-
+const home = new HomeController(new HomeView(), new AppModel());
 home.displayPage();
-
 const router = new Router();
 router.init();
-router.add('', home);
-router.add('book', book);
-router.add('auth', auth);
+router.add('', () => home.displayPage());
+router.add('book', () => book.displayPage());
+router.add('auth', () => auth.displayPage());
