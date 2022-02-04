@@ -1,7 +1,7 @@
 import AppModel from '../../AppModel';
 import BookCardView from './BookCardView';
 import IWord from '../../../models/word-model';
-import AppController from '../../../core/AppController';
+import AppController from '../../../core/Controller';
 
 class BookCardController extends AppController {
   page: number;

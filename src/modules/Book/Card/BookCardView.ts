@@ -1,4 +1,4 @@
-import AppView from '../../../core/AppView';
+import AppView from '../../../core/View';
 
 class BookCardView extends AppView {
   group?: string;
