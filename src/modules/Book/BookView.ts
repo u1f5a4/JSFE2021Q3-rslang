@@ -1,8 +1,13 @@
-import AppView from '../AppView';
+import AppView from '../../../core/AppView';
 import './BookStyle.scss';
 
 class BookView extends AppView {
   titlePage = 'Book View';
+
+  drawPage() {
+    document.title = this.titlePage;
+    this.body!.innerHTML = this.getHtml();
+  }
 
   getHtml(): string {
     return `<h1>${this.titlePage}</h1>

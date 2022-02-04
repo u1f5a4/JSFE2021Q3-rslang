@@ -1,4 +1,4 @@
-import AppView from '../AppView';
+import AppView from '../../../core/AppView';
 
 class AuthView extends AppView {
   text: string;
@@ -10,7 +10,7 @@ class AuthView extends AppView {
     this.text = 'Auth View';
   }
 
-  getHtml() {
+  getHtml(): string {
     return `
             <h1>${this.text}</h1>
             <a href="#">home</a>
