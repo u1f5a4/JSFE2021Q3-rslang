@@ -47,6 +47,11 @@ $card-bg: #fff;
   max-width: 1140px;
 }
 
+._container {
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
 .page-caption {
   display: flex;
   flex-direction: column;
