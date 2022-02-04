@@ -1,4 +1,4 @@
-import AppView from '../core/AppView';
+import AppView from './core/AppView';
 
 class HomeView extends AppView {
   titlePage = 'home';

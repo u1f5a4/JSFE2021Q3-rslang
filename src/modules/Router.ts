@@ -1,4 +1,4 @@
-import AppView from '../../core/AppView';
+import AppView from '../core/AppView';
 
 // TODO: посмотреть как можно сделать рабочими стрелочки в браузере
 

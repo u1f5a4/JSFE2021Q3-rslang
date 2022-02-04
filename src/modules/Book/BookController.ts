@@ -1,4 +1,4 @@
-import AppController from '../../../core/AppController';
+import AppController from '../../core/AppController';
 import AppModel from '../AppModel';
 import BookView from './BookView';
 import BookCardController from './Card/BookCardController';

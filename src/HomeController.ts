@@ -1,4 +1,4 @@
-import AppController from '../core/AppController';
+import AppController from './core/AppController';
 import HomeView from './HomeView';
 import AppModel from './modules/AppModel';
 

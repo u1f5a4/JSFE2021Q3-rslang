@@ -1,4 +1,4 @@
-import AppController from '../../../core/AppController';
+import AppController from '../../core/AppController';
 import AppModel from '../AppModel';
 import AuthView from './AuthView';
 

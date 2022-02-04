@@ -1,4 +1,4 @@
-import AppView from '../../../core/AppView';
+import AppView from '../../core/AppView';
 
 class AuthView extends AppView {
   text: string;

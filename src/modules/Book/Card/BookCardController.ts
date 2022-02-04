@@ -1,7 +1,7 @@
 import AppModel from '../../AppModel';
 import BookCardView from './BookCardView';
 import IWord from '../../../models/word-model';
-import AppController from '../../../../core/AppController';
+import AppController from '../../../core/AppController';
 
 class BookCardController extends AppController {
   page: number;
@@ -20,6 +20,7 @@ class BookCardController extends AppController {
     this.wordNumber = 0;
     this.words = await this.model.getWords(Number(group), page);
     const { word } = this.words[0];
+
     this.view.drawCardPage(group, word, page);
 
     this.bindButton(group);

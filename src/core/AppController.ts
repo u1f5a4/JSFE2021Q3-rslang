@@ -1,4 +1,4 @@
-import AppModel from '../src/modules/AppModel';
+import AppModel from '../modules/AppModel';
 import AppView from './AppView';
 
 class AppController {
