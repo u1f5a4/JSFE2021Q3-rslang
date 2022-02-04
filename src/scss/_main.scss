@@ -1,7 +1,12 @@
 @import 'normalize';
 
 $main-font: 'Montserrat', sans-serif;
+$logo-font: 'Work Sans', sans-serif;
 $color-one: #463f66;
+$color-two: #6252d4;
+$color-black: #282e3e;
+$color-bg: #f6f7fb;
+$color-hover: #fcac00;
 
 .title-font {
   font-family: $main-font;
@@ -31,18 +36,28 @@ $color-one: #463f66;
   color: $color-one;
 }
 
-body {
-  background-color: #f6f7fb;
+.body {
+  background-color: $color-bg;
 }
 
 .content {
+  margin: 48px 0;
   max-width: 1140px;
   margin: 0px auto;
 }
 
-.title-content {
+.title-page {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
+  gap: 8px;
+  width: 750px;
+  margin-bottom: 32px;
+
+  &__title {
+    margin: 0;
+  }
+  &__text {
+    margin: 0;
+    width: 80%;
+  }
 }
