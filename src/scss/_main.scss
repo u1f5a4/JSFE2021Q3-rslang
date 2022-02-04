@@ -7,6 +7,7 @@ $color-two: #6252d4;
 $color-black: #282e3e;
 $color-bg: #f6f7fb;
 $color-hover: #fcac00;
+$btn-color: #fff;
 $card-bg: #fff;
 
 .title-font {
@@ -60,4 +61,10 @@ $card-bg: #fff;
     margin: 0;
     width: 80%;
   }
+}
+
+.normalized-icon {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position-x: center;
 }

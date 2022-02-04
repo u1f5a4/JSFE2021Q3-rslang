@@ -35,7 +35,7 @@
     border-radius: 15px;
     transition: box-shadow ease 0.2s;
     &:hover {
-      box-shadow: 0 0 11px rgba(33,33,33,.2);
+      box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
     }
   }
 
@@ -53,9 +53,6 @@
 }
 
 .page-cards__icon {
-  cursor: pointer;
-  background-repeat: no-repeat;
-  background-position-x: center;
   width: 80px;
   height: 80px;
   margin-right: 16px;
@@ -76,4 +73,3 @@
 .puzzle-icon {
   background-image: url('../../assets/svg/card-4.svg');
 }
-

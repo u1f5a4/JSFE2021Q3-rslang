@@ -4,7 +4,7 @@ type PageCardsType = {
   cardIconClassName: string;
 }[];
 
-const pageCards: PageCardsType = [
+const pageCardsData: PageCardsType = [
   {
     cardTitle: 'Учебная программа',
     cardSubtitle:
@@ -30,4 +30,4 @@ const pageCards: PageCardsType = [
   },
 ];
 
-export default pageCards;
+export default pageCardsData;

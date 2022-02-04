@@ -2,7 +2,8 @@
 import AppView from '../../core/View';
 import './HomeStyle.scss';
 import renderHeaderTemplate from '../../Components/Header/_renderHeaderTemplate';
-import pageCards from './page-cards';
+import renderFooterTemplate from "../../Components/Footer/_renderFooterTemplate";
+import pageCardsData from './page-cards-data';
 
 class HomeView extends AppView {
   titlePage = 'Учебник английского с карточками и мини-играми';
@@ -31,12 +32,12 @@ class HomeView extends AppView {
                 }</p>
             </div>
             <div class="page-cards__list">
-              ${pageCards
+              ${pageCardsData
                 .map(
                   (card) =>
                     `<div class="page-cards__item">
                     <div class="page-cards__inner">
-                        <i class="page-cards__icon ${card.cardIconClassName}"></i>
+                        <i class="page-cards__icon ${card.cardIconClassName} normalized-icon"></i>
                         <h4 class="page-cards__title">
                             ${card.cardTitle}
                         </h4>
@@ -50,6 +51,7 @@ class HomeView extends AppView {
             </div>
         </div>
       </main>
+      ${renderFooterTemplate()}
     `;
   }
 }
