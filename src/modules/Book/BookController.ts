@@ -1,19 +1,13 @@
-// eslint-disable-next-line import/no-cycle
-import AppController from '../AppController';
+import AppController from '../../core/Controller';
 import AppModel from '../AppModel';
 import BookView from './BookView';
-// eslint-disable-next-line import/no-cycle
 import BookCardController from './Card/BookCardController';
 
 class BookController extends AppController {
-  view: BookView;
-
   card?: BookCardController;
 
-  constructor(view: BookView, model: AppModel) {
+  constructor(public view: BookView, public model: AppModel) {
     super(view, model);
-    this.view = view;
-    this.model = model;
   }
 
   async displayPage() {
@@ -26,14 +20,20 @@ class BookController extends AppController {
 
     Array.from(buttons).forEach((div) => {
       div.addEventListener('click', (event) => {
-        const group = this.getData(event, 'group');
-        this.card?.displayPageCard(group);
+        let group = this.getData(event, 'group');
+        if (group === 'difficult') {
+          console.log('difficult page');
+        } else {
+          const ZeroCountCompensation = 1;
+          group = String(Number(group) - ZeroCountCompensation);
+          this.card?.displayPage(group);
+        }
       });
     });
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getData(event: Event, value: string) {
+  getData(event: Event, value: string): string {
     const element = event.currentTarget as HTMLDivElement;
     return String(element.dataset[value]);
   }

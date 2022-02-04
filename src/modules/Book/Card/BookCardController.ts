@@ -1,30 +1,26 @@
-// eslint-disable-next-line import/no-cycle
-import AppController from '../../AppController';
 import AppModel from '../../AppModel';
 import BookCardView from './BookCardView';
-import IWord from '../../models/word-model';
+import IWord from '../../../models/word-model';
+import AppController from '../../../core/Controller';
 
 class BookCardController extends AppController {
-  view: BookCardView;
-
   page: number;
 
   words!: IWord[];
 
   wordNumber: number;
 
-  constructor(view: BookCardView, model: AppModel) {
+  constructor(public view: BookCardView, public model: AppModel) {
     super(view, model);
-    this.view = view;
-    this.model = model;
     this.page = 0;
     this.wordNumber = 0;
   }
 
-  async displayPageCard(group: string, page = this.page) {
+  async displayPage(group: string, page = this.page) {
     this.wordNumber = 0;
     this.words = await this.model.getWords(Number(group), page);
     const { word } = this.words[0];
+
     this.view.drawCardPage(group, word, page);
 
     this.bindButton(group);
@@ -35,7 +31,7 @@ class BookCardController extends AppController {
     nextPage?.addEventListener('click', () => {
       if (this.page !== 29) {
         this.page += 1;
-        this.displayPageCard(group);
+        this.displayPage(group);
       }
     });
 
@@ -43,7 +39,7 @@ class BookCardController extends AppController {
     prevPage?.addEventListener('click', () => {
       if (this.page > 0) {
         this.page -= 1;
-        this.displayPageCard(group);
+        this.displayPage(group);
       }
     });
 

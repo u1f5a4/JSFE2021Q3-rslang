@@ -1,5 +1,4 @@
-import AppController from './AppController';
-import AppView from './AppView';
+import AppView from '../core/View';
 
 // TODO: посмотреть как можно сделать рабочими стрелочки в браузере
 
@@ -15,8 +14,8 @@ class Router {
     this.paths = [];
   }
 
-  add(path: string, controller: AppController) {
-    this.paths.push({ path, handler: () => controller.displayPage() });
+  add(path: string, handler: () => void) {
+    this.paths.push({ path, handler });
   }
 
   init() {
