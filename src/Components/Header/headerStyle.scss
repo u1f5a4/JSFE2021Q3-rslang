@@ -5,7 +5,7 @@
 
 .header {
   position: relative;
-  background-color: #F6F7FB;
+  background-color: #f6f7fb;
   //width: 100%;
   //left: 0;
   //top: 0;
@@ -19,7 +19,7 @@
   }
 
   &__logo {
-    color: #282E3E;
+    color: #282e3e;
     font-size: 34px;
     font-weight: 700;
     text-decoration: none;
@@ -39,12 +39,11 @@
   }
 
   &__item {
-
   }
 
   &__link {
     text-decoration: none;
-    color: #282E3E;
+    color: #282e3e;
   }
 
   &__item:not(:last-child) {
@@ -53,7 +52,6 @@
 }
 
 .btn {
-  background: #6252D4;
+  background: #6252d4;
   padding: 10px 26px;
-
 }

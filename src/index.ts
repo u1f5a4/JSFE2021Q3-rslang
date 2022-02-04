@@ -11,7 +11,6 @@ import Router from './modules/Router';
 import HomeController from './modules/Home/HomeController';
 import HomeView from './modules/Home/HomeView';
 
-
 const auth = new AuthController(new AuthView(), new AppModel());
 
 const book = new BookController(new BookView(), new AppModel());
