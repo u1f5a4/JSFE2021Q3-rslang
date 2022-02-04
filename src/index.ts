@@ -1,6 +1,4 @@
-import AppController from './core/Controller';
 import AppModel from './modules/AppModel';
-import AppView from './core/View';
 import AuthController from './modules/Auth/AuthController';
 import AuthView from './modules/Auth/AuthView';
 import BookController from './modules/Book/BookController';
