@@ -1,3 +1,5 @@
+import HomeView from './Home/HomeView';
+
 class AppView {
   body = document.querySelector('body');
 

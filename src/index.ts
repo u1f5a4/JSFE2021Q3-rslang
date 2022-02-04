@@ -8,6 +8,10 @@ import BookView from './modules/Book/BookView';
 import BookCardController from './modules/Book/Card/BookCardController';
 import BookCardView from './modules/Book/Card/BookCardView';
 import Router from './modules/Router';
+import HomeController from './modules/Home/HomeController';
+import HomeView from './modules/Home/HomeView';
+
+const home = new HomeController(new HomeView(), new AppModel());
 
 const auth = new AuthController(new AuthView(), new AppModel());
 
@@ -18,11 +22,12 @@ book.card = bookCard;
 const app = new AppController(new AppView(), new AppModel());
 app.auth = auth;
 app.book = book;
+app.home = home;
 
-app.displayPage();
+home.displayPage();
 
 const router = new Router();
 router.init();
-router.add('', app);
+router.add('', home);
 router.add('book', book);
 router.add('auth', auth);

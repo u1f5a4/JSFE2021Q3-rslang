@@ -4,11 +4,14 @@ import AppView from './AppView';
 import AuthController from './Auth/AuthController';
 // eslint-disable-next-line import/no-cycle
 import BookController from './Book/BookController';
+import HomeController from './Home/HomeController';
 
 class AppController {
   view: AppView;
 
   model: AppModel;
+
+  home?: HomeController;
 
   auth?: AuthController;
 
