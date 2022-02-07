@@ -15,9 +15,10 @@ class BookCardView extends AppView {
   subtitlePage = `Нажимай на карточку и смотри перевод, добавляй
    в свой список слов, удаляй и смотри изображение`;
 
+  domain?: string;
+
   async drawCardPage(word: IWord) {
     this.word = word;
-
     this.body!.innerHTML = this.getHtml();
   }
 
@@ -35,31 +36,68 @@ class BookCardView extends AppView {
 
               <div class="book-card">
                 <div class="book-card__body">
-                  <button class="book-card__button" id="prev-word">👈</button>
-                  <div class="book-card__card">
-                    <div class="book-card__content">
-                      <div class="book-card__title">
-                        <p id="en-word" class="header-font">${
-                          this.word?.word
-                        }</p>
+
+                  <button class="book-card__button button" id="prev-word">👈</button>
+
+                  <div class="book-card__container">
+                    <div class="book-card__card"  id="flip">
+    
+                      <div class="book-card__front book-card__content">
+                          <div class="book-card__title">
+                            <p class="header-font book-card__text">
+                            ${this.word?.word} – ${this.word?.transcription}
+                            </p>
+                            <button class='button book-card__button-audio'>🔊</button>
+                          </div>
+                            <p class="text-font book-card__text">
+                              ${this.word?.textMeaning}
+                            </p>
+                            <p class="body-font book-card__text">
+                              ${this.word?.textExample}
+                            </p>
                       </div>
-                      <p></p>
+    
+                      <div class="book-card__back book-card__content-back">
+                        <div class="book-card__body-back">
+                          <p class="header-font book-card__text">
+                            ${this.word?.wordTranslate}
+                          </p>
+                          <p class="text-font book-card__text">
+                            ${this.word?.textMeaningTranslate}
+                          </p>
+                          <p class="body-font book-card__text">
+                            ${this.word?.textExampleTranslate}
+                          </p>
+                        </div>
+                        <img class="book-card__img" 
+                        src="${this.domain}/${this.word?.image}" 
+                        alt="${this.word?.id}">
+                      </div>
+    
                     </div>
                   </div>
-                  <button class="book-card__button" id="next-word">👉</button>
+
+                  <button class="book-card__button button" id="next-word">👉</button>
+
                 </div>
+
                 <p id='count-word'>${
                   Number(this.wordNumber) + ZeroCountCompensation
                 }/20</p>
               </div>
 
-              <br><br><br><br>
-              
-              <button id="prev-page">prev page</button>
-              <p id="num-page">
-              ${Number(this.page) + ZeroCountCompensation}/30
-              </p>
-              <button id="next-page">next page</button>
+
+
+
+              <div class="page-pagination">
+                <button class="element-font page-pagination__button button" id="prev-page"><</button>
+
+                <button class="element-font page-pagination__button button">
+                  ${Number(this.page) + ZeroCountCompensation} / 30
+                </button>
+
+                <button class="element-font page-pagination__button button" id="next-page">></button>
+              </div>
             </div>
     `;
   }

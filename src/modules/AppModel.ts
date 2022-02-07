@@ -1,10 +1,14 @@
 class AppModel {
-  domain = 'https://rslang-words.herokuapp.com';
+  private domain = 'https://rslang-words.herokuapp.com';
 
   async getWords(group: number, page: number) {
     return (
       await this.request(`${this.domain}/words?page=${page}&group=${group}`)
     ).json();
+  }
+
+  getDomain(): string {
+    return this.domain;
   }
 
   // eslint-disable-next-line class-methods-use-this

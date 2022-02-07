@@ -14,6 +14,7 @@ class BookCardController extends AppController {
     super(view, model);
     this.page = 0;
     this.wordNumber = 0;
+    this.view.domain = this.model.getDomain();
   }
 
   async displayPage(group: string, page = this.page) {
@@ -30,7 +31,34 @@ class BookCardController extends AppController {
     const word = this.words[this.wordNumber];
     this.view.drawCardPage(word);
 
+    document
+      .querySelector('#flip')
+      ?.addEventListener('click', (event) => this.flip(event));
+
     this.bindButton(group);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  playAudio() {}
+
+  // eslint-disable-next-line class-methods-use-this
+  flip(event: Event) {
+    const card = event.currentTarget as HTMLElement;
+
+    const element = event.target as HTMLElement;
+    const buttons = ['book-card__button-audio'];
+    const isButton = (htmlElement: HTMLElement) =>
+      !buttons.some((selector) => htmlElement.classList.contains(selector));
+
+    if (isButton(element)) {
+      if (card.className === 'book-card__card') {
+        if (card.style.transform === 'rotateY(180deg)') {
+          card.style.transform = 'rotateY(0deg)';
+        } else {
+          card.style.transform = 'rotateY(180deg)';
+        }
+      }
+    }
   }
 
   bindButton(group: string) {
@@ -38,6 +66,7 @@ class BookCardController extends AppController {
     nextPage?.addEventListener('click', () => {
       if (this.page !== 29) {
         this.page += 1;
+        this.wordNumber = 0;
         this.displayPage(group);
       }
     });
@@ -46,6 +75,7 @@ class BookCardController extends AppController {
     prevPage?.addEventListener('click', () => {
       if (this.page > 0) {
         this.page -= 1;
+        this.wordNumber = 0;
         this.displayPage(group);
       }
     });
@@ -64,6 +94,13 @@ class BookCardController extends AppController {
         this.wordNumber += 1;
         this.displayPage(group);
       }
+    });
+
+    const playAudio = document.querySelector('.book-card__button-audio');
+    playAudio?.addEventListener('click', () => {
+      const word = this.words[this.wordNumber];
+      const audio = new Audio(`${this.model.getDomain()}/${word.audio}`);
+      audio.play();
     });
   }
 }

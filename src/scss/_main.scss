@@ -24,7 +24,8 @@ $color-hover: #fcac00;
   font-weight: normal;
   font-size: 18px;
   line-height: 22px;
-  color: $color-one;
+  color: $color-black;
+  margin: 0;
 }
 
 .header-font {
@@ -33,7 +34,30 @@ $color-hover: #fcac00;
   font-weight: 600;
   font-size: 24px;
   line-height: 29px;
-  color: $color-one;
+  color: $color-black;
+  margin: 0;
+}
+
+.body-font {
+  font-family: $main-font;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.02em;
+  color: $color-black;
+  margin: 0;
+}
+
+.element-font {
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  color: $color-black;
+  text-align: center;
 }
 
 .body {
@@ -65,4 +89,11 @@ $color-hover: #fcac00;
     margin: 0;
     width: 80%;
   }
+}
+
+.button {
+  background: #ffffff;
+  border-radius: 5px;
+  border: none;
+  padding: 0;
 }
