@@ -41,12 +41,17 @@ $color-hover: #fcac00;
 }
 
 .content {
-  margin: 48px 0;
+  // margin: 48px 0;
   max-width: 1140px;
   margin: 0px auto;
 }
 
+.header {
+  margin-top: 32px;
+}
+
 .title-page {
+  margin-top: 48px;
   display: flex;
   flex-direction: column;
   gap: 8px;

@@ -17,6 +17,10 @@ class BookCardController extends AppController {
   }
 
   async displayPage(group: string, page = this.page) {
+    if (group === 'difficult') {
+      console.log('difficult page');
+      return;
+    }
     this.wordNumber = 0;
     this.words = await this.model.getWords(Number(group), page);
     const { word } = this.words[0];

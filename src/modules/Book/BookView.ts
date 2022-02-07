@@ -23,25 +23,32 @@ class BookView extends AppView {
               </div>
               <div class="app book-cards">
                 <div class="book-cards__card" data-group='1'>
-                  <p class="book-cards__header header-font">🤐 Группа слов #1</p>
+                  <p class="book-cards__emoji">🤐</p>
+                  <p class="book-cards__header header-font">Группа слов #1</p>
                 </div>
                 <div class="book-cards__card" data-group='2'>
-                  <p class="book-cards__header header-font">🙄 Группа слов #2</p>
+                  <p class="book-cards__emoji">🙄</p>
+                  <p class="book-cards__header header-font">Группа слов #2</p>
                 </div>
                 <div class="book-cards__card" data-group='3'>
-                  <p class="book-cards__header header-font">🤤 Группа слов #3</p>
+                  <p class="book-cards__emoji">🤤</p>
+                  <p class="book-cards__header header-font">Группа слов #3</p>
                 </div>
                 <div class="book-cards__card" data-group='4'>
-                  <p class="book-cards__header header-font">🤓 Группа слов #4</p>
+                  <p class="book-cards__emoji">🤓</p>
+                  <p class="book-cards__header header-font">Группа слов #4</p>
                 </div>
                 <div class="book-cards__card" data-group='5'>
-                  <p class="book-cards__header header-font">😎 Группа слов #5</p>
+                  <p class="book-cards__emoji">😎</p>
+                  <p class="book-cards__header header-font">Группа слов #5</p>
                 </div>
                 <div class="book-cards__card" data-group='6'>
-                  <p class="book-cards__header header-font">😭 Группа слов #6</p>
+                  <p class="book-cards__emoji">😭</p>
+                  <p class="book-cards__header header-font">Группа слов #6</p>
                 </div>
                 <div class="book-cards__card" data-group='difficult'>
-                  <p class="book-cards__header header-font">🤡 Сложные слова</p>
+                  <p class="book-cards__emoji">🤡</p>
+                  <p class="book-cards__header header-font">Сложные слова</p>
                 </div>
               </div>
             </div>`;

@@ -1,0 +1,40 @@
+.book-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  &__body {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    gap: 32px;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 32px;
+    background: #ffffff;
+    border-radius: 15px;
+    width: 752px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 32px;
+  }
+
+  &__button {
+    // display: block;
+    // height: 100%;
+    font-size: 36px;
+    background: #ffffff;
+    border-radius: 5px;
+    border: none;
+  }
+}
