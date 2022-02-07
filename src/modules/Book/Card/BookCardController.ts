@@ -21,11 +21,14 @@ class BookCardController extends AppController {
       console.log('difficult page');
       return;
     }
-    this.wordNumber = 0;
-    this.words = await this.model.getWords(Number(group), page);
-    const { word } = this.words[0];
 
-    this.view.drawCardPage(group, word, page);
+    this.view.group = group;
+    this.view.page = page;
+    this.view.wordNumber = this.wordNumber;
+
+    this.words = await this.model.getWords(Number(group), page);
+    const word = this.words[this.wordNumber];
+    this.view.drawCardPage(word);
 
     this.bindButton(group);
   }
@@ -47,21 +50,20 @@ class BookCardController extends AppController {
       }
     });
 
-    const enWord = document.querySelector('#en-word');
-    const countWord = document.querySelector('#count-word');
-
     const prevWord = document.querySelector('#prev-word');
     prevWord?.addEventListener('click', () => {
-      if (this.wordNumber > 0) this.wordNumber -= 1;
-      enWord!.textContent = this.words[this.wordNumber].word;
-      countWord!.textContent = `${this.wordNumber + 1}/20`;
+      if (this.wordNumber > 0) {
+        this.wordNumber -= 1;
+        this.displayPage(group);
+      }
     });
 
     const nextWord = document.querySelector('#next-word');
     nextWord?.addEventListener('click', () => {
-      if (this.wordNumber !== 19) this.wordNumber += 1;
-      enWord!.textContent = this.words[this.wordNumber].word;
-      countWord!.textContent = `${this.wordNumber + 1}/20`;
+      if (this.wordNumber !== 19) {
+        this.wordNumber += 1;
+        this.displayPage(group);
+      }
     });
   }
 }
