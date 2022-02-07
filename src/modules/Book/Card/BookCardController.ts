@@ -17,48 +17,28 @@ class BookCardController extends AppController {
     this.view.domain = this.model.getDomain();
   }
 
-  async displayPage(group: string, page = this.page) {
+  async displayPage(group: string) {
     if (group === 'difficult') {
       console.log('difficult page');
       return;
     }
 
+    let localPage = Number(this.model.getSetting(`group/${group}`));
+    if (!localPage) {
+      this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
+      localPage = this.page;
+    }
+    this.page = localPage;
+
+    this.view.page = this.page;
     this.view.group = group;
-    this.view.page = page;
     this.view.wordNumber = this.wordNumber;
 
-    this.words = await this.model.getWords(Number(group), page);
+    this.words = await this.model.getWords(Number(group), this.page);
     const word = this.words[this.wordNumber];
     this.view.drawCardPage(word);
 
-    document
-      .querySelector('#flip')
-      ?.addEventListener('click', (event) => this.flip(event));
-
     this.bindButton(group);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  playAudio() {}
-
-  // eslint-disable-next-line class-methods-use-this
-  flip(event: Event) {
-    const card = event.currentTarget as HTMLElement;
-
-    const element = event.target as HTMLElement;
-    const buttons = ['book-card__button-audio'];
-    const isButton = (htmlElement: HTMLElement) =>
-      !buttons.some((selector) => htmlElement.classList.contains(selector));
-
-    if (isButton(element)) {
-      if (card.className === 'book-card__card') {
-        if (card.style.transform === 'rotateY(180deg)') {
-          card.style.transform = 'rotateY(0deg)';
-        } else {
-          card.style.transform = 'rotateY(180deg)';
-        }
-      }
-    }
   }
 
   bindButton(group: string) {
@@ -66,6 +46,8 @@ class BookCardController extends AppController {
     nextPage?.addEventListener('click', () => {
       if (this.page !== 29) {
         this.page += 1;
+        this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
+
         this.wordNumber = 0;
         this.displayPage(group);
       }
@@ -75,6 +57,8 @@ class BookCardController extends AppController {
     prevPage?.addEventListener('click', () => {
       if (this.page > 0) {
         this.page -= 1;
+        this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
+
         this.wordNumber = 0;
         this.displayPage(group);
       }
@@ -101,6 +85,26 @@ class BookCardController extends AppController {
       const word = this.words[this.wordNumber];
       const audio = new Audio(`${this.model.getDomain()}/${word.audio}`);
       audio.play();
+    });
+
+    const cardFlip = document.querySelector('#flip');
+    cardFlip?.addEventListener('click', (event) => {
+      const card = event.currentTarget as HTMLElement;
+
+      const element = event.target as HTMLElement;
+      const buttons = ['book-card__button-audio'];
+      const isButton = (htmlElement: HTMLElement) =>
+        !buttons.some((selector) => htmlElement.classList.contains(selector));
+
+      if (isButton(element)) {
+        if (card.className === 'book-card__card') {
+          if (card.style.transform === 'rotateY(180deg)') {
+            card.style.transform = 'rotateY(0deg)';
+          } else {
+            card.style.transform = 'rotateY(180deg)';
+          }
+        }
+      }
     });
   }
 }
