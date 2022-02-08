@@ -1,0 +1,144 @@
+.book-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  &__body {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  &__container {
+    width: 752px;
+    height: 316px;
+    perspective: 1000px;
+  }
+
+  &__card {
+    width: 100%;
+    height: 100%;
+
+    transition: transform 2s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+  }
+
+  &__button {
+    font-size: 36px;
+  }
+
+  &__button-audio {
+    font-size: 36px;
+  }
+
+  &__back {
+    transform: rotateY(180deg);
+  }
+
+  &__front,
+  &__back {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 15px;
+
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+  }
+
+  &__content-back {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  &__body-back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__img {
+    max-width: 200px;
+    object-fit: cover;
+    object-position: 100% 0;
+  }
+
+  &__text {
+    text-align: center;
+  }
+}
+
+.page-pagination {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+
+  &__button {
+    text-align: center;
+    width: 48px;
+    height: 40px;
+  }
+}
+
+.content {
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
+.button {
+  background: #ffffff;
+  border-radius: 5px;
+  border: none;
+  padding: 0;
+}
+
+.shadow-active {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:active {
+    transform: translateX(2px);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.title-page {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 750px;
+  margin-bottom: 32px;
+
+  &__title {
+    margin: 0;
+  }
+  &__text {
+    margin: 0;
+    width: 80%;
+  }
+}
