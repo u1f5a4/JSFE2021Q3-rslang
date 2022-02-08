@@ -1,9 +1,9 @@
-class AppModel {
-  domain = 'https://rslang-words.herokuapp.com';
+import { domain } from '../core/constants/server-constants';
 
+class AppModel {
   async getWords(group: number, page: number) {
     return (
-      await this.request(`${this.domain}/words?page=${page}&group=${group}`)
+      await this.request(`${domain}/words?page=${page}&group=${group}`)
     ).json();
   }
 

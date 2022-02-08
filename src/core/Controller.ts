@@ -1,8 +1,5 @@
-import AppModel from '../modules/AppModel';
-import AppView from './View';
-
 class AppController {
-  constructor(public view: AppView, public model: AppModel) {}
+  constructor(public view: any, public model: any) {}
 }
 
 export default AppController;

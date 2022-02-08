@@ -1,20 +1,38 @@
-import AppView from '../../core/View';
+import SignUpForm from './components/signup-form';
+import './AuthStyle.scss';
+import View from '../../core/View-auth';
+import Control from '../../core/BaseElement';
 
-class AuthView extends AppView {
-  text: string;
+class AuthView extends View {
+  formAuth: SignUpForm;
 
-  titlePage = 'auth';
+  button: Control<HTMLButtonElement>;
+
+  onClick!: () => void;
+
+  name!: string;
 
   constructor() {
-    super();
-    this.text = 'Auth View';
+    super('div', 'auth__container');
+    this.node.innerHTML = `<h1 class="auth__title">Добро пожаловать ${this.userName}</h1>`;
+    this.formAuth = new SignUpForm(this.node);
+    this.button = new Control(
+      this.node,
+      'button',
+      'login-button',
+      'Пользователи'
+    );
+    this.button.node.onclick = () => {
+      this.onClick();
+    };
   }
 
-  getHtml(): string {
-    return `
-            <h1>${this.text}</h1>
-            <a href="#">home</a>
-        `;
+  get userName() {
+    return this.name;
+  }
+
+  set userName(value) {
+    this.name = value;
   }
 }
 

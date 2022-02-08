@@ -1,0 +1,79 @@
+.auth__title {
+    text-align: center;
+}
+
+.auth__error {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 10px 15px;
+    color: brown;
+    background: rgb(254, 215, 215);
+    border-radius: 4px;
+
+    .error__icon {
+        width: 25px;
+        height: 25px;
+        background-image: url(../../assets/svg/attention.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .error__list {
+        margin: 0;
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 350px;
+    position: relative;
+    padding: 0 40px;
+    margin: 0 auto;
+
+    h5 {
+        text-align: center;
+        color: #1a1a1a;
+        margin: 0;
+        font-size: 18px;
+    }
+
+    input {
+        box-sizing: border-box;
+        height: 40px;
+        background-color: #fff;
+        border-radius: 2px;
+        width: 100%;
+        padding: 10px 12px 12px;
+        border: 1px solid rgba(213,215,219,.6);
+        border-radius: 2px;
+        outline: none;
+        font-size: 14px;
+        line-height: 20px;
+        color: #1a1a1a;
+        background: transparent;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .login-button {
+        padding: 10px 0;
+        width: 167px;
+        line-height: 20px;
+        display: inline-block;
+        text-align: center;
+        border: none;
+        outline: none;
+        color: #fff;
+        font-size: 14px;
+        border-radius: 4px;
+        background-color: #6252D4;
+        cursor: pointer;
+    }
+}

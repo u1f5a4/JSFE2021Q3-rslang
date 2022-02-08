@@ -8,8 +8,9 @@ import BookCardView from './modules/Book/Card/BookCardView';
 import Router from './modules/Router';
 import HomeController from './modules/Home/HomeController';
 import HomeView from './modules/Home/HomeView';
+import AuthModel from './modules/Auth/AuthModel';
 
-const auth = new AuthController(new AuthView(), new AppModel());
+const auth = new AuthController(new AuthView(), new AuthModel());
 
 const book = new BookController(new BookView(), new AppModel());
 const bookCard = new BookCardController(new BookCardView(), new AppModel());
