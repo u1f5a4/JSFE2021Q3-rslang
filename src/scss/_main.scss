@@ -97,3 +97,12 @@ $color-hover: #fcac00;
   border: none;
   padding: 0;
 }
+
+.shadow-active {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:active {
+    transform: translateX(2px);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
+}

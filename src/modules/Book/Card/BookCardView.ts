@@ -37,7 +37,7 @@ class BookCardView extends AppView {
               <div class="book-card">
                 <div class="book-card__body">
 
-                  <button class="book-card__button button" id="prev-word">👈</button>
+                  <button class="book-card__button button shadow-active" id="prev-word">👈</button>
 
                   <div class="book-card__container">
                     <div class="book-card__card"  id="flip">
@@ -77,7 +77,7 @@ class BookCardView extends AppView {
                     </div>
                   </div>
 
-                  <button class="book-card__button button" id="next-word">👉</button>
+                  <button class="book-card__button button shadow-active" id="next-word">👉</button>
 
                 </div>
 
@@ -90,13 +90,13 @@ class BookCardView extends AppView {
 
 
               <div class="page-pagination">
-                <button class="element-font page-pagination__button button" id="prev-page"><</button>
+                <button class="element-font page-pagination__button button shadow-active" id="prev-page"><</button>
 
                 <button class="element-font page-pagination__button button">
                   ${Number(this.page) + ZeroCountCompensation} / 30
                 </button>
 
-                <button class="element-font page-pagination__button button" id="next-page">></button>
+                <button class="element-font page-pagination__button button shadow-active" id="next-page">></button>
               </div>
             </div>
     `;

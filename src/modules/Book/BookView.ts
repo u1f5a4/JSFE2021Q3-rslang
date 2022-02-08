@@ -22,31 +22,31 @@ class BookView extends AppView {
                 <p class="title-page__text text-font">${this.subtitlePage}</p>
               </div>
               <div class="app book-cards">
-                <div class="book-cards__card" data-group='1'>
+                <div class="book-cards__card shadow-active" data-group='1'>
                   <p class="book-cards__emoji">🤐</p>
                   <p class="book-cards__header header-font">Группа слов #1</p>
                 </div>
-                <div class="book-cards__card" data-group='2'>
+                <div class="book-cards__card shadow-active" data-group='2'>
                   <p class="book-cards__emoji">🙄</p>
                   <p class="book-cards__header header-font">Группа слов #2</p>
                 </div>
-                <div class="book-cards__card" data-group='3'>
+                <div class="book-cards__card shadow-active" data-group='3'>
                   <p class="book-cards__emoji">🤤</p>
                   <p class="book-cards__header header-font">Группа слов #3</p>
                 </div>
-                <div class="book-cards__card" data-group='4'>
+                <div class="book-cards__card shadow-active" data-group='4'>
                   <p class="book-cards__emoji">🤓</p>
                   <p class="book-cards__header header-font">Группа слов #4</p>
                 </div>
-                <div class="book-cards__card" data-group='5'>
+                <div class="book-cards__card shadow-active" data-group='5'>
                   <p class="book-cards__emoji">😎</p>
                   <p class="book-cards__header header-font">Группа слов #5</p>
                 </div>
-                <div class="book-cards__card" data-group='6'>
+                <div class="book-cards__card shadow-active" data-group='6'>
                   <p class="book-cards__emoji">😭</p>
                   <p class="book-cards__header header-font">Группа слов #6</p>
                 </div>
-                <div class="book-cards__card" data-group='difficult'>
+                <div class="book-cards__card shadow-active" data-group='difficult'>
                   <p class="book-cards__emoji">🤡</p>
                   <p class="book-cards__header header-font">Сложные слова</p>
                 </div>
