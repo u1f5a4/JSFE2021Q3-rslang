@@ -1,10 +1,10 @@
-import styles from './styles.module.scss';
+import styles from './headerStyle.module.scss';
 
 export default function renderHeaderTemplate(): string {
   return `
     <header class="${styles.header}">
         <div class="${styles.header__container} ${styles.container}">
-            <a href="/" class="${styles.header__logo}">RS Lang</a>
+            <a href="/" class="${styles.header__logo}">🇺🇸 RS Lang</a>
             <nav content="${styles.menu}">
                 <ul class=${styles.menu__list}">
                     <li class="${styles.menu__item}">

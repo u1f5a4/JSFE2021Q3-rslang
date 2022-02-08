@@ -1,7 +1,7 @@
 import renderHeaderTemplate from '../../../Components/Header/_renderHeaderTemplate';
 import AppView from '../../../core/View';
 import IWord from '../../../models/word-model';
-import './BookCardStyle.scss';
+import './BookCardStyle.module.scss';
 
 class BookCardView extends AppView {
   group?: string;

@@ -5,7 +5,7 @@
 
 .header {
   position: relative;
-  background-color: #f6f7fb;
+  background-color: $color-bg;
 
   &__container {
     display: flex;
@@ -15,7 +15,7 @@
   }
 
   &__logo {
-    color: #282e3e;
+    color: $color-black;
     font-size: 34px;
     font-weight: 700;
     text-decoration: none;
@@ -32,7 +32,7 @@
 
   &__link {
     text-decoration: none;
-    color: #282e3e;
+    color: $color-black;
   }
 
   &__item:not(:last-child) {
@@ -42,7 +42,7 @@
 
 .btn {
   color: $btn-color;
-  background: #6252d4;
+  background: $color-two;
   border-radius: 5px;
   border: none;
   padding: 10px 26px;

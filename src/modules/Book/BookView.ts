@@ -1,6 +1,6 @@
 import renderHeaderTemplate from '../../Components/Header/_renderHeaderTemplate';
 import AppView from '../../core/View';
-import './BookStyle.scss';
+import './BookStyle.module.scss';
 
 class BookView extends AppView {
   titlePage = 'Учебник';

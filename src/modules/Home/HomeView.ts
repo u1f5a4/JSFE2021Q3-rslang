@@ -23,7 +23,7 @@ class HomeView extends AppView {
         <div class="${styles.hero}">
             <h1 class="${styles.hero__title}">RSlang играй и учись</h1>
         </div>
-        <div class="${styles.main__block} _container">
+        <div class="${styles.main__block} ${styles.container}">
             <div class="page-caption">  
                 <h2 class="page-caption__title title-font">${
                   this.titlePage
