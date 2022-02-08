@@ -1,4 +1,4 @@
-import renderHeaderTemplate from '../../../Components/Header/_renderHeaderTemplate';
+import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 import AppView from '../../../core/View';
 import IWord from '../../../models/word-model';
 import './BookCardStyle.module.scss';
