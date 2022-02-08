@@ -1,0 +1,61 @@
+.hero {
+  position: relative;
+  background-image: url('../../assets/images/home-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 360px;
+
+  &__title {
+    position: absolute;
+    bottom: 0;
+    color: #fefefe;
+    right: 30px;
+    font-size: 6rem;
+    text-transform: uppercase;
+  }
+}
+
+.main {
+  &__block {
+    padding: 70px 0;
+  }
+}
+
+.cards {
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 24px;
+  }
+
+  &__item {
+    cursor: pointer;
+    padding: 47px 32px;
+    background: $card-bg;
+    border-radius: 15px;
+    transition: box-shadow ease 0.2s;
+    &:hover {
+      box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+    }
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  &__title {
+    color: $color-one;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+    margin-right: 16px;
+  }
+}
