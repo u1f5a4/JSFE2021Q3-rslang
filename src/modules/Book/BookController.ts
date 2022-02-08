@@ -20,20 +20,14 @@ class BookController extends AppController {
 
     Array.from(buttons).forEach((div) => {
       div.addEventListener('click', (event) => {
-        let group = this.getData(event, 'group');
-        if (group === 'difficult') {
-          console.log('difficult page');
-        } else {
-          const ZeroCountCompensation = 1;
-          group = String(Number(group) - ZeroCountCompensation);
-          this.card?.displayPage(group);
-        }
+        const group = this.getDataset(event, 'group');
+        window.location.href = `${window.location.href}/${group}`;
       });
     });
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getData(event: Event, value: string): string {
+  getDataset(event: Event, value: string): string {
     const element = event.currentTarget as HTMLDivElement;
     return String(element.dataset[value]);
   }

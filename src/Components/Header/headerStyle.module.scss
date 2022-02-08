@@ -1,15 +1,11 @@
-._container {
+.container {
   max-width: 1140px;
   margin: 0px auto;
 }
 
 .header {
   position: relative;
-  background-color: #f6f7fb;
-  //width: 100%;
-  //left: 0;
-  //top: 0;
-  //z-index: 50;
+  background-color: $color-bg;
 
   &__container {
     display: flex;
@@ -19,14 +15,10 @@
   }
 
   &__logo {
-    color: #282e3e;
+    color: $color-black;
     font-size: 34px;
     font-weight: 700;
     text-decoration: none;
-  }
-
-  &__menu {
-    //border: 1px solid red;
   }
 }
 
@@ -38,12 +30,9 @@
     list-style-type: none;
   }
 
-  &__item {
-  }
-
   &__link {
     text-decoration: none;
-    color: #282e3e;
+    color: $color-black;
   }
 
   &__item:not(:last-child) {
@@ -52,6 +41,9 @@
 }
 
 .btn {
-  background: #6252d4;
+  color: $btn-color;
+  background: $color-two;
+  border-radius: 5px;
+  border: none;
   padding: 10px 26px;
 }
