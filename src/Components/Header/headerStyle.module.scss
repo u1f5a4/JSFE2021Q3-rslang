@@ -1,9 +1,6 @@
-.container {
-  max-width: 1140px;
-  margin: 0px auto;
-}
-
 .header {
+  margin-top: 32px;
+  margin-bottom: 48px;
   position: relative;
   background-color: $color-bg;
 
@@ -16,8 +13,7 @@
 
   &__logo {
     color: $color-black;
-    font-size: 34px;
-    font-weight: 700;
+    text-align: center;
     text-decoration: none;
   }
 }

@@ -50,6 +50,37 @@ $card-bg: #fff;
   letter-spacing: 0em;
 }
 
+.logo-font {
+  font-family: $logo-font;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+}
+
 .body {
   background-color: $color-bg;
+}
+
+.content {
+  max-width: 1140px;
+  margin: 32px auto;
+}
+
+.button {
+  background: #ffffff;
+  border-radius: 5px;
+  border: none;
+  padding: 0;
+}
+
+.shadow-active {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:active {
+    transition: box-shadow ease 0.2s;
+    transform: translateX(2px);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
 }

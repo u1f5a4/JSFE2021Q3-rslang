@@ -16,6 +16,7 @@
     background: #ffffff;
     border-radius: 15px;
     width: 100%;
+    height: 150px;
   }
 
   &__header {
@@ -24,26 +25,4 @@
   &__emoji {
     font-size: 44px;
   }
-}
-
-.title-page {
-  margin-top: 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 750px;
-  margin-bottom: 32px;
-
-  &__title {
-    margin: 0;
-  }
-  &__text {
-    margin: 0;
-    width: 80%;
-  }
-}
-
-.content {
-  max-width: 1140px;
-  margin: 0px auto;
 }

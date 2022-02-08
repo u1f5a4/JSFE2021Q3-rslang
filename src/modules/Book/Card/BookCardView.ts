@@ -1,5 +1,6 @@
 import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
 import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../../components/PageDesc/_renderPageDescTemplate';
 import AppView from '../../../core/View';
 import IWord from '../../../models/word-model';
 import css from './BookCardStyle.module.scss';
@@ -26,17 +27,14 @@ class BookCardView extends AppView {
   getHtml(): string {
     const ZeroCountCompensation = 1;
     return `${renderHeaderTemplate()}
-            <div class="${css.content}">
-              <div class="${css['title-page']}">  
-                <h2 class="
-                ${css['title-page__title']} ${css['title-font']}
-                ">Группа слов 
-                  #${Number(this.group) + ZeroCountCompensation}</h2>
-                <p class="${css['title-page__text']} ${css['text-font']}">
-                  ${this.subtitlePage}
-                </p>
-              </div>
+          <div class="${css.content}">
 
+            ${renderPageDescTemplate(
+              `Группа слов #${Number(this.group) + ZeroCountCompensation}`,
+              this.subtitlePage
+            )}
+
+            <div class="${css.content}">
               <div class="${css['book-card']}">
                 <div class="${css['book-card__body']}">
 
@@ -125,9 +123,11 @@ class BookCardView extends AppView {
                                 ${css.button}
                                 ${css['shadow-active']}
                                 " id="next-page">></button>
-              </div>
+                </div>
+                
             </div>
-            ${renderFooterTemplate()}
+          </div>
+          ${renderFooterTemplate()}
     `;
   }
 }

@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
 import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
+
 import AppView from '../../core/View';
 import styles from './BookStyle.module.scss';
 
@@ -19,16 +21,7 @@ class BookView extends AppView {
     return `
           ${renderHeaderTemplate()}
             <div class="${styles.content}">
-              <div class="${styles['title-page']}">  
-                <h2 class="${styles['title-page__title']} 
-                          ${styles['title-font']}
-                ">${this.titlePage}</h2>
-                <p class="
-                ${styles['title-page__text']}
-                ${styles['text-font']}
-                ">${this.subtitlePage}</p>
-              </div>
-
+            ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
               <div class="${styles['book-cards']} app">
                 <div class="
                 ${styles['book-cards__card']}

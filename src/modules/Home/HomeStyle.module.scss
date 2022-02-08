@@ -16,11 +16,11 @@
   }
 }
 
-.main {
-  &__block {
-    padding: 70px 0;
-  }
-}
+// .main {
+//   &__block {
+//     margin: 48px auto !important;
+//   }
+// }
 
 .cards {
   &__list {
@@ -31,14 +31,9 @@
   }
 
   &__item {
-    cursor: pointer;
-    padding: 47px 32px;
+    padding: 48px 32px;
     background: $card-bg;
     border-radius: 15px;
-    transition: box-shadow ease 0.2s;
-    &:hover {
-      box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
-    }
   }
 
   &__inner {

@@ -1,19 +1,25 @@
+import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 import AppView from '../../core/View';
+import css from './AuthStyle.module.scss';
 
 class AuthView extends AppView {
-  text: string;
-
-  titlePage = 'auth';
+  titlePage: string;
 
   constructor() {
     super();
-    this.text = 'Auth View';
+    this.titlePage = 'Добро пожаловать';
   }
 
   getHtml(): string {
     return `
-            <h1>${this.text}</h1>
-            <a href="#">home</a>
+    <div class="">
+            ${renderHeaderTemplate()}
+            <div class="${css.content} ${css.wrapper}">
+              <h2>${this.titlePage}</h2>
+            </div>
+            ${renderFooterTemplate()}
+    </div>
         `;
   }
 }
