@@ -16,6 +16,7 @@ class HomeView extends AppView {
     this.body!.innerHTML = this.getHtml();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getHtml() {
     return `
       ${renderHeaderTemplate()} 

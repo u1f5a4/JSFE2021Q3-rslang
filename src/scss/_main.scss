@@ -27,6 +27,8 @@ $card-bg: #fff;
   font-size: 18px;
   line-height: 22px;
   color: $color-one;
+  color: $color-black;
+  margin: 0;
 }
 
 .header-font {
@@ -36,6 +38,30 @@ $card-bg: #fff;
   font-size: 24px;
   line-height: 29px;
   color: $color-one;
+  color: $color-black;
+  margin: 0;
+}
+
+.body-font {
+  font-family: $main-font;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.02em;
+  color: $color-black;
+  margin: 0;
+}
+
+.element-font {
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  color: $color-black;
+  text-align: center;
 }
 
 .body {
@@ -53,6 +79,17 @@ $card-bg: #fff;
 }
 
 .page-caption {
+  // margin: 48px 0;
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
+.header {
+  margin-top: 32px;
+}
+
+.title-page {
+  margin-top: 48px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -68,8 +105,25 @@ $card-bg: #fff;
   }
 }
 
+
 .normalized-icon {
   cursor: pointer;
   background-repeat: no-repeat;
   background-position-x: center;
+}
+
+.button {
+  background: #ffffff;
+  border-radius: 5px;
+  border: none;
+  padding: 0;
+}
+
+.shadow-active {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:active {
+    transform: translateX(2px);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
 }

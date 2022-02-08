@@ -1,3 +1,36 @@
+._container {
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
+.header {
+  position: relative;
+  background-color: #f6f7fb;
+  //width: 100%;
+  //left: 0;
+  //top: 0;
+  //z-index: 50;
+
+  &__container {
+    display: flex;
+    min-height: 82px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    color: #282e3e;
+    font-family: $logo-font;
+    font-size: 34px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  &__menu {
+    //border: 1px solid red;
+  }
+}
+
 .menu {
   &__list {
     display: flex;
