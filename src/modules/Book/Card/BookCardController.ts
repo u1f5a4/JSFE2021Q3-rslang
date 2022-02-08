@@ -83,8 +83,23 @@ class BookCardController extends AppController {
     const playAudio = document.querySelector('.book-card__button-audio');
     playAudio?.addEventListener('click', () => {
       const word = this.words[this.wordNumber];
-      const audio = new Audio(`${this.model.getDomain()}/${word.audio}`);
-      audio.play();
+      const tracks = [
+        `${this.model.getDomain()}/${word.audio}`,
+        `${this.model.getDomain()}/${word.audioMeaning}`,
+        `${this.model.getDomain()}/${word.audioExample}`,
+      ];
+      const player = new Audio();
+      let currentTrack = 0;
+      player.src = tracks[currentTrack];
+      player.play();
+
+      player.addEventListener('ended', () => {
+        currentTrack += 1;
+        if (currentTrack !== tracks.length) {
+          player.src = tracks[currentTrack];
+          player.play();
+        }
+      });
     });
 
     const cardFlip = document.querySelector('#flip');
