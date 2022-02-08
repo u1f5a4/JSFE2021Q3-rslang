@@ -1,7 +1,8 @@
+import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
 import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 import AppView from '../../../core/View';
 import IWord from '../../../models/word-model';
-import './BookCardStyle.module.scss';
+import css from './BookCardStyle.module.scss';
 
 class BookCardView extends AppView {
   group?: string;
@@ -25,51 +26,66 @@ class BookCardView extends AppView {
   getHtml(): string {
     const ZeroCountCompensation = 1;
     return `${renderHeaderTemplate()}
-            <div class="content">
-              <div class="title-page">  
-                <h2 class="title-page__title title-font">Группа слов 
+            <div class="${css.content}">
+              <div class="${css['title-page']}">  
+                <h2 class="
+                ${css['title-page__title']} ${css['title-font']}
+                ">Группа слов 
                   #${Number(this.group) + ZeroCountCompensation}</h2>
-                <p class="title-page__text text-font">
+                <p class="${css['title-page__text']} ${css['text-font']}">
                   ${this.subtitlePage}
                 </p>
               </div>
 
-              <div class="book-card">
-                <div class="book-card__body">
+              <div class="${css['book-card']}">
+                <div class="${css['book-card__body']}">
 
-                  <button class="book-card__button button shadow-active" id="prev-word">👈</button>
+                  <button class="${css['book-card__button']} 
+                                 ${css.button} 
+                                 ${css['shadow-active']}
+                                " id="prev-word">👈</button>
 
-                  <div class="book-card__container">
-                    <div class="book-card__card"  id="flip">
+                  <div class="${css['book-card__container']}">
+                    <div class="${css['book-card__card']}" id="flip">
     
-                      <div class="book-card__front book-card__content">
-                          <div class="book-card__title">
-                            <p class="header-font book-card__text">
+                      <div class="${css['book-card__front']} 
+                                  ${css['book-card__content']}">
+                          <div class="${css['book-card__title']}">
+                            <p class="${css['header-font']} 
+                                      ${css['book-card__text']}">
                             ${this.word?.word} – ${this.word?.transcription}
                             </p>
-                            <button class='button book-card__button-audio'>🔊</button>
+                            <button class='${css.button} 
+                                            ${css['book-card__button-audio']}
+                                            ' id="play-audio-card">🔊</button>
                           </div>
-                            <p class="text-font book-card__text">
+                            <p class="${css['text-font']} 
+                                      ${css['book-card__text']} ">
                               ${this.word?.textMeaning}
                             </p>
-                            <p class="body-font book-card__text">
+                            <p class="${css['body-font']}
+                                      ${css['book-card__text']}">
                               ${this.word?.textExample}
                             </p>
                       </div>
     
-                      <div class="book-card__back book-card__content-back">
-                        <div class="book-card__body-back">
-                          <p class="header-font book-card__text">
+                      <div class="${css['book-card__back']} 
+                                  ${css['book-card__content-back']}">
+                        <div class="${css['book-card__body-back']}">
+                          <p class="${css['header-font']} 
+                                    ${css['book-card__text']}">
                             ${this.word?.wordTranslate}
                           </p>
-                          <p class="text-font book-card__text">
+                          <p class="${css['text-font']} 
+                                    ${css['book-card__text']}">
                             ${this.word?.textMeaningTranslate}
                           </p>
-                          <p class="body-font book-card__text">
+                          <p class="${css['body-font']} 
+                                    ${css['book-card__text']} ">
                             ${this.word?.textExampleTranslate}
                           </p>
                         </div>
-                        <img class="book-card__img" 
+                        <img class="${css['book-card__img']}" 
                         src="${this.domain}/${this.word?.image}" 
                         alt="${this.word?.id}">
                       </div>
@@ -77,7 +93,10 @@ class BookCardView extends AppView {
                     </div>
                   </div>
 
-                  <button class="book-card__button button shadow-active" id="next-word">👉</button>
+                  <button class="${css['book-card__button']} 
+                                 ${css.button}
+                                 ${css['shadow-active']}
+                                  " id="next-word">👉</button>
 
                 </div>
 
@@ -88,17 +107,27 @@ class BookCardView extends AppView {
 
 
 
+              <div class="${css['page-pagination']}">
+                <button class="${css['element-font']}
+                               ${css['page-pagination__button']}
+                               ${css.button}
+                               ${css['shadow-active']}
+                               " id="prev-page"><</button>
 
-              <div class="page-pagination">
-                <button class="element-font page-pagination__button button shadow-active" id="prev-page"><</button>
-
-                <button class="element-font page-pagination__button button">
+                <button class="${css['element-font']}
+                               ${css['page-pagination__button']}
+                               ${css.button}">
                   ${Number(this.page) + ZeroCountCompensation} / 30
                 </button>
 
-                <button class="element-font page-pagination__button button shadow-active" id="next-page">></button>
+                <button class="${css['element-font']}
+                                ${css['page-pagination__button']}
+                                ${css.button}
+                                ${css['shadow-active']}
+                                " id="next-page">></button>
               </div>
             </div>
+            ${renderFooterTemplate()}
     `;
   }
 }

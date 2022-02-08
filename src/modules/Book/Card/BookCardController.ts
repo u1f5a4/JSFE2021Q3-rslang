@@ -80,7 +80,7 @@ class BookCardController extends AppController {
       }
     });
 
-    const playAudio = document.querySelector('.book-card__button-audio');
+    const playAudio = document.querySelector('#play-audio-card');
     playAudio?.addEventListener('click', () => {
       const word = this.words[this.wordNumber];
       const tracks = [
@@ -107,17 +107,15 @@ class BookCardController extends AppController {
       const card = event.currentTarget as HTMLElement;
 
       const element = event.target as HTMLElement;
-      const buttons = ['book-card__button-audio'];
+      const buttons = ['play-audio-card'];
       const isButton = (htmlElement: HTMLElement) =>
-        !buttons.some((selector) => htmlElement.classList.contains(selector));
+        !buttons.some((selector) => htmlElement.id === selector);
 
       if (isButton(element)) {
-        if (card.className === 'book-card__card') {
-          if (card.style.transform === 'rotateY(180deg)') {
-            card.style.transform = 'rotateY(0deg)';
-          } else {
-            card.style.transform = 'rotateY(180deg)';
-          }
+        if (card.style.transform === 'rotateY(180deg)') {
+          card.style.transform = 'rotateY(0deg)';
+        } else {
+          card.style.transform = 'rotateY(180deg)';
         }
       }
     });
