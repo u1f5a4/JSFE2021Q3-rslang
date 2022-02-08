@@ -7,6 +7,8 @@ $color-two: #6252d4;
 $color-black: #282e3e;
 $color-bg: #f6f7fb;
 $color-hover: #fcac00;
+$btn-color: #fff;
+$card-bg: #fff;
 
 .title-font {
   font-family: $main-font;
@@ -24,6 +26,7 @@ $color-hover: #fcac00;
   font-weight: normal;
   font-size: 18px;
   line-height: 22px;
+  color: $color-one;
   color: $color-black;
   margin: 0;
 }
@@ -34,6 +37,7 @@ $color-hover: #fcac00;
   font-weight: 600;
   font-size: 24px;
   line-height: 29px;
+  color: $color-one;
   color: $color-black;
   margin: 0;
 }
@@ -65,6 +69,16 @@ $color-hover: #fcac00;
 }
 
 .content {
+  margin: 48px 0;
+  max-width: 1140px;
+}
+
+._container {
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
+.page-caption {
   // margin: 48px 0;
   max-width: 1140px;
   margin: 0px auto;
@@ -89,6 +103,13 @@ $color-hover: #fcac00;
     margin: 0;
     width: 80%;
   }
+}
+
+
+.normalized-icon {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position-x: center;
 }
 
 .button {

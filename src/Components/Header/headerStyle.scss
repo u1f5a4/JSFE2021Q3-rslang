@@ -53,6 +53,9 @@
 }
 
 .btn {
+  color: $btn-color;
   background: #6252d4;
+  border-radius: 5px;
+  border: none;
   padding: 10px 26px;
 }
