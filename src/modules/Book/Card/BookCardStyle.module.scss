@@ -5,6 +5,12 @@
   align-items: center;
   gap: 16px;
 
+  &__page {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
   &__body {
     display: flex;
     justify-content: center;
@@ -41,6 +47,11 @@
 
   &__button {
     font-size: 36px;
+
+    border: none;
+    border-radius: 5px;
+    background: $color-white;
+    color: $color-black;
   }
 
   &__button-audio {
@@ -54,7 +65,7 @@
   &__front,
   &__back {
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
+    background-color: $color-white;
     border-radius: 15px;
 
     width: 100%;
@@ -90,6 +101,32 @@
 
   &__text {
     text-align: center;
+    color: $color-one;
+  }
+
+  &__buttons-word {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__button-complicate-word {
+    background: tomato;
+    &:hover {
+      background: rgb(201, 78, 56);
+    }
+    &:active {
+      background: $color-yellow;
+    }
+  }
+
+  &__button-easy-word {
+    background: green;
+    &:hover {
+      background: rgb(1, 83, 1);
+    }
+    &:active {
+      background: $color-yellow;
+    }
   }
 }
 
@@ -97,12 +134,81 @@
   display: flex;
   gap: 16px;
   justify-content: center;
+  position: relative;
 
   &__button {
     text-align: center;
-    width: 48px;
     height: 40px;
+    border: none;
+    border-radius: 5px;
+    background: $color-white;
+    color: $color-black;
+  }
+
+  &__arrow {
+    width: 48px;
+  }
+
+  &__text {
+    cursor: default;
+  }
+
+  &__button-back {
+    padding: 0 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
+.list-dot {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  &__dot {
+    height: 20px;
+    width: 20px;
+    background: $color-white;
+    border-radius: 5px;
+  }
+
+  &__dot-active {
+    background: $color-one;
+  }
+}
+
+.game-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+
+  &__card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    gap: 16px;
+    width: 100%;
+    background: $color-white;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  &__emoji {
+  }
+
+  &__title {
+    color: $color-one;
+  }
+}

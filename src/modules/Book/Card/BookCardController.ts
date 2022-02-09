@@ -107,7 +107,7 @@ class BookCardController extends AppController {
       const card = event.currentTarget as HTMLElement;
 
       const element = event.target as HTMLElement;
-      const buttons = ['play-audio-card'];
+      const buttons = ['play-audio-card', 'complicate-word', 'easy-word'];
       const isButton = (htmlElement: HTMLElement) =>
         !buttons.some((selector) => htmlElement.id === selector);
 
@@ -118,6 +118,20 @@ class BookCardController extends AppController {
           card.style.transform = 'rotateY(180deg)';
         }
       }
+    });
+
+    const buttonBack = document.querySelector('#button-back');
+    buttonBack?.addEventListener('click', () => {
+      document.location = '/#book';
+    });
+
+    const buttonGoAudioGame = document.querySelector('#go-audio-game');
+    buttonGoAudioGame?.addEventListener('click', () => {
+      document.location = '/#book';
+    });
+    const buttonGoSprintGame = document.querySelector('#go-sprint-game');
+    buttonGoSprintGame?.addEventListener('click', () => {
+      document.location = '/#book';
     });
   }
 }
