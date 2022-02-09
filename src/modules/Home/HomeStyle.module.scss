@@ -1,24 +1,18 @@
-.hero {
-  position: relative;
-  background-image: url('../../assets/images/home-bg.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  min-height: 360px;
+// .hero {
+//   position: relative;
+//   background-image: url('../../assets/images/home-bg.png');
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   min-height: 360px;
 
-  &__title {
-    position: absolute;
-    bottom: 0;
-    color: #fefefe;
-    right: 30px;
-    font-size: 6rem;
-    text-transform: uppercase;
-  }
-}
-
-// .main {
-//   &__block {
-//     margin: 48px auto !important;
+//   &__title {
+//     position: absolute;
+//     bottom: 0;
+//     color: #fefefe;
+//     right: 30px;
+//     font-size: 6rem;
+//     text-transform: uppercase;
 //   }
 // }
 
@@ -31,31 +25,33 @@
   }
 
   &__item {
-    padding: 48px 32px;
-    background: $card-bg;
+    background: $color-white;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 32px;
+    gap: 16px;
   }
 
   &__inner {
     display: flex;
     align-items: center;
-    margin-bottom: 16px;
+    justify-content: center;
+    gap: 16px;
   }
 
   &__title {
     color: $color-one;
-    font-size: 24px;
-    font-weight: 600;
   }
 
   &__icon {
     width: 80px;
     height: 80px;
-    margin-right: 16px;
   }
-}
 
-.container {
-  max-width: 1140px;
-  margin: 0px auto;
+  &__text {
+    color: $color-black;
+  }
 }
