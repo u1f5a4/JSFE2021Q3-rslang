@@ -23,7 +23,7 @@ class HomeView extends AppView {
     return `
       ${renderHeaderTemplate()} 
 
-      <main class="${styles.main} ${styles.content}">
+      <main class="${styles.content}">
 
         <div class="${styles.main__block}  ">
         
@@ -40,7 +40,7 @@ class HomeView extends AppView {
                             ${card.cardTitle}
                           </h4>
                         </div>
-                        <p class="page-cards__text text-font">
+                        <p class="${styles.cards__text} ${styles['text-font']}">
                             ${card.cardSubtitle}
                         </p>
                       </div>`
