@@ -8,6 +8,10 @@ import BookCardView from './modules/Book/Card/BookCardView';
 import Router from './modules/Router';
 import HomeController from './modules/Home/HomeController';
 import HomeView from './modules/Home/HomeView';
+import GamesController from './modules/Games/GamesController';
+import GamesView from './modules/Games/GamesView';
+
+const games = new GamesController(new GamesView(), new AppModel());
 
 const auth = new AuthController(new AuthView(), new AppModel());
 
@@ -30,3 +34,4 @@ router.add('book/4', () => bookCard.displayPage('3'));
 router.add('book/5', () => bookCard.displayPage('4'));
 router.add('book/6', () => bookCard.displayPage('5'));
 router.add('book/difficult', () => bookCard.displayPage('difficult'));
+router.add('games', () => games.displayPage());
