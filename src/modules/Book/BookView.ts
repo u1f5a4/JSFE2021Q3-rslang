@@ -4,6 +4,7 @@ import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate'
 import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
 
 import AppView from '../../core/View';
+import { emojiList } from '../AppModel';
 import styles from './BookStyle.module.scss';
 
 class BookView extends AppView {
@@ -23,75 +24,33 @@ class BookView extends AppView {
             <div class="${styles.content}">
             ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
               <div class="${styles['book-cards']} app">
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='1'>
-                  <p class="${styles['book-cards__emoji']}">🤐</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #1</p>
-                </div>
+              ${(() => {
+                let result = ``;
 
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='2'>
-                  <p class="${styles['book-cards__emoji']}">🙄</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #2</p>
-                </div>
+                // eslint-disable-next-line no-restricted-syntax
+                for (const elem of emojiList) {
+                  const [value, emoji] = elem;
+                  result += `<div class="
+                                ${styles['book-cards__card']}
+                                ${styles['shadow-active']}
+                                " data-group='${value}'>
+                                  <p class="${
+                                    styles['book-cards__emoji']
+                                  }">${emoji}</p>
+                                  <p class="
+                                  ${styles['book-cards__header']} ${
+                    styles['header-font']
+                  }
+                                  ">${
+                                    value !== 'difficult'
+                                      ? `Группа слов #${value}`
+                                      : `Сложные слова`
+                                  }</p>
+                              </div>`;
+                }
 
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='3'>
-                  <p class="${styles['book-cards__emoji']}">🤤</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #3</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='4'>
-                  <p class="${styles['book-cards__emoji']}">🤓</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #4</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='5'>
-                  <p class="${styles['book-cards__emoji']}">😎</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #5</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='6'>
-                  <p class="${styles['book-cards__emoji']}">😭</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #6</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='difficult'>
-                  <p class="${styles['book-cards__emoji']}">🤡</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Сложные слова</p>
-                </div>
+                return result;
+              })()}
               </div>
             </div>
             ${renderFooterTemplate()}`;

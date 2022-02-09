@@ -1,3 +1,13 @@
+const emojiList = [
+  ['1', '🤐'],
+  ['2', '🙄'],
+  ['3', '🤤'],
+  ['4', '🤓'],
+  ['5', '😎'],
+  ['6', '😭'],
+  ['difficult', '🤡'],
+];
+
 class AppModel {
   private domain = 'https://rslang-words.herokuapp.com';
 
@@ -43,3 +53,4 @@ class AppModel {
 }
 
 export default AppModel;
+export { emojiList };
