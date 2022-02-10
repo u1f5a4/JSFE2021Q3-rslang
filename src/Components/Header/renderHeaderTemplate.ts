@@ -22,7 +22,7 @@ export default function renderHeaderTemplate(): string {
                 </ul>
             </nav>
             <button class="${styles.header__button} ${styles.btn}">
-                Войти/Регистрация
+                <a href="#auth" class="${styles.menu__link}">Войти/Регистрация</a>
             </button>
         </div>
     </header>

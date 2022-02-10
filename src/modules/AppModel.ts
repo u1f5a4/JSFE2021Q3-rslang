@@ -1,6 +1,8 @@
 import { domain } from '../core/constants/server-constants';
 
 class AppModel {
+  domain!: string;
+
   async getWords(group: number, page: number) {
     return (
       await this.request(`${domain}/words?page=${page}&group=${group}`)

@@ -7,14 +7,17 @@ export default class InputControl<
     parentNode: HTMLElement | null,
     tagName = 'div',
     className = '',
-    value = '',
+    min = '',
+    type = '',
     valuePlaceHolder = ''
   ) {
     const el = document.createElement(tagName);
     el.className = className;
-    el.setAttribute('type', value);
+    // el.setAttribute('type', value);
     el.setAttribute('placeholder', valuePlaceHolder);
     el.setAttribute('required', 'true');
+    el.setAttribute('min', min);
+    el.setAttribute('type', type);
     if (parentNode) {
       parentNode.append(el);
     }

@@ -1,7 +1,6 @@
 import Control from '../../../core/BaseElement';
 import InputControl from '../../../core/BaseElement-input';
 import { IUser } from '../../../models/user-model';
-import AuthButton from './auth-button';
 
 class SignUpForm extends Control {
   public inputName: InputControl<HTMLInputElement>;
@@ -10,24 +9,27 @@ class SignUpForm extends Control {
 
   private inputPassword: InputControl<HTMLInputElement>;
 
-  public formButtons: AuthButton;
-
   public onSubmit!: (value: IUser) => void;
 
-  public onLogin!: (value: IUser) => void;
-
-  public titleBlock: Control<HTMLElement>;
-
-  private title: Control<HTMLElement>;
+  // public onLogin!: (value: IUser) => void;
+  public singUpButton: Control<HTMLElement>;
+  // public formHeader: FormHeader;
 
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'form', '', '');
-    this.titleBlock = new Control(this.node, 'div', '', '');
-    this.title = new Control(this.titleBlock.node, 'h5', '', 'Регистрация');
-    this.inputName = new InputControl(this.node, 'input', '', 'text', 'Имя');
+    super(parentNode, 'form', 'form', '');
+
+    this.inputName = new InputControl(
+      this.node,
+      'input',
+      '',
+      '2',
+      'text',
+      'Имя'
+    );
     this.inputEmail = new InputControl(
       this.node,
       'input',
+      '',
       '',
       'text',
       'Email Adress'
@@ -36,17 +38,20 @@ class SignUpForm extends Control {
       this.node,
       'input',
       '',
+      '8',
       'password',
       'Пароль'
     );
-    this.formButtons = new AuthButton(this.node);
-    this.formButtons.singUpButton.node.onclick = (event) => {
+    this.singUpButton = new Control(
+      this.node,
+      'button',
+      'login-button',
+      'Зарегистрироваться'
+    );
+    this.singUpButton.node.setAttribute('type', 'submit');
+    this.singUpButton.node.onclick = (event) => {
       event.preventDefault();
       this.onSubmit(this.submitFormHandler());
-    };
-    this.formButtons.singInButton.node.onclick = (event) => {
-      event.preventDefault();
-      this.onLogin(this.submitFormHandler());
     };
   }
 

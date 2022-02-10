@@ -1,32 +1,53 @@
 import Control from '../../../core/BaseElement';
 import InputControl from '../../../core/BaseElement-input';
-import AuthButton from './auth-button';
+import { IUser } from '../../../models/user-model';
 
 class SignInForm extends Control {
-  inpunEmail: InputControl<HTMLInputElement>;
+  private inputEmail: InputControl<HTMLInputElement>;
 
-  passwordInput: InputControl<HTMLInputElement>;
+  private inputPassword: InputControl<HTMLInputElement>;
 
-  formButtons: AuthButton;
+  public onLogin!: (value: IUser) => void;
+
+  public singInButton: Control<HTMLElement>;
 
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'form', '', '');
-    this.node.insertAdjacentHTML('afterbegin', '<h5>Войти</h5>');
-    this.inpunEmail = new InputControl(
+    super(parentNode, 'form', 'form', '');
+    this.inputEmail = new InputControl(
       this.node,
       'input',
+      '',
       '',
       'text',
       'Email Adress'
     );
-    this.passwordInput = new InputControl(
+    this.inputPassword = new InputControl(
       this.node,
       'input',
       '',
+      '8',
       'password',
       'Пароль'
     );
-    this.formButtons = new AuthButton(this.node);
+    this.singInButton = new Control(
+      this.node,
+      'button',
+      'login-button',
+      'Войти'
+    );
+    this.singInButton.node.onclick = (event) => {
+      event.preventDefault();
+      this.onLogin(this.submitFormHandler());
+    };
+  }
+
+  public submitFormHandler(): IUser {
+    const user = {
+      name: '',
+      email: this.inputEmail.node.value,
+      password: this.inputPassword.node.value,
+    };
+    return user;
   }
 }
 

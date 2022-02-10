@@ -1,64 +1,116 @@
 import { BEARER } from '../../core/constants/server-constants';
 import { AuthResponse } from '../../models/response/AuthResponse';
+import { IUser } from '../../models/user-model';
+import AppModel from '../AppModel';
+import HomeController from '../Home/HomeController';
+import HomeView from '../Home/HomeView';
 import AuthModel from './AuthModel';
 import AuthView from './AuthView';
 import ErrorContainer from './components/error-container';
+import SignInForm from './components/signin-form';
+import SignUpForm from './components/signup-form';
 
 class AuthController {
-  userData!: AuthResponse;
+  private userData!: any;
 
-  errorContainer!: ErrorContainer;
+  public signInForm!: SignInForm;
 
-  errorBlock!: ErrorContainer;
+  public signUpForm!: SignUpForm;
+
+  public errorBlock!: ErrorContainer;
 
   constructor(public view: AuthView, public model: AuthModel) {
-    this.submitForm();
-    this.login();
+    this.registrationUser(this.view.formContainer.formAuth);
+    this.toggleAuthModal();
     this.view.onClick = () => {
-      this.model.getUsers(this.userData.userId);
+      this.model.getUsers(this.userData.content.userId);
     };
   }
 
-  displayPage() {
+  public displayPage(): void {
     this.view.drawPage();
   }
 
-  submitForm() {
-    this.view.formAuth.onSubmit = async (user) => {
-      this.model.registrationUser(user).then((response) => {
-        if (response.status === 422) {
-          response.json().then((data: any) => {
-            this.errorBlock = new ErrorContainer(
-              this.view.formAuth.titleBlock.node,
-              data.error.errors
-            );
-          });
-        }
-        if (response.status === 417) {
-          response.text().then((err: string) => {
-            this.errorBlock = new ErrorContainer(
-              this.view.formAuth.titleBlock.node,
-              '',
-              err
-            );
-          });
-        } else {
-          this.errorBlock.destroy();
-        }
-      });
+  private async registrationUser(elem: SignUpForm): Promise<void> {
+    elem.onSubmit = async (user: IUser) => {
+      const response = await this.model.registrationUser(user);
+      this.renderError(response)    
+      if(response.ok) {
+        response.json().then((data: IUser) => {
+            this.view.formContainer.formHeader.node.innerHTML = `<h2>Добро пожаловать, ${data.name}!</h2>`
+            this.view.formContainer.formAuth.destroy()
+            this.signInForm = new SignInForm(this.view.formContainer.node)
+            this.login(this.signInForm)
+          }) 
+      }
+      this.clearErrorBlok()
+    };
+  } 
+
+  private clearErrorBlok(): void {
+    if (this.errorBlock) {
       this.errorBlock.destroy();
-      this.submitForm();
+    }
+  }
+
+  public async loginHandler(user: IUser): Promise<void> {
+    const response = await this.model.loginUser(user)
+    this.renderError(response)
+    if (response.ok) {
+        //this.userData = response.json()
+        const content: AuthResponse = await response.json();
+        localStorage.setItem('user', JSON.stringify(content));
+        BEARER.bearer = `Bearer ${content.token}`;
+        this.view.destroy();
+        const home = new HomeController(new HomeView(), new AppModel());
+        home.displayPage();
+      };
+      this.clearErrorBlok()
+  }
+
+  public login(elem: SignInForm): void {
+    elem.onLogin = async (user) => {
+      this.loginHandler(user);
     };
   }
 
-  login() {
-    this.view.formAuth.onLogin = async (user) => {
-      this.userData = await this.model.loginUser(user);
-      localStorage.setItem('token', this.userData.token);
-      BEARER.bearer = `Bearer ${this.userData.token}`;
-      this.view.userName = this.userData.name;
+  private toggleAuthModal(): void {
+    this.view.formContainer.onToggleIn = () => {
+      this.view.formContainer.formAuth.destroy();
+      this.signInForm = new SignInForm(this.view.formContainer.node);
+      this.login(this.signInForm);
+      this.clearErrorBlok()
+    };
+    this.view.formContainer.onToggleUp = () => {
+      this.signInForm.destroy();
+      this.view.formContainer.formAuth = new SignUpForm(
+        this.view.formContainer.node
+      );
+      this.registrationUser(this.view.formContainer.formAuth);
+      this.clearErrorBlok()
     };
   }
+
+  public renderError(response: Response): void {  
+    const error = response.text()
+    response.json()
+    .catch((e: any) => {
+      error.then((err: any) => {
+        if(response.status === 422) {
+          this.errorBlock = new ErrorContainer(
+            this.view.formContainer.formHeader.node,
+            JSON.parse(err).error.errors
+          )
+        } else {
+          this.errorBlock = new ErrorContainer(
+            this.view.formContainer.formHeader.node,
+            '',
+            err
+          )
+        }
+        }) 
+  }) 
+}
 }
 
 export default AuthController;

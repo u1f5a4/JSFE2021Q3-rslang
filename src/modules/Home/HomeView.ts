@@ -2,8 +2,8 @@
 import AppView from '../../core/View';
 import './HomeStyle.scss';
 import styles from './HomeStyle.module.scss';
-import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
-import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../Components/Header/renderHeaderTemplate';
+import renderFooterTemplate from '../../Components/Footer/renderFooterTemplate';
 import pageCardsData from './page-cards-data';
 
 class HomeView extends AppView {

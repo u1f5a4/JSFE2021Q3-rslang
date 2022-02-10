@@ -1,21 +1,34 @@
-import SignUpForm from './components/signup-form';
 import './AuthStyle.scss';
 import View from '../../core/View-auth';
 import Control from '../../core/BaseElement';
+import renderHeaderTemplate from '../../Components/Header/renderHeaderTemplate';
+import FormHeader from './components/form-header';
 
 class AuthView extends View {
-  formAuth: SignUpForm;
 
-  button: Control<HTMLButtonElement>;
+  public button: Control<HTMLButtonElement>;
 
-  onClick!: () => void;
+  public onClick!: () => void;
 
-  name!: string;
+  private imageBlock: Control<HTMLElement>;
+
+  public authContainer: Control<HTMLElement>;
+  public formContainer: FormHeader;
+
 
   constructor() {
-    super('div', 'auth__container');
-    this.node.innerHTML = `<h1 class="auth__title">Добро пожаловать ${this.userName}</h1>`;
-    this.formAuth = new SignUpForm(this.node);
+    super('div', 'auth');
+    this.node.innerHTML = `${renderHeaderTemplate()}`;
+    this.authContainer = new Control(this.node, 'div', 'auth__container', '');
+    this.imageBlock = new Control(
+      this.authContainer.node,
+      'div',
+      'auth__image',
+      ''
+    );
+    this.imageBlock.node.innerHTML = '<p class="auth__title text-font"><span class="title-font">Присоединяйся!</span><br> Получай дополнительные возможности приложения для более успешного изучения слов</p>'
+    this.formContainer = new FormHeader(this.authContainer.node);
+
     this.button = new Control(
       this.node,
       'button',
@@ -25,14 +38,6 @@ class AuthView extends View {
     this.button.node.onclick = () => {
       this.onClick();
     };
-  }
-
-  get userName() {
-    return this.name;
-  }
-
-  set userName(value) {
-    this.name = value;
   }
 }
 

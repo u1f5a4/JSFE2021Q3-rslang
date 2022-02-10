@@ -5,5 +5,5 @@ export interface IBearer {
 }
 
 export const BEARER: IBearer = {
-  bearer: `Bearer `,
+  bearer: `Bearer ${JSON.parse(localStorage.getItem('user')!)}`,
 };
