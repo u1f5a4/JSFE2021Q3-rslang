@@ -23,12 +23,13 @@ class BookCardController extends AppController {
       return;
     }
 
-    let localPage = Number(this.model.getSetting(`group/${group}`));
-    if (!localPage) {
-      this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
-      localPage = this.page;
+    const localPage = Number(this.model.getSetting(`group/${group}`));
+    if (Number.isNaN(localPage)) {
+      this.model.addSetting({ [`group/${group}`]: [`0`] });
+      this.page = 0;
+    } else {
+      this.page = localPage;
     }
-    this.page = localPage;
 
     this.view.page = this.page;
     this.view.group = group;
