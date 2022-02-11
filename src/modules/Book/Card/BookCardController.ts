@@ -34,7 +34,11 @@ class BookCardController extends AppController {
     this.view.wordNumber = this.wordNumber;
 
     if (this.view.isUser && group === 'difficult') {
-      this.words = await this.model.getAllDifficultWords();
+      this.words = await this.model.getAllDifficultWords(this.page);
+      this.view.countDifficultWords = Number(
+        (Number(await this.model.getCountAllDifficultWords()) / 20).toFixed()
+      );
+      this.view.countDifficultWordsOnPage = this.words.length;
     }
     if (this.view.isUser && group !== 'difficult') {
       this.words = await this.model.getTwentyUserWords(group, this.page);
@@ -162,6 +166,25 @@ class BookCardController extends AppController {
       const word = this.words[this.wordNumber];
       this.model.deleteUserWord(String(word.id));
       setTimeout(() => this.displayPage('difficult'), 700);
+    });
+
+    const nextPageDifficult = document.querySelector('#next-page-difficult');
+    nextPageDifficult?.addEventListener('click', () => {
+      if (this.page !== this.view.countDifficultWords) {
+        this.page += 1;
+        this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
+        this.wordNumber = 0;
+        this.displayPage(group);
+      }
+    });
+
+    const nextWordDifficult = document.querySelector('#next-word-difficult');
+    nextWordDifficult?.addEventListener('click', () => {
+      const ZeroCountCompensation = 1;
+      if (this.wordNumber !== this.words.length - ZeroCountCompensation) {
+        this.wordNumber += 1;
+        this.displayPage(group);
+      }
     });
   }
 }

@@ -22,6 +22,10 @@ class BookCardView extends AppView {
 
   domain?: string;
 
+  countDifficultWords?: number;
+
+  countDifficultWordsOnPage?: number;
+
   async drawCardPage(word: IWord) {
     this.word = word;
     if (this.group !== 'difficult') this.body!.innerHTML = this.getHtml();
@@ -232,6 +236,7 @@ class BookCardView extends AppView {
 
   // eslint-disable-next-line class-methods-use-this
   getHtmlDifficult(): string {
+    const ZeroCountCompensation = 1;
     return `${renderHeaderTemplate()}
     <div class="${css.content} ${css['book-card__page']}">
 
@@ -313,14 +318,17 @@ class BookCardView extends AppView {
 
               <button class="${css['book-card__button']} 
                             ${css['shadow-active']}
-                              " id="next-word">👉</button>
+                              " id="next-word-difficult">👉</button>
             </div>
 
             <div class="${css['list-dot']}">
               ${(() => {
                 let result = '';
-                // TODO: список сложных слов может быть больше 20ти
-                for (let i = 0; i < 20; i += 1) {
+                for (
+                  let i = 0;
+                  i < Number(this.countDifficultWordsOnPage);
+                  i += 1
+                ) {
                   if (this.wordNumber === i) {
                     result += `<div class="${css['list-dot__dot']} ${css['list-dot__dot-active']}"></div>`;
                     // eslint-disable-next-line no-continue
@@ -354,14 +362,15 @@ class BookCardView extends AppView {
           <button class="${css['element-font']}
                          ${css['page-pagination__text']}
                          ${css['page-pagination__button']}">
-            ${Number(this.page)} / 30
+            ${Number(this.page) + ZeroCountCompensation} / 
+            ${Number(this.countDifficultWords) + ZeroCountCompensation}
           </button>
 
           <button class="${css['element-font']}
                           ${css['page-pagination__button']}
                           ${css['page-pagination__arrow']}
                           ${css['shadow-active']}
-                          " id="next-page">></button>
+                          " id="next-page-difficult">></button>
           </div>
           
           <div class="${css['game-list']}">

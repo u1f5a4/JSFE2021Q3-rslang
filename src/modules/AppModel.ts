@@ -27,7 +27,7 @@ class AppModel {
 
   // === Работа со словами при авторизации === //
 
-  async getAllDifficultWords() {
+  async getAllDifficultWords(page: number) {
     const userWords = await this.getAllUserWords();
     const filtered = userWords.filter((elem) => elem.optional.difficulty);
     const wordIdList = filtered.map((elem) => elem.wordId);
@@ -42,7 +42,21 @@ class AppModel {
     const result = commonWords.map((elem, index) =>
       Object.assign(elem, { userWord: filtered[index] })
     );
-    return result;
+
+    const ZeroCountCompensation = 1;
+    const wordsOnPage = 20;
+
+    const words = result.splice(
+      wordsOnPage * (page + ZeroCountCompensation - 1),
+      wordsOnPage * (page + ZeroCountCompensation)
+    );
+    return words;
+  }
+
+  async getCountAllDifficultWords(): Promise<number> {
+    const userWords = await this.getAllUserWords();
+    const filtered = userWords.filter((elem) => elem.optional.difficulty);
+    return filtered.length;
   }
 
   async setWordDifficult(wordId: string, word: string) {
