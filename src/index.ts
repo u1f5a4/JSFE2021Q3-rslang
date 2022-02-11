@@ -21,6 +21,7 @@ home.displayPage();
 
 const router = new Router();
 router.init();
+
 router.add('', () => home.displayPage());
 router.add('book', () => book.displayPage());
 router.add('auth', () => auth.displayPage());

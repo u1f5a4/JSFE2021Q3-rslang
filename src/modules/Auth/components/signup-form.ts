@@ -11,9 +11,7 @@ class SignUpForm extends Control {
 
   public onSubmit!: (value: IUser) => void;
 
-  // public onLogin!: (value: IUser) => void;
   public singUpButton: Control<HTMLElement>;
-  // public formHeader: FormHeader;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'form', 'form', '');

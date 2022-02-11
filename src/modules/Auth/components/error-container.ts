@@ -1,11 +1,11 @@
 import Control from '../../../core/BaseElement';
 
 export default class ErrorContainer extends Control {
-  //private errorIcon: Control<HTMLElement>;
-
   public textList: Control<HTMLElement>;
 
   public errorItem!: Control<HTMLElement>;
+
+  private errorIcon: Control<HTMLElement>;
 
   constructor(
     parentNode: HTMLElement,
@@ -13,22 +13,21 @@ export default class ErrorContainer extends Control {
     public messageText?: string
   ) {
     super(parentNode, 'div', 'auth__error', '');
-    console.log('11111', messageErrors);
-    const errorIcon = new Control(this.node, 'span', 'error__icon', '');
+    this.errorIcon = new Control(this.node, 'span', 'error__icon', '');
     this.textList = new Control(this.node, 'ul', 'error__list', '');
     this.renderErrorMessage();
   }
 
   renderErrorMessage() {
-     if (this.messageText) {
+    if (this.messageText) {
       this.errorItem = new Control(
         this.textList.node,
         'li',
         'error__item',
         `${this.messageText}`
       );
-    } else { 
-    this.messageErrors.map((message: any) => {
+    } else {
+      this.messageErrors.map((message: any) => {
         this.errorItem = new Control(
           this.textList.node,
           'li',

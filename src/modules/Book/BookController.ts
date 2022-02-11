@@ -13,6 +13,7 @@ class BookController extends AppController {
   async displayPage() {
     this.view.drawPage();
     this.bindButtons();
+    this.model.logout();
   }
 
   bindButtons() {

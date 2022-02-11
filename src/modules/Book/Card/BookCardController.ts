@@ -39,6 +39,7 @@ class BookCardController extends AppController {
     this.view.drawCardPage(word);
 
     this.bindButton(group);
+    this.model.logout();
   }
 
   bindButton(group: string) {

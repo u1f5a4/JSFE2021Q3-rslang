@@ -10,6 +10,7 @@ class HomeController extends AppController {
 
   displayPage() {
     this.view.drawPage();
+    this.model.logout();
   }
 }
 

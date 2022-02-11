@@ -1,4 +1,10 @@
-import { domain } from '../core/constants/server-constants';
+import renderHeaderTemplate from '../Components/Header/renderHeaderTemplate';
+import { domain, STATE } from '../core/constants/server-constants';
+import AppView from '../core/View';
+// eslint-disable-next-line import/no-cycle
+import AuthController from './Auth/AuthController';
+import AuthModel from './Auth/AuthModel';
+import AuthView from './Auth/AuthView';
 
 class AppModel {
   domain!: string;
@@ -41,6 +47,24 @@ class AppModel {
   // eslint-disable-next-line class-methods-use-this
   private saveSetting(setting: {}) {
     localStorage.setItem('rslang-localStorage', JSON.stringify(setting));
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public logout(): void {
+    const logoutBtn = document.getElementById(
+      'logout-btn'
+    ) as HTMLButtonElement;
+    if (logoutBtn) {
+      logoutBtn.onclick = () => {
+        localStorage.clear();
+        STATE.auth = JSON.parse(localStorage.getItem('user')!);
+        STATE.userName = JSON.parse(localStorage.getItem('user')!);
+        AppView.clear();
+        const auth = new AuthController(new AuthView(), new AuthModel());
+        auth.displayPage();
+        renderHeaderTemplate();
+      };
+    }
   }
 }
 

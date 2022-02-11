@@ -5,16 +5,13 @@ import renderHeaderTemplate from '../../Components/Header/renderHeaderTemplate';
 import FormHeader from './components/form-header';
 
 class AuthView extends View {
-
-  public button: Control<HTMLButtonElement>;
-
   public onClick!: () => void;
 
   private imageBlock: Control<HTMLElement>;
 
   public authContainer: Control<HTMLElement>;
-  public formContainer: FormHeader;
 
+  public formContainer: FormHeader;
 
   constructor() {
     super('div', 'auth');
@@ -26,18 +23,9 @@ class AuthView extends View {
       'auth__image',
       ''
     );
-    this.imageBlock.node.innerHTML = '<p class="auth__title text-font"><span class="title-font">Присоединяйся!</span><br> Получай дополнительные возможности приложения для более успешного изучения слов</p>'
+    this.imageBlock.node.innerHTML =
+      '<p class="auth__title text-font"><span class="title-font">Присоединяйся!</span><br> Получай дополнительные возможности приложения для более успешного изучения слов</p>';
     this.formContainer = new FormHeader(this.authContainer.node);
-
-    this.button = new Control(
-      this.node,
-      'button',
-      'login-button',
-      'Пользователи'
-    );
-    this.button.node.onclick = () => {
-      this.onClick();
-    };
   }
 }
 
