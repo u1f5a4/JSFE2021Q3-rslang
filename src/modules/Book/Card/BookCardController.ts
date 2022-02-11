@@ -153,7 +153,6 @@ class BookCardController extends AppController {
     const buttonEasy = document.querySelector('#easy-word');
     buttonEasy?.addEventListener('click', () => {
       const word = this.words[this.wordNumber];
-      console.log(word);
       this.model.setWordEasy(String(word._id), word.word);
       this.view.changeCardToEasy();
     });
@@ -162,8 +161,6 @@ class BookCardController extends AppController {
     buttonClear?.addEventListener('click', () => {
       const word = this.words[this.wordNumber];
       this.model.deleteUserWord(String(word.id));
-      // eslint-disable-next-line no-restricted-globals
-      // location.href = '/#book/difficult';
       setTimeout(() => this.displayPage('difficult'), 700);
     });
   }
