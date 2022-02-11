@@ -11,6 +11,7 @@ class BookController extends AppController {
   }
 
   async displayPage() {
+    this.view.isUser = this.model.isUser();
     this.view.drawPage();
     this.bindButtons();
   }

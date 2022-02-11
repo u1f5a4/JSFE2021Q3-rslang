@@ -8,6 +8,8 @@ import { emojiList } from '../AppModel';
 import styles from './BookStyle.module.scss';
 
 class BookView extends AppView {
+  isUser?: boolean;
+
   titlePage = 'Учебник';
 
   subtitlePage = `Выбери список слов по уровню сложности, 
@@ -30,23 +32,31 @@ class BookView extends AppView {
                 // eslint-disable-next-line no-restricted-syntax
                 for (const elem of emojiList) {
                   const [value, emoji] = elem;
-                  result += `<div class="
-                                ${styles['book-cards__card']}
-                                ${styles['shadow-active']}
-                                " data-group='${value}'>
-                                  <p class="${
-                                    styles['book-cards__emoji']
-                                  }">${emoji}</p>
-                                  <p class="
-                                  ${styles['book-cards__header']} ${
-                    styles['header-font']
+                  if (value !== 'difficult') {
+                    result += `<div class="
+                              ${styles['book-cards__card']}
+                              ${styles['shadow-active']}
+                              " data-group='${value}'>
+                                <p class="${
+                                  styles['book-cards__emoji']
+                                }">${emoji}</p>
+                                <p class="
+                                ${styles['book-cards__header']} ${
+                      styles['header-font']
+                    }
+                                ">${`Группа слов #${value}`}</p>
+                            </div>`;
+                  } else if (this.isUser) {
+                    result += `<div class="
+                              ${styles['book-cards__card']}
+                              ${styles['shadow-active']}
+                              " data-group='${value}'>
+                                <p class="${styles['book-cards__emoji']}">${emoji}</p>
+                                <p class="
+                                ${styles['book-cards__header']} ${styles['header-font']}
+                                ">Сложные слова</p>
+                            </div>`;
                   }
-                                  ">${
-                                    value !== 'difficult'
-                                      ? `Группа слов #${value}`
-                                      : `Сложные слова`
-                                  }</p>
-                              </div>`;
                 }
 
                 return result;

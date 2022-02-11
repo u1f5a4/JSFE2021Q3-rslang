@@ -1,5 +1,8 @@
+import { UserWord } from '../modules/AppModel';
+
 interface IWord {
-  id: string;
+  id?: string;
+  _id?: string;
   group: number;
   page: number;
   word: string;
@@ -13,6 +16,7 @@ interface IWord {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
+  userWord?: UserWord;
 }
 
 export default IWord;

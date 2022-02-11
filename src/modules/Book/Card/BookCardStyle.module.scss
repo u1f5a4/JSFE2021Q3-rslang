@@ -32,6 +32,18 @@
     cursor: pointer;
   }
 
+  &__card-easy {
+    box-sizing: border-box;
+    border-radius: 15px;
+    border: 4px solid green;
+  }
+
+  &__card-difficulty {
+    box-sizing: border-box;
+    border-radius: 15px;
+    border: 4px solid tomato;
+  }
+
   &__content {
     display: flex;
     flex-direction: column;
@@ -203,9 +215,6 @@
     background: $color-white;
     border-radius: 15px;
     cursor: pointer;
-  }
-
-  &__emoji {
   }
 
   &__title {

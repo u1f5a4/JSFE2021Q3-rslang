@@ -17,6 +17,10 @@ class AuthView extends AppView {
             ${renderHeaderTemplate()}
             <div class="${css.content} ${css.wrapper}">
               <h2>${this.titlePage}</h2>
+              <input id="name" type="text" placeholder="name">
+              <input id="email" type="text" placeholder="email">
+              <input id="password" type="text" placeholder="password">
+              <button id="button-registration">Регистрация</button> <button id="button-signIn">Вход</button>
             </div>
             ${renderFooterTemplate()}
     </div>

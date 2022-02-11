@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import AppModel from '../../AppModel';
 import BookCardView from './BookCardView';
 import IWord from '../../../models/word-model';
@@ -18,10 +19,7 @@ class BookCardController extends AppController {
   }
 
   async displayPage(group: string) {
-    if (group === 'difficult') {
-      console.log('difficult page');
-      return;
-    }
+    this.view.isUser = this.model.isUser();
 
     const localPage = Number(this.model.getSetting(`group/${group}`));
     if (Number.isNaN(localPage)) {
@@ -35,7 +33,16 @@ class BookCardController extends AppController {
     this.view.group = group;
     this.view.wordNumber = this.wordNumber;
 
-    this.words = await this.model.getWords(Number(group), this.page);
+    if (this.view.isUser && group === 'difficult') {
+      this.words = await this.model.getAllDifficultWords();
+    }
+    if (this.view.isUser && group !== 'difficult') {
+      this.words = await this.model.getTwentyUserWords(group, this.page);
+    }
+    if (!this.view.isUser) {
+      this.words = await this.model.getWords(group, this.page);
+    }
+
     const word = this.words[this.wordNumber];
     this.view.drawCardPage(word);
 
@@ -130,9 +137,34 @@ class BookCardController extends AppController {
     buttonGoAudioGame?.addEventListener('click', () => {
       document.location = '/#book';
     });
+
     const buttonGoSprintGame = document.querySelector('#go-sprint-game');
     buttonGoSprintGame?.addEventListener('click', () => {
       document.location = '/#book';
+    });
+
+    const buttonDifficult = document.querySelector('#complicate-word');
+    buttonDifficult?.addEventListener('click', async () => {
+      const word = this.words[this.wordNumber];
+      this.model.setWordDifficult(String(word._id), word.word);
+      this.view.changeCardToDifficulty();
+    });
+
+    const buttonEasy = document.querySelector('#easy-word');
+    buttonEasy?.addEventListener('click', () => {
+      const word = this.words[this.wordNumber];
+      console.log(word);
+      this.model.setWordEasy(String(word._id), word.word);
+      this.view.changeCardToEasy();
+    });
+
+    const buttonClear = document.querySelector('#clear-word');
+    buttonClear?.addEventListener('click', () => {
+      const word = this.words[this.wordNumber];
+      this.model.deleteUserWord(String(word.id));
+      // eslint-disable-next-line no-restricted-globals
+      // location.href = '/#book/difficult';
+      setTimeout(() => this.displayPage('difficult'), 700);
     });
   }
 }
