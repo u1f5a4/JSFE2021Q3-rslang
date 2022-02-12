@@ -3,7 +3,7 @@ import AppView from '../../core/View';
 import styles from './AudioCallStyle.module.scss';
 import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
-import levelData from "./level-data";
+import levelData from './level-data';
 
 class AudioCallView extends AppView {
   titlePage = 'Учебник английского с карточками и мини-играми';
@@ -21,8 +21,10 @@ class AudioCallView extends AppView {
       <main class="${styles.container}">
         <form class="form" id="audio-call-form">
             <div class="form__level-list">
-                ${levelData.map(level => 
-                  `              
+                ${levelData
+                  .map(
+                    (level) =>
+                      `              
                     <div class="form__level-item">
                         <input type="radio" id="${level.levelId}" name="audio-game" class="form__level-input" value="${level.levelValue}" >
                         <label class="form__level-label" for="${level.levelId}">
@@ -30,8 +32,9 @@ class AudioCallView extends AppView {
                             <span class="form__level-name">${level.levelName}</span>
                         </label>
                     </div>
-                    `  
-                ).join('')}
+                    `
+                  )
+                  .join('')}
             </div>
             <button type="submit">Play</button>
         </form>

@@ -11,17 +11,19 @@ class AudioCallController extends AppController {
   bindButtons() {
     const form = document.getElementById('audio-call-form') as HTMLFormElement;
 
-    form.addEventListener('submit',  (event) => {
-      let checkedInput = document.querySelector('input[name=audio-game]:checked') as HTMLInputElement;
+    form.addEventListener('submit', (event) => {
+      let checkedInput = document.querySelector(
+        'input[name=audio-game]:checked'
+      ) as HTMLInputElement;
       let checkedInputValue = checkedInput.value;
 
-      document.location += '/' + checkedInputValue;
+      window.location.href = `/#audioCall/${checkedInputValue}`;
       event.preventDefault();
-    })
+    });
   }
   displayPage() {
     this.view.drawPage();
-    this.bindButtons()
+    this.bindButtons();
   }
 }
 
