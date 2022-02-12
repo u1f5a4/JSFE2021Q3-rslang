@@ -10,8 +10,8 @@ import HomeController from './modules/Home/HomeController';
 import HomeView from './modules/Home/HomeView';
 import AudioCallController from './modules/AudioCall/AudioCallController';
 import AudioCallView from './modules/AudioCall/AudioCallView';
-import AudioCallGameController from "./modules/AudioCall/AudioCallGame/AudioCallGameController";
-import AudioCallGameView from "./modules/AudioCall/AudioCallGame/AudioCallGameView";
+import AudioCallGameController from './modules/AudioCall/AudioCallGame/AudioCallGameController';
+import AudioCallGameView from './modules/AudioCall/AudioCallGame/AudioCallGameView';
 
 const auth = new AuthController(new AuthView(), new AppModel());
 
@@ -20,8 +20,10 @@ const bookCard = new BookCardController(new BookCardView(), new AppModel());
 book.card = bookCard;
 
 const audioCall = new AudioCallController(new AudioCallView(), new AppModel());
-const audioCallGame = new AudioCallGameController(new AudioCallGameView(), new AppModel());
-
+const audioCallGame = new AudioCallGameController(
+  new AudioCallGameView(),
+  new AppModel()
+);
 
 const home = new HomeController(new HomeView(), new AppModel());
 home.displayPage();
