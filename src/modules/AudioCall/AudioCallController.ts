@@ -1,0 +1,28 @@
+// eslint-disable-next-line import/no-cycle
+import AppController from '../../core/Controller';
+import AppModel from '../AppModel';
+import AudioCallView from './AudioCallView';
+
+class AudioCallController extends AppController {
+  constructor(public view: AudioCallView, public model: AppModel) {
+    super(view, model);
+  }
+
+  bindButtons() {
+    const form = document.getElementById('audio-call-form') as HTMLFormElement;
+
+    form.addEventListener('submit',  (event) => {
+      let checkedInput = document.querySelector('input[name=audio-game]:checked') as HTMLInputElement;
+      let checkedInputValue = checkedInput.value;
+
+      document.location += '/' + checkedInputValue;
+      event.preventDefault();
+    })
+  }
+  displayPage() {
+    this.view.drawPage();
+    this.bindButtons()
+  }
+}
+
+export default AudioCallController;
