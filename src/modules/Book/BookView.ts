@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
-import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
+import renderFooterTemplate from "../../components/Footer/_renderFooterTemplate";
+import renderHeaderTemplate from "../../components/Header/_renderHeaderTemplate";
 import AppView from '../../core/View';
 import styles from './BookStyle.module.scss';
 
