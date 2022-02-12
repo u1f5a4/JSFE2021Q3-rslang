@@ -14,7 +14,7 @@ export default function renderHeaderTemplate(): string {
                         <a href="/#book" class="${styles.menu__link}">Учебник</a>
                     </li>
                     <li class="${styles.menu__item}">
-                        <a href="" class="${styles.menu__link}">Мини-игры</a>
+                        <a href="/#audioCall" class="${styles.menu__link}">Мини-игры</a>
                     </li>
                     <li class="${styles.menu__item}">
                         <a href="" class="${styles.menu__link}">Статистика</a>
