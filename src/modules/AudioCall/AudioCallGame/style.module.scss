@@ -1,0 +1,12 @@
+.container {
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
+.game {
+  display: flex;
+  min-height: 410px;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+}
