@@ -2,19 +2,19 @@ import AppModel from '../../../AppModel';
 
 const appManager = new AppModel();
 
+function generateRandomNumber(min: number = 0, max: number = 20) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 export async function getWordsByGroup(groupId: number) {
   const promiseArr: any[] = [];
   const maxPageNumber = 29;
   const randomPageNumber = generateRandomNumber(0, maxPageNumber);
   promiseArr.push(...(await appManager.getWords(groupId, randomPageNumber)));
 
-  let data: any = promiseArr;
+  const data: any = promiseArr;
 
   return await data;
-}
-
-function generateRandomNumber(min: number = 0, max: number = 20) {
-  return Math.floor(Math.random() * (max - min) + min);
 }
 
 function generateRoundData(data: []) {
@@ -35,15 +35,26 @@ function generateRoundData(data: []) {
     optionsData.push(option);
     optionsId.push(idx);
   }
-  return optionsData;
+  return {
+    optionsData,
+    correctWordId,
+  };
 }
 
 export async function createQuizData(level: number) {
   const quizData = [];
+  const correctWordIdArray: number[] = [];
   const maxQuizRounds = 10;
   const data = await getWordsByGroup(level);
   while (quizData.length < maxQuizRounds) {
-    quizData.push(generateRoundData(data));
+    const newRoundData = generateRoundData(data);
+    const newRoundOptionsData = newRoundData.optionsData;
+
+    if (correctWordIdArray.includes(newRoundData.correctWordId)) {
+      continue;
+    }
+    quizData.push(newRoundOptionsData);
+    correctWordIdArray.push(newRoundData.correctWordId);
   }
   return quizData;
 }
@@ -53,5 +64,5 @@ export const getShuffledArray: (arr: any[]) => any = (arr) => {
     return arr;
   }
   const rand = Math.floor(Math.random() * arr.length);
-  return [arr[rand], ...getShuffledArray(arr.filter((_, i) => i != rand))];
+  return [arr[rand], ...getShuffledArray(arr.filter((_, i) => i !== rand))];
 };
