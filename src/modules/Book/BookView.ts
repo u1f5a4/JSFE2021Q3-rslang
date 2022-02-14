@@ -22,7 +22,7 @@ class BookView extends AppView {
   getHtml(): string {
     return `
           ${renderHeaderTemplate()}
-            <div class="${styles.content}">
+            <div class="${styles.content} ${styles.wrapper}">
             ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
               <div class="${styles['book-cards']} app">
               ${(() => {

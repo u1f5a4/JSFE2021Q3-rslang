@@ -91,7 +91,7 @@ class BookCardView extends AppView {
   getHtml(): string {
     const ZeroCountCompensation = 1;
     return `${renderHeaderTemplate()}
-          <div class="${css.content} ${css['book-card__page']}">
+          <div class="${css.content} ${css['book-card__page']} ${css.wrapper}">
 
             ${renderPageDescTemplate(
               `${
