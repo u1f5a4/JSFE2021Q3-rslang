@@ -14,10 +14,13 @@ export function renderAuthUser(): string {
 
 export default function renderHeaderTemplate(): string {
   return `
-    <header class="${styles.header}">
-        <div class="${styles.header__container} ${styles.container}">
-            <a href="/" class="${styles.header__logo}">🇺🇸 RS Lang</a>
-            <nav id="menu" content="${styles.menu}">
+    <header class="${styles.header} ${styles.content} ${
+    styles.header__container
+  }">
+            <a href="/" class="${styles.header__logo} ${
+    styles['logo-font']
+  }">😎 RS Lang</a>
+            <nav content="${styles.menu}">
                 <ul class=${styles.menu__list}">
                     <li class="${styles.menu__item}">
                         <a href="" class="${styles.menu__link}">Главная</a>
@@ -28,10 +31,14 @@ export default function renderHeaderTemplate(): string {
                         }">Учебник</a>
                     </li>
                     <li class="${styles.menu__item}">
-                        <a href="" class="${styles.menu__link}">Мини-игры</a>
+                        <a href="/#games" class="${
+                          styles.menu__link
+                        }">Мини-игры</a>
                     </li>
                     <li class="${styles.menu__item}">
-                        <a href="" class="${styles.menu__link}">Статистика</a>
+                        <a href="/#stat" class="${
+                          styles.menu__link
+                        }">Статистика</a>
                     </li> 
                 </ul>
             </nav>

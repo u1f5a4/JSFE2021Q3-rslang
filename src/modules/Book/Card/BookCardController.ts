@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import AppModel from '../../AppModel';
 import BookCardView from './BookCardView';
 import IWord from '../../../models/word-model';
@@ -18,23 +19,34 @@ class BookCardController extends AppController {
   }
 
   async displayPage(group: string) {
-    if (group === 'difficult') {
-      console.log('difficult page');
-      return;
-    }
+    this.view.isUser = this.model.isUser();
 
-    let localPage = Number(this.model.getSetting(`group/${group}`));
-    if (!localPage) {
-      this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
-      localPage = this.page;
+    const localPage = Number(this.model.getSetting(`group/${group}`));
+    if (Number.isNaN(localPage)) {
+      this.model.addSetting({ [`group/${group}`]: [`0`] });
+      this.page = 0;
+    } else {
+      this.page = localPage;
     }
-    this.page = localPage;
 
     this.view.page = this.page;
     this.view.group = group;
     this.view.wordNumber = this.wordNumber;
 
-    this.words = await this.model.getWords(Number(group), this.page);
+    if (this.view.isUser && group === 'difficult') {
+      this.words = await this.model.getAllDifficultWords(this.page);
+      this.view.countDifficultWords = Number(
+        (Number(await this.model.getCountAllDifficultWords()) / 20).toFixed()
+      );
+      this.view.countDifficultWordsOnPage = this.words.length;
+    }
+    if (this.view.isUser && group !== 'difficult') {
+      this.words = await this.model.getTwentyUserWords(group, this.page);
+    }
+    if (!this.view.isUser) {
+      this.words = await this.model.getWords(group, this.page);
+    }
+
     const word = this.words[this.wordNumber];
     this.view.drawCardPage(word);
 
@@ -108,7 +120,7 @@ class BookCardController extends AppController {
       const card = event.currentTarget as HTMLElement;
 
       const element = event.target as HTMLElement;
-      const buttons = ['play-audio-card'];
+      const buttons = ['play-audio-card', 'complicate-word', 'easy-word'];
       const isButton = (htmlElement: HTMLElement) =>
         !buttons.some((selector) => htmlElement.id === selector);
 
@@ -118,6 +130,61 @@ class BookCardController extends AppController {
         } else {
           card.style.transform = 'rotateY(180deg)';
         }
+      }
+    });
+
+    const buttonBack = document.querySelector('#button-back');
+    buttonBack?.addEventListener('click', () => {
+      document.location = '/#book';
+    });
+
+    const buttonGoAudioGame = document.querySelector('#go-audio-game');
+    buttonGoAudioGame?.addEventListener('click', () => {
+      document.location = '/#book';
+    });
+
+    const buttonGoSprintGame = document.querySelector('#go-sprint-game');
+    buttonGoSprintGame?.addEventListener('click', () => {
+      document.location = '/#book';
+    });
+
+    const buttonDifficult = document.querySelector('#complicate-word');
+    buttonDifficult?.addEventListener('click', async () => {
+      const word = this.words[this.wordNumber];
+      this.model.setWordDifficult(String(word._id), word.word);
+      this.view.changeCardToDifficulty();
+    });
+
+    const buttonEasy = document.querySelector('#easy-word');
+    buttonEasy?.addEventListener('click', () => {
+      const word = this.words[this.wordNumber];
+      this.model.setWordEasy(String(word._id), word.word);
+      this.view.changeCardToEasy();
+    });
+
+    const buttonClear = document.querySelector('#clear-word');
+    buttonClear?.addEventListener('click', () => {
+      const word = this.words[this.wordNumber];
+      this.model.deleteUserWord(String(word.id));
+      setTimeout(() => this.displayPage('difficult'), 700);
+    });
+
+    const nextPageDifficult = document.querySelector('#next-page-difficult');
+    nextPageDifficult?.addEventListener('click', () => {
+      if (this.page !== this.view.countDifficultWords) {
+        this.page += 1;
+        this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
+        this.wordNumber = 0;
+        this.displayPage(group);
+      }
+    });
+
+    const nextWordDifficult = document.querySelector('#next-word-difficult');
+    nextWordDifficult?.addEventListener('click', () => {
+      const ZeroCountCompensation = 1;
+      if (this.wordNumber !== this.words.length - ZeroCountCompensation) {
+        this.wordNumber += 1;
+        this.displayPage(group);
       }
     });
   }

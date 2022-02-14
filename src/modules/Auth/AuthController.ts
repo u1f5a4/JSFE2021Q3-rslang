@@ -1,7 +1,9 @@
-import renderHeaderTemplate from '../../Components/Header/renderHeaderTemplate';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 import { BEARER, STATE } from '../../core/constants/server-constants';
 import { AuthResponse } from '../../models/response/AuthResponse';
 import { IUser } from '../../models/user-model';
+// eslint-disable-next-line import/no-cycle
+import AppModel from '../AppModel';
 import AuthModel from './AuthModel';
 import AuthView from './AuthView';
 import ErrorContainer from './components/error-container';
@@ -16,6 +18,8 @@ class AuthController {
   public signUpForm!: SignUpForm;
 
   public errorBlock!: ErrorContainer;
+
+  AppModel!: AppModel;
 
   constructor(public view: AuthView, public model: AuthModel) {
     this.registrationUser(this.view.formContainer.formAuth);
@@ -39,7 +43,7 @@ class AuthController {
       }
       if (response.ok) {
         response.json().then((data: IUser) => {
-          this.view.formContainer.formHeader.node.innerHTML = `<h2>Добро пожаловать, ${data.name}!</h2>`;
+          this.view.formContainer.formHeader.node.innerHTML = `<h2>Теперь авторизуйся, ${data.name}!</h2>`;
           this.view.formContainer.formAuth.destroy();
           this.signInForm = new SignInForm(this.view.formContainer.node);
           this.login(this.signInForm);
@@ -62,11 +66,12 @@ class AuthController {
     }
     if (response.ok) {
       this.userData = await response.json();
+      this.AppModel.addSetting({ auth: await this.userData });
       localStorage.setItem('user', JSON.stringify(this.userData));
       BEARER.bearer = `Bearer ${this.userData.token}`;
       STATE.auth = JSON.parse(localStorage.getItem('user')!);
       STATE.userName = JSON.parse(localStorage.getItem('user')!);
-      window.location.replace('http://localhost:8080');
+      window.location.replace('/');
       renderHeaderTemplate();
     }
     this.clearErrorBlok();
@@ -86,11 +91,13 @@ class AuthController {
       this.login(this.signInForm);
       this.clearErrorBlok();
     };
+
     this.view.formContainer.onToggleUp = () => {
       this.signInForm.destroy();
       this.view.formContainer.formAuth = new SignUpForm(
         this.view.formContainer.node
       );
+
       this.registrationUser(this.view.formContainer.formAuth);
       this.clearErrorBlok();
     };
