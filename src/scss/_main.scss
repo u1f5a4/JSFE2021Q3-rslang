@@ -4,9 +4,8 @@ $color-one: #463f66;
 $color-two: #6252d4;
 $color-black: #282e3e;
 $color-bg: #f6f7fb;
-$color-hover: #fcac00;
-$btn-color: #fff;
-$card-bg: #fff;
+$color-yellow: #fcac00;
+$color-white: #fff;
 
 .title-font {
   font-family: $main-font;
@@ -50,10 +49,57 @@ $card-bg: #fff;
   letter-spacing: 0em;
 }
 
+.logo-font {
+  font-family: $logo-font;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+}
+
 .body {
   background-color: $color-bg;
 }
 
 .display-none {
   display: none !important;
+}
+
+.content {
+  max-width: 1140px;
+  margin: 32px auto;
+}
+
+.btn {
+  box-sizing: border-box;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: $color-white;
+  background: $color-two;
+  border-radius: 5px;
+  border: none;
+  padding: 16px 32px;
+
+  &:hover {
+    background: #443a92;
+  }
+
+  &:active {
+    background: $color-yellow;
+  }
+}
+
+.shadow-active {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:active {
+    transition: box-shadow ease 0.2s;
+    transform: translateX(2px);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
 }

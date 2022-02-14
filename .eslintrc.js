@@ -20,7 +20,7 @@ module.exports = {
       },
     ],
     'class-methods-use-this': 'off',
-    ' no-continue': 'off'
+    ' no-continue': 'off',
   },
   ignorePatterns: ['.eslintrc.js', 'webpack.config.js'],
 };

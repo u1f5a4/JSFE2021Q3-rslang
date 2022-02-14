@@ -6,7 +6,7 @@ function generateRandomNumber(min: number = 0, max: number = 20) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-export async function getWordsByGroup(groupId: number) {
+export async function getWordsByGroup(groupId: string) {
   const promiseArr: any[] = [];
   const maxPageNumber = 29;
   const randomPageNumber = generateRandomNumber(0, maxPageNumber);
@@ -14,7 +14,7 @@ export async function getWordsByGroup(groupId: number) {
 
   const data: any = promiseArr;
 
-  return await data;
+  return data;
 }
 
 function generateRoundData(data: []) {
@@ -41,7 +41,7 @@ function generateRoundData(data: []) {
   };
 }
 
-export async function createQuizData(level: number) {
+export async function createQuizData(level: string) {
   const quizData = [];
   const correctWordIdArray: number[] = [];
   const maxQuizRounds = 10;

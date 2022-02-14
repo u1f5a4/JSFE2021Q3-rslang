@@ -9,8 +9,39 @@ class AuthController extends AppController {
 
   displayPage() {
     this.view.drawPage();
-    // вот здесь будет бинд кнопок к событиям
-    // события будут записаны здесь как методы
+    this.bindButton();
+  }
+
+  bindButton() {
+    const btnRegistration = document.querySelector('#button-registration');
+    btnRegistration?.addEventListener('click', () => this.registration());
+
+    const btnSingIn = document.querySelector('#button-signIn');
+    btnSingIn?.addEventListener('click', () => this.signIn());
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getDataInput() {
+    const name = (document.querySelector('#name') as HTMLInputElement).value;
+    const email = (document.querySelector('#email') as HTMLInputElement).value;
+    const password = (document.querySelector('#password') as HTMLInputElement)
+      .value;
+
+    return { name, email, password };
+  }
+
+  registration() {
+    this.model.createUser(this.getDataInput());
+  }
+
+  signIn() {
+    const dataInputs = this.getDataInput();
+    const data = {
+      email: dataInputs.email,
+      password: dataInputs.password,
+    };
+
+    this.model.signIn(data);
   }
 }
 

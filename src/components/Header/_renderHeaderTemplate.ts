@@ -2,9 +2,8 @@ import styles from './headerStyle.module.scss';
 
 export default function renderHeaderTemplate(): string {
   return `
-    <header class="${styles.header}">
-        <div class="${styles.header__container} ${styles.container}">
-            <a href="/" class="${styles.header__logo}">🇺🇸 RS Lang</a>
+    <header class="${styles.header} ${styles.content} ${styles.header__container}">
+            <a href="/" class="${styles.header__logo} ${styles['logo-font']}">🇺🇸 RS Lang</a>
             <nav content="${styles.menu}">
                 <ul class=${styles.menu__list}">
                     <li class="${styles.menu__item}">
@@ -14,17 +13,16 @@ export default function renderHeaderTemplate(): string {
                         <a href="/#book" class="${styles.menu__link}">Учебник</a>
                     </li>
                     <li class="${styles.menu__item}">
-                        <a href="/#audioCall" class="${styles.menu__link}">Мини-игры</a>
+                        <a href="/#games" class="${styles.menu__link}">Мини-игры</a>
                     </li>
                     <li class="${styles.menu__item}">
-                        <a href="" class="${styles.menu__link}">Статистика</a>
+                        <a href="/#auth" class="${styles.menu__link}">Авторизация</a>
                     </li> 
                 </ul>
             </nav>
             <button class="${styles.header__button} ${styles.btn}">
                 Войти/Регистрация
             </button>
-        </div>
     </header>
   `;
 }

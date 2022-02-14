@@ -12,6 +12,10 @@ import AudioCallController from './modules/AudioCall/AudioCallController';
 import AudioCallView from './modules/AudioCall/AudioCallView';
 import AudioCallGameController from './modules/AudioCall/AudioCallGame/AudioCallGameController';
 import AudioCallGameView from './modules/AudioCall/AudioCallGame/AudioCallGameView';
+import GamesController from './modules/Games/GamesController';
+import GamesView from './modules/Games/GamesView';
+
+const games = new GamesController(new GamesView(), new AppModel());
 
 const auth = new AuthController(new AuthView(), new AppModel());
 
@@ -47,3 +51,4 @@ router.add('audio-game/2', () => audioCallGame.displayPage());
 router.add('audio-game/3', () => audioCallGame.displayPage());
 router.add('audio-game/4', () => audioCallGame.displayPage());
 router.add('audio-game/5', () => audioCallGame.displayPage());
+router.add('games', () => games.displayPage());

@@ -14,7 +14,7 @@ export class QuizManager {
 
   currentRoundNumber: number = -1;
 
-  level: number = 0;
+  level: string = '0';
 
   currentRoundQuestions: any;
 
@@ -41,9 +41,7 @@ export class QuizManager {
     this.quizScore = 0;
     this.maxRoundNumber = 9;
     this.isGameFinished = false;
-    this.level = Number(
-      window.location.href.charAt(window.location.href.length - 1)
-    );
+    this.level = window.location.href.charAt(window.location.href.length - 1);
   }
 
   async startRound() {
