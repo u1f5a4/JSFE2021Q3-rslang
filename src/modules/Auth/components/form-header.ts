@@ -20,19 +20,23 @@ class FormHeader extends Control {
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'form__container', '');
+
     this.formHeader = new Control(this.node, 'div', 'form__header', '');
+
     this.titleBlock = new Control(
       this.formHeader.node,
       'div',
       'title-block',
       ''
     );
+
     this.titleUp = new Control(
       this.titleBlock.node,
       'button',
       'auth__button header-font active-button',
       'Зарегистрироваться'
     );
+
     this.titleUp.node.disabled = true;
     this.titleIn = new Control(
       this.titleBlock.node,
@@ -40,7 +44,9 @@ class FormHeader extends Control {
       'auth__button header-font',
       'Вход'
     );
+
     this.formAuth = new SignUpForm(this.node);
+
     this.titleIn.node.onclick = () => {
       this.onToggleIn();
       this.titleIn.node.disabled = true;
@@ -48,6 +54,7 @@ class FormHeader extends Control {
       this.titleIn.node.classList.toggle('active-button');
       this.titleUp.node.classList.toggle('active-button');
     };
+
     this.titleUp.node.onclick = () => {
       this.onToggleUp();
       this.titleIn.node.disabled = false;

@@ -11,6 +11,8 @@ class BookCardController extends AppController {
 
   wordNumber: number;
 
+  countDifficultWords?: number;
+
   constructor(public view: BookCardView, public model: AppModel) {
     super(view, model);
     this.page = 0;
@@ -35,9 +37,10 @@ class BookCardController extends AppController {
 
     if (this.view.isUser && group === 'difficult') {
       this.words = await this.model.getAllDifficultWords(this.page);
-      this.view.countDifficultWords = Number(
+      this.countDifficultWords = Number(
         (Number(await this.model.getCountAllDifficultWords()) / 20).toFixed()
       );
+      this.view.countDifficultWords = this.countDifficultWords;
       this.view.countDifficultWordsOnPage = this.words.length;
     }
     if (this.view.isUser && group !== 'difficult') {
@@ -171,7 +174,7 @@ class BookCardController extends AppController {
 
     const nextPageDifficult = document.querySelector('#next-page-difficult');
     nextPageDifficult?.addEventListener('click', () => {
-      if (this.page !== this.view.countDifficultWords) {
+      if (this.page !== this.countDifficultWords) {
         this.page += 1;
         this.model.addSetting({ [`group/${group}`]: [`${this.page}`] });
         this.wordNumber = 0;

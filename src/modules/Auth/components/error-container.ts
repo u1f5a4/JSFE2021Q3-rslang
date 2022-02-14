@@ -9,7 +9,7 @@ export default class ErrorContainer extends Control {
 
   constructor(
     parentNode: HTMLElement,
-    public messageErrors: any,
+    public messageErrors: string[],
     public messageText?: string
   ) {
     super(parentNode, 'div', 'auth__error', '');
@@ -27,12 +27,12 @@ export default class ErrorContainer extends Control {
         `${this.messageText}`
       );
     } else {
-      this.messageErrors.map((message: any) => {
+      Array.from(this.messageErrors).map((message) => {
         this.errorItem = new Control(
           this.textList.node,
           'li',
           'error__item',
-          `${message.message}`
+          `${message}`
         );
         return false;
       });

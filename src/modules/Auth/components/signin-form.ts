@@ -13,14 +13,16 @@ class SignInForm extends Control {
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'form', 'form', '');
+
     this.inputEmail = new InputControl(
       this.node,
       'input',
       '',
       '',
       'text',
-      'Email Adress'
+      'Почта'
     );
+
     this.inputPassword = new InputControl(
       this.node,
       'input',
@@ -29,12 +31,14 @@ class SignInForm extends Control {
       'password',
       'Пароль'
     );
+
     this.singInButton = new Control(
       this.node,
       'button',
       'login-button',
       'Войти'
     );
+
     this.singInButton.node.onclick = (event) => {
       event.preventDefault();
       this.onLogin(this.submitFormHandler());

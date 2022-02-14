@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { UserWord } from '../modules/AppModel';
 
 interface IWord {

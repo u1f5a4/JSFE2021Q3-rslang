@@ -106,7 +106,7 @@ class AuthController {
   public renderError(response: Response): void {
     const error = response.text();
     response.json().catch(() => {
-      error.then((err: any) => {
+      error.then((err) => {
         if (response.status === 422) {
           this.errorBlock = new ErrorContainer(
             this.view.formContainer.formHeader.node,
@@ -115,7 +115,7 @@ class AuthController {
         } else {
           this.errorBlock = new ErrorContainer(
             this.view.formContainer.formHeader.node,
-            '',
+            [''],
             err
           );
         }
