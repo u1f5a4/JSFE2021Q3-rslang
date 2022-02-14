@@ -63,7 +63,12 @@ class AppModel {
   async getCountAllDifficultWords(): Promise<number> {
     const userWords = await this.getAllUserWords();
     const filtered = userWords.filter((elem) => elem.optional.difficulty);
-    return filtered.length;
+
+    const ZeroCountCompensation = 1;
+    const wordsOnPage = 20;
+    return Math.floor(
+      Number(Number(filtered.length) / (wordsOnPage + ZeroCountCompensation))
+    );
   }
 
   async setWordDifficult(wordId: string, word: string): Promise<void> {
@@ -85,9 +90,10 @@ class AppModel {
   }
 
   async getTwentyUserWords(group: string, page: number): Promise<IWord[]> {
-    const one = (await this.getUserWords(group, page))[0].paginatedResults;
+    const one = (await this.getUserWords(group, page * 2))[0].paginatedResults;
 
-    const two = (await this.getUserWords(group, page + 1))[0].paginatedResults;
+    const two = (await this.getUserWords(group, page * 2 + 1))[0]
+      .paginatedResults;
 
     const array = one.concat(two);
 

@@ -22,7 +22,6 @@ const bookCard = new BookCardController(new BookCardView(), new AppModel());
 book.card = bookCard;
 
 const home = new HomeController(new HomeView(), new AppModel());
-home.displayPage();
 
 const router = new Router();
 router.init();
@@ -38,3 +37,9 @@ router.add('book/5', () => bookCard.displayPage('4'));
 router.add('book/6', () => bookCard.displayPage('5'));
 router.add('book/difficult', () => bookCard.displayPage('difficult'));
 router.add('games', () => games.displayPage());
+
+window.addEventListener('load', () => {
+  const { hash } = window.location;
+  if (!hash) home.displayPage();
+  router.go();
+});
