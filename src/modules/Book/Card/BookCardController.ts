@@ -37,9 +37,7 @@ class BookCardController extends AppController {
 
     if (this.view.isUser && group === 'difficult') {
       this.words = await this.model.getAllDifficultWords(this.page);
-      this.countDifficultWords = Number(
-        (Number(await this.model.getCountAllDifficultWords()) / 20).toFixed()
-      );
+      this.countDifficultWords = await this.model.getCountAllDifficultWords();
       this.view.countDifficultWords = this.countDifficultWords;
       this.view.countDifficultWordsOnPage = this.words.length;
     }
