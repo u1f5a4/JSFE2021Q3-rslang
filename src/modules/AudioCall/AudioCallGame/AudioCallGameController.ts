@@ -70,7 +70,7 @@ class AudioCallController extends AppController {
     allOptionBtnCollection.forEach((btn) => {
       btn.disabled = true;
       if (btn.id === qm.currentRoundAnswer.id) {
-        btn.style.backgroundColor = 'green';
+        btn.style.backgroundColor = '#278D9F';
       } else {
         btn.style.backgroundColor = 'red';
       }
