@@ -12,12 +12,14 @@ import AudioCallController from './modules/AudioCall/AudioCallController';
 import AudioCallView from './modules/AudioCall/AudioCallView';
 import AudioCallGameController from './modules/AudioCall/AudioCallGame/AudioCallGameController';
 import AudioCallGameView from './modules/AudioCall/AudioCallGame/AudioCallGameView';
+import AuthModel from './modules/Auth/AuthModel';
 import GamesController from './modules/Games/GamesController';
 import GamesView from './modules/Games/GamesView';
 
 const games = new GamesController(new GamesView(), new AppModel());
 
-const auth = new AuthController(new AuthView(), new AppModel());
+const auth = new AuthController(new AuthView(), new AuthModel());
+auth.AppModel = new AppModel();
 
 const book = new BookController(new BookView(), new AppModel());
 const bookCard = new BookCardController(new BookCardView(), new AppModel());
@@ -34,6 +36,7 @@ home.displayPage();
 
 const router = new Router();
 router.init();
+
 router.add('', () => home.displayPage());
 router.add('book', () => book.displayPage());
 router.add('auth', () => auth.displayPage());

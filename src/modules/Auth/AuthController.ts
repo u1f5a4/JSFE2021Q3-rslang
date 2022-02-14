@@ -1,47 +1,126 @@
-import AppController from '../../core/Controller';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
+import { BEARER, STATE } from '../../core/constants/server-constants';
+import { AuthResponse } from '../../models/response/AuthResponse';
+import { IUser } from '../../models/user-model';
+// eslint-disable-next-line import/no-cycle
 import AppModel from '../AppModel';
+import AuthModel from './AuthModel';
 import AuthView from './AuthView';
+import ErrorContainer from './components/error-container';
+import SignInForm from './components/signin-form';
+import SignUpForm from './components/signup-form';
 
-class AuthController extends AppController {
-  constructor(public view: AuthView, public model: AppModel) {
-    super(view, model);
+class AuthController {
+  private userData!: AuthResponse;
+
+  public signInForm!: SignInForm;
+
+  public signUpForm!: SignUpForm;
+
+  public errorBlock!: ErrorContainer;
+
+  AppModel!: AppModel;
+
+  constructor(public view: AuthView, public model: AuthModel) {
+    this.registrationUser(this.view.formContainer.formAuth);
+    this.toggleAuthModal();
   }
 
-  displayPage() {
+  public displayPage(): void {
     this.view.drawPage();
-    this.bindButton();
+    const loginBtn = document.getElementById('login') as HTMLButtonElement;
+    if (loginBtn) {
+      loginBtn.disabled = true;
+    }
   }
 
-  bindButton() {
-    const btnRegistration = document.querySelector('#button-registration');
-    btnRegistration?.addEventListener('click', () => this.registration());
-
-    const btnSingIn = document.querySelector('#button-signIn');
-    btnSingIn?.addEventListener('click', () => this.signIn());
+  private async registrationUser(elem: SignUpForm): Promise<void> {
+    const singUpFormButton = elem;
+    singUpFormButton.onSubmit = async (user: IUser) => {
+      const response = await this.model.registrationUser(user);
+      if (!response.ok) {
+        this.renderError(response);
+      }
+      if (response.ok) {
+        response.json().then((data: IUser) => {
+          this.view.formContainer.formHeader.node.innerHTML = `<h2>Теперь авторизуйся, ${data.name}!</h2>`;
+          this.view.formContainer.formAuth.destroy();
+          this.signInForm = new SignInForm(this.view.formContainer.node);
+          this.login(this.signInForm);
+        });
+      }
+      this.clearErrorBlok();
+    };
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  getDataInput() {
-    const name = (document.querySelector('#name') as HTMLInputElement).value;
-    const email = (document.querySelector('#email') as HTMLInputElement).value;
-    const password = (document.querySelector('#password') as HTMLInputElement)
-      .value;
-
-    return { name, email, password };
+  private clearErrorBlok(): void {
+    if (this.errorBlock) {
+      this.errorBlock.destroy();
+    }
   }
 
-  registration() {
-    this.model.createUser(this.getDataInput());
+  public async loginHandler(user: IUser): Promise<void> {
+    const response = await this.model.loginUser(user);
+    if (!response.ok) {
+      this.renderError(response);
+    }
+    if (response.ok) {
+      this.userData = await response.json();
+      this.AppModel.addSetting({ auth: await this.userData });
+      localStorage.setItem('user', JSON.stringify(this.userData));
+      BEARER.bearer = `Bearer ${this.userData.token}`;
+      STATE.auth = JSON.parse(localStorage.getItem('user')!);
+      STATE.userName = JSON.parse(localStorage.getItem('user')!);
+      window.location.replace('/');
+      renderHeaderTemplate();
+    }
+    this.clearErrorBlok();
   }
 
-  signIn() {
-    const dataInputs = this.getDataInput();
-    const data = {
-      email: dataInputs.email,
-      password: dataInputs.password,
+  public login(elem: SignInForm): void {
+    const signInFormButton = elem;
+    signInFormButton.onLogin = async (user) => {
+      this.loginHandler(user);
+    };
+  }
+
+  private toggleAuthModal(): void {
+    this.view.formContainer.onToggleIn = () => {
+      this.view.formContainer.formAuth.destroy();
+      this.signInForm = new SignInForm(this.view.formContainer.node);
+      this.login(this.signInForm);
+      this.clearErrorBlok();
     };
 
-    this.model.signIn(data);
+    this.view.formContainer.onToggleUp = () => {
+      this.signInForm.destroy();
+      this.view.formContainer.formAuth = new SignUpForm(
+        this.view.formContainer.node
+      );
+
+      this.registrationUser(this.view.formContainer.formAuth);
+      this.clearErrorBlok();
+    };
+  }
+
+  public renderError(response: Response): void {
+    const error = response.text();
+    response.json().catch(() => {
+      error.then((err) => {
+        if (response.status === 422) {
+          this.errorBlock = new ErrorContainer(
+            this.view.formContainer.formHeader.node,
+            JSON.parse(err).error.errors
+          );
+        } else {
+          this.errorBlock = new ErrorContainer(
+            this.view.formContainer.formHeader.node,
+            [''],
+            err
+          );
+        }
+      });
+    });
   }
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
 import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';

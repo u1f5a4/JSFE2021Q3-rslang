@@ -14,6 +14,7 @@ class BookController extends AppController {
     this.view.isUser = this.model.isUser();
     this.view.drawPage();
     this.bindButtons();
+    this.model.logout();
   }
 
   bindButtons() {

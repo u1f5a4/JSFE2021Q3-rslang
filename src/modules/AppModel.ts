@@ -1,18 +1,22 @@
+import renderHeaderTemplate from '../components/Header/_renderHeaderTemplate';
+import { STATE } from '../core/constants/server-constants';
+import AppView from '../core/View';
+// eslint-disable-next-line import/no-cycle
+import IWord from '../models/word-model';
+// eslint-disable-next-line import/no-cycle
+import AuthController from './Auth/AuthController';
+import AuthModel from './Auth/AuthModel';
+import AuthView from './Auth/AuthView';
+
 const emojiList = [
   ['1', '🤐'],
   ['2', '🙄'],
   ['3', '🤤'],
   ['4', '🤓'],
-  ['5', '😎'],
+  ['5', '😬'],
   ['6', '😭'],
   ['difficult', '🤡'],
 ];
-
-type InputData = {
-  name?: string;
-  email: string;
-  password: string;
-};
 
 type UserWord = {
   difficulty: string;
@@ -22,12 +26,16 @@ type UserWord = {
 };
 export { UserWord };
 
+type UserWord2 = [
+  { paginatedResults: IWord[]; totalCount: [{ count: number }] }
+];
+
 class AppModel {
   private domain = 'https://rslang-words.herokuapp.com';
 
   // === Работа со словами при авторизации === //
 
-  async getAllDifficultWords(page: number) {
+  async getAllDifficultWords(page: number): Promise<IWord[]> {
     const userWords = await this.getAllUserWords();
     const filtered = userWords.filter((elem) => elem.optional.difficulty);
     const wordIdList = filtered.map((elem) => elem.wordId);
@@ -35,10 +43,8 @@ class AppModel {
     const promiseArray: Promise<any>[] = [];
     wordIdList.forEach((wordId) => {
       promiseArray.push(this.getWord(String(wordId)));
-      return true;
     });
     const commonWords = await Promise.all(promiseArray);
-
     const result = commonWords.map((elem, index) =>
       Object.assign(elem, { userWord: filtered[index] })
     );
@@ -50,6 +56,7 @@ class AppModel {
       wordsOnPage * (page + ZeroCountCompensation - 1),
       wordsOnPage * (page + ZeroCountCompensation)
     );
+
     return words;
   }
 
@@ -59,7 +66,7 @@ class AppModel {
     return filtered.length;
   }
 
-  async setWordDifficult(wordId: string, word: string) {
+  async setWordDifficult(wordId: string, word: string): Promise<void> {
     try {
       await this.updateUserWord(wordId, word, '0', true, false);
     } catch {
@@ -68,7 +75,7 @@ class AppModel {
     }
   }
 
-  async setWordEasy(wordId: string, word: string) {
+  async setWordEasy(wordId: string, word: string): Promise<void> {
     try {
       await this.updateUserWord(wordId, word, '0', false, true);
     } catch {
@@ -77,7 +84,7 @@ class AppModel {
     }
   }
 
-  async getTwentyUserWords(group: string, page: number) {
+  async getTwentyUserWords(group: string, page: number): Promise<IWord[]> {
     const one = (await this.getUserWords(group, page))[0].paginatedResults;
 
     const two = (await this.getUserWords(group, page + 1))[0].paginatedResults;
@@ -87,7 +94,7 @@ class AppModel {
     return array;
   }
 
-  async deleteUserWord(wordId: string) {
+  async deleteUserWord(wordId: string): Promise<void> {
     const { userId, token } = this.getSetting('auth');
 
     await fetch(`${this.domain}/users/${userId}/words/${wordId}`, {
@@ -98,7 +105,7 @@ class AppModel {
     });
   }
 
-  private async getUserWords(group: string, page: number) {
+  private async getUserWords(group: string, page: number): Promise<UserWord2> {
     const { userId, token } = this.getSetting('auth');
 
     const rawResponse = await fetch(
@@ -116,7 +123,7 @@ class AppModel {
     return rawResponse.json();
   }
 
-  private async createUserWord(wordId: string, word: string) {
+  private async createUserWord(wordId: string, word: string): Promise<void> {
     const { userId, token } = this.getSetting('auth');
     const data = {
       difficulty: word,
@@ -127,21 +134,15 @@ class AppModel {
       },
     };
 
-    const rawResponse = await fetch(
-      `${this.domain}/users/${userId}/words/${wordId}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
-    );
-
-    const content = await rawResponse.json();
-    return content;
+    await fetch(`${this.domain}/users/${userId}/words/${wordId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
   }
 
   private async updateUserWord(
@@ -150,7 +151,7 @@ class AppModel {
     answers: string,
     difficulty: boolean,
     easy: boolean
-  ) {
+  ): Promise<UserWord> {
     const { userId, token } = this.getSetting('auth');
 
     const data: UserWord = {
@@ -162,7 +163,7 @@ class AppModel {
       },
     };
 
-    const rawResponse = await fetch(
+    const response = await fetch(
       `${this.domain}/users/${userId}/words/${wordId}`,
       {
         method: 'PUT',
@@ -175,26 +176,10 @@ class AppModel {
       }
     );
 
-    return rawResponse.json();
+    const content = await response.json();
+    console.log(content);
+    return content;
   }
-
-  // async getUserWord(wordId: string): Promise<UserWord> {
-  //   const { userId, token } = this.getSetting('auth');
-
-  //   const rawResponse = await fetch(
-  //     `${this.domain}/users/${userId}/words/${wordId}`,
-  //     {
-  //       method: 'GET',
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         Accept: 'application/json',
-  //       },
-  //     }
-  //   );
-
-  //   const content = await rawResponse.json();
-  //   return content;
-  // }
 
   private async getAllUserWords(): Promise<UserWord[]> {
     const { userId, token } = this.getSetting('auth');
@@ -214,25 +199,25 @@ class AppModel {
 
   // === Работа с User === //
 
-  async signIn(data: InputData) {
-    const request = await fetch(`${this.domain}/signin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (request.ok) {
-      console.log(`Пользователь ${data.email} вошёл в систему`);
-      this.addSetting({ auth: await request.json() });
-      console.log(this.getSetting('auth'));
-    } else {
-      console.log(`Пользователь ${data.email} не вошёл`);
+  // eslint-disable-next-line class-methods-use-this
+  public logout(): void {
+    const logoutBtn = document.getElementById(
+      'logout-btn'
+    ) as HTMLButtonElement;
+    if (logoutBtn) {
+      logoutBtn.onclick = () => {
+        localStorage.clear();
+        STATE.auth = JSON.parse(localStorage.getItem('user')!);
+        STATE.userName = JSON.parse(localStorage.getItem('user')!);
+        AppView.clear();
+        const auth = new AuthController(new AuthView(), new AuthModel());
+        auth.displayPage();
+        renderHeaderTemplate();
+      };
     }
   }
 
-  isUser() {
+  isUser(): boolean {
     try {
       return 'name' in this.getSetting('auth');
     } catch (error) {
@@ -240,25 +225,9 @@ class AppModel {
     }
   }
 
-  async createUser(data: InputData) {
-    const request = await fetch(`${this.domain}/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (request.ok) {
-      console.log(`Пользователь ${data.name} зарегистрирован`);
-    } else {
-      console.log(`Пользователь ${data.name} НЕ зарегистрирован`);
-    }
-  }
-
   // === Работа со словами без авторизации === //
 
-  async getWords(group: string, page: number) {
+  async getWords(group: string, page: number): Promise<IWord[]> {
     return (
       await fetch(`${this.domain}/words?group=${group}&page=${page}`, {
         method: 'GET',
@@ -266,7 +235,7 @@ class AppModel {
     ).json();
   }
 
-  async getWord(wordId: string) {
+  async getWord(wordId: string): Promise<IWord> {
     return (
       await fetch(`${this.domain}/words/${wordId}`, {
         method: 'GET',
@@ -286,7 +255,7 @@ class AppModel {
     return null;
   }
 
-  addSetting(data: {}) {
+  addSetting(data: {}): void {
     const setting = this.downloadSetting();
     if (setting) this.saveSetting(Object.assign(setting, data));
     else this.saveSetting(data);
