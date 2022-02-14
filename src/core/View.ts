@@ -1,6 +1,8 @@
 class AppView {
   body = document.querySelector('body');
 
+  titlemain = 'RS Lang – ';
+
   titlePage = 'abstract view';
 
   drawPage() {

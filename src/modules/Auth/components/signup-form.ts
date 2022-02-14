@@ -24,14 +24,16 @@ class SignUpForm extends Control {
       'text',
       'Имя'
     );
+
     this.inputEmail = new InputControl(
       this.node,
       'input',
       '',
       '',
       'text',
-      'Email Adress'
+      'Почта'
     );
+
     this.inputPassword = new InputControl(
       this.node,
       'input',
@@ -40,12 +42,14 @@ class SignUpForm extends Control {
       'password',
       'Пароль'
     );
+
     this.singUpButton = new Control(
       this.node,
       'button',
       'login-button',
       'Зарегистрироваться'
     );
+
     this.singUpButton.node.setAttribute('type', 'submit');
     this.singUpButton.node.onclick = (event) => {
       event.preventDefault();

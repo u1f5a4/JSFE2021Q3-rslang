@@ -1,17 +1,23 @@
-/* eslint-disable prettier/prettier */
-import renderFooterTemplate from '../../Components/Footer/renderFooterTemplate';
-import renderHeaderTemplate from '../../Components/Header/renderHeaderTemplate';
+import renderFooterTemplate from '../../сomponents/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
+
 import AppView from '../../core/View';
+import { emojiList } from '../AppModel';
 import styles from './BookStyle.module.scss';
+import '../../scss/_main.scss';
+
 
 class BookView extends AppView {
+  isUser?: boolean;
+
   titlePage = 'Учебник';
 
   subtitlePage = `Выбери список слов по уровню сложности, 
   в каждой группе по тридцать страниц, а на каждой странице по двадцать слов`;
 
   drawPage() {
-    document.title = this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 
@@ -19,86 +25,43 @@ class BookView extends AppView {
     return `
           ${renderHeaderTemplate()}
             <div class="${styles.content}">
-              <div class="${styles['title-page']}">  
-                <h2 class="${styles['title-page__title']} 
-                          ${styles['title-font']}
-                ">${this.titlePage}</h2>
-                <p class="
-                ${styles['title-page__text']}
-                ${styles['text-font']}
-                ">${this.subtitlePage}</p>
-              </div>
-
+            ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
               <div class="${styles['book-cards']} app">
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='1'>
-                  <p class="${styles['book-cards__emoji']}">🤐</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #1</p>
-                </div>
+              ${(() => {
+                let result = ``;
 
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='2'>
-                  <p class="${styles['book-cards__emoji']}">🙄</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #2</p>
-                </div>
+                // eslint-disable-next-line no-restricted-syntax
+                for (const elem of emojiList) {
+                  const [value, emoji] = elem;
+                  if (value !== 'difficult') {
+                    result += `<div class="
+                              ${styles['book-cards__card']}
+                              ${styles['shadow-active']}
+                              " data-group='${value}'>
+                                <p class="${
+                                  styles['book-cards__emoji']
+                                }">${emoji}</p>
+                                <p class="
+                                ${styles['book-cards__header']} ${
+                      styles['header-font']
+                    }
+                                ">${`Группа слов #${value}`}</p>
+                            </div>`;
+                  } else if (this.isUser) {
+                    result += `<div class="
+                              ${styles['book-cards__card']}
+                              ${styles['shadow-active']}
+                              " data-group='${value}'>
+                                <p class="${styles['book-cards__emoji']}">${emoji}</p>
+                                <p class="
+                                ${styles['book-cards__header']} ${styles['header-font']}
+                                ">Сложные слова</p>
+                            </div>`;
+                  }
+                }
 
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='3'>
-                  <p class="${styles['book-cards__emoji']}">🤤</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #3</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='4'>
-                  <p class="${styles['book-cards__emoji']}">🤓</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #4</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='5'>
-                  <p class="${styles['book-cards__emoji']}">😎</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #5</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='6'>
-                  <p class="${styles['book-cards__emoji']}">😭</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Группа слов #6</p>
-                </div>
-
-                <div class="
-                ${styles['book-cards__card']}
-                ${styles['shadow-active']}
-                " data-group='difficult'>
-                  <p class="${styles['book-cards__emoji']}">🤡</p>
-                  <p class="
-                  ${styles['book-cards__header']} ${styles['header-font']}
-                  ">Сложные слова</p>
-                </div>
+                return result;
+              })()}
               </div>
             </div>
             ${renderFooterTemplate()}`;
