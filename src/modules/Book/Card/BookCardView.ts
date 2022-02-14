@@ -28,11 +28,14 @@ class BookCardView extends AppView {
 
   countDifficultWordsOnPage?: number;
 
+  typePage?: 'easy' | 'difficult' | 'mixed';
+
   async drawCardPage(word: IWord) {
     this.word = word;
     if (this.group !== 'difficult') {
       this.body!.innerHTML = this.getHtml();
       this.titlePage = `Группа #${Number(this.group) + 1}`;
+      this.isPage();
     } else {
       this.body!.innerHTML = this.getHtmlDifficult();
       this.titlePage = `Сложные слова`;
@@ -73,6 +76,16 @@ class BookCardView extends AppView {
   changeCardToDeleted() {
     const card = document.querySelector('#flip') as HTMLDivElement;
     card.style.borderColor = 'none';
+  }
+
+  isPage() {
+    const pag = document.querySelector('#pag') as HTMLDivElement;
+    if (this.typePage === 'easy') {
+      pag?.classList.add(`${css['page-pagination__easy']}`);
+    }
+    if (this.typePage === 'difficult') {
+      pag?.classList.add(`${css['page-pagination__difficulty']}`);
+    }
   }
 
   getHtml(): string {
@@ -204,10 +217,11 @@ class BookCardView extends AppView {
                                ${css['shadow-active']}
                                " id="prev-page"><</button>
 
-                <button class="${css['element-font']}
+                <button id="pag" class="${css['element-font']}
                                ${css['page-pagination__text']}
                                ${css['page-pagination__button']}">
-                  ${Number(this.page) + ZeroCountCompensation} / 30
+                  <b>${Number(this.page) + ZeroCountCompensation}</b>
+                   / 30 
                 </button>
 
                 <button class="${css['element-font']}
@@ -265,7 +279,6 @@ class BookCardView extends AppView {
 
               <div class="${css['book-card__container']}">
                 <div class="${css['book-card__card']} 
-                            ${this.isState()}
                             " id="flip">
 
                   <div class="${css['book-card__front']} 
@@ -305,16 +318,12 @@ class BookCardView extends AppView {
                                 ${css['book-card__text']} ">
                         ${this.word?.textExampleTranslate}
                       </p>
-                      ${(() => {
-                        if (this.isUser)
-                          return `<div class="${css['book-card__buttons-word']}">
+                     <div class="${css['book-card__buttons-word']}">
                         <button id="clear-word" class="${css.btn}
                         ${css['book-card__button-easy-word']}">
-                          убрать из списка сложных слов
+                          убрать из сложных слов
                         </button>
-                      </div>`;
-                        return '';
-                      })()}
+                      </div>
                       
                     </div>
                     <img class="${css['book-card__img']}" 

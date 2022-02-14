@@ -43,6 +43,7 @@ class BookCardController extends AppController {
     }
     if (this.view.isUser && group !== 'difficult') {
       this.words = await this.model.getTwentyUserWords(group, this.page);
+      this.view.typePage = this.isTypePage();
     }
     if (!this.view.isUser) {
       this.words = await this.model.getWords(group, this.page);
@@ -53,6 +54,19 @@ class BookCardController extends AppController {
 
     this.bindButton(group);
     this.model.logout();
+  }
+
+  isTypePage() {
+    const easy = this.words.every(
+      (elem: IWord) => elem.userWord?.optional.easy
+    );
+    const difficult = this.words.every(
+      (elem: IWord) => elem.userWord?.optional.difficulty
+    );
+
+    if (easy) return 'easy';
+    if (difficult) return 'difficult';
+    return 'mixed';
   }
 
   bindButton(group: string) {
