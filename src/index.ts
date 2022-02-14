@@ -30,7 +30,7 @@ const audioCallGame = new AudioCallGameController(
 );
 
 const home = new HomeController(new HomeView(), new AppModel());
-audioCall.displayPage();
+home.displayPage();
 
 const router = new Router();
 router.init();
