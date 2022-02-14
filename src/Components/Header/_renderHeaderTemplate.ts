@@ -4,11 +4,10 @@ import styles from './headerStyle.module.scss';
 export function renderAuthUser(): string {
   if (STATE.auth) {
     return `
-        <span class="${styles.header__greetings}">Hi, ${STATE.userName.name}</span>
-        <button id="logout-btn" class="${styles.header__button} ${styles.btn}">Выйти</button>`;
+        <button id="logout-btn" class="${styles.header__button} ${styles.btn}">Выйти из ${STATE.userName.name}</button>`;
   }
   return ` <a href="#auth" class="${styles.menu__link}"><button id="login" class="${styles.header__button} ${styles.btn}">
-        Войти/Регистрация
+        Войти | Регистрация
     </button></a>`;
 }
 
