@@ -32,6 +32,7 @@ class AuthController {
     if (loginBtn) {
       loginBtn.disabled = true;
     }
+    document.title = `RS Lang — Добро пожаловать`;
   }
 
   private async registrationUser(elem: SignUpForm): Promise<void> {

@@ -15,7 +15,7 @@ class BookView extends AppView {
   в каждой группе по тридцать страниц, а на каждой странице по двадцать слов`;
 
   drawPage() {
-    document.title = this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 

@@ -17,6 +17,8 @@ class BookCardView extends AppView {
 
   isUser?: boolean;
 
+  titlePage = ``;
+
   subtitlePage = `Нажимай на карточку и смотри перевод, добавляй
    в список сложных или лёгких слов, смотри изображение и слушай произношение`;
 
@@ -28,8 +30,15 @@ class BookCardView extends AppView {
 
   async drawCardPage(word: IWord) {
     this.word = word;
-    if (this.group !== 'difficult') this.body!.innerHTML = this.getHtml();
-    else this.body!.innerHTML = this.getHtmlDifficult();
+    if (this.group !== 'difficult') {
+      this.body!.innerHTML = this.getHtml();
+      this.titlePage = `Группа #${Number(this.group) + 1}`;
+    } else {
+      this.body!.innerHTML = this.getHtmlDifficult();
+      this.titlePage = `Сложные слова`;
+    }
+
+    document.title = this.titlemain + this.titlePage;
   }
 
   isState() {

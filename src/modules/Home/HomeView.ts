@@ -8,12 +8,12 @@ import pageCardsData from './page-cards-data';
 import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
 
 class HomeView extends AppView {
-  titlePage = 'Учебник английского с карточками и мини-играми';
+  titlePage = `Изучение английского по карточкам и мини-играми`;
 
   subtitlePage = `Простой и понятный интерфейс нашего приложения позволит сконцентрироваться на изучении и достигнуть результата наблюдая за своим прогрессом`;
 
   drawPage() {
-    document.title = this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 

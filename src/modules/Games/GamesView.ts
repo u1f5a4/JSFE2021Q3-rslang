@@ -5,7 +5,7 @@ import View from '../../core/View';
 import css from './GamesStyles.module.scss';
 
 class GamesView extends View {
-  titlePage = 'Мини-игры';
+  titlePage = `Мини-игры`;
 
   subtitlePage = `Играй в игры и учись! А если перейти в мини-игру из учебника,
    то в игре будут слова с той страницы`;
@@ -17,7 +17,7 @@ class GamesView extends View {
   а ты выбираешь правильный перевод из пяти вариантов`;
 
   drawPage() {
-    document.title = this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 

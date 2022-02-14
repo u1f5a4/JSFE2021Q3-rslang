@@ -14,7 +14,7 @@ class AuthView extends View {
 
   public formContainer: FormHeader;
 
-  titlePage = 'Присоединяйся!';
+  titlePage = 'Добро пожаловать';
 
   subtitlePage =
     'Получай дополнительные возможности приложения для более успешного изучения слов';
