@@ -16,15 +16,21 @@ class AuthView extends View {
   constructor() {
     super('div', 'auth');
     this.node.innerHTML = `${renderHeaderTemplate()}`;
-    this.authContainer = new Control(this.node, 'div', 'auth__container', '');
     this.imageBlock = new Control(
-      this.authContainer.node,
+      this.node,
       'div',
       'auth__image',
       ''
     );
+    this.authContainer = new Control(this.imageBlock.node, 'div', 'auth__container', '');
+    this.imageBlock = new Control(
+      this.authContainer.node,
+      'div',
+      'auth__title',
+      ''
+    );
     this.imageBlock.node.innerHTML =
-      '<p class="auth__title text-font"><span class="title-font">Присоединяйся!</span><br> Получай дополнительные возможности приложения для более успешного изучения слов</p>';
+      '<p class="title text-font"><span class="title-font">Присоединяйся!</span><br> Получай дополнительные возможности приложения для более успешного изучения слов</p>';
     this.formContainer = new FormHeader(this.authContainer.node);
   }
 }

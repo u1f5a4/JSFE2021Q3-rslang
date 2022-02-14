@@ -2,22 +2,26 @@
 
     &__container {
         display: flex;
+        max-width: 1140px;
+        margin: 0 auto;
     }
 
     &__image {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        width: 50%;
-        min-height: 90vh;
-        padding: 0 60px;
+       
         background-image: url(../../assets/images/auth-bg.png);
-        background-position: center;
-        background-size: cover;
+        background-position: left;
+        background-size: 50%;
         background-repeat: no-repeat;
     }
 
-   &__title {
+    &__title {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        min-height: 90vh;
+    }
+
+   .title {
        display: flex;
        flex-direction: column;
        color: $color-black;
@@ -58,10 +62,9 @@
 }
 
 .form__container {
-    width: 30%;
+    width: 45%;
     position: relative;
-    padding: 0 40px;
-    margin: 70px auto auto;
+    padding: 60px 0 0 40px;
 }
 
 .form__header {
