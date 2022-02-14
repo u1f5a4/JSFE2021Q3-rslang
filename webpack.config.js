@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtract = require('mini-css-extract-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
+
 
 const config = {
   entry: './src/index.ts',
@@ -12,10 +14,6 @@ const config = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.css$/,
-      //   use: [MiniCssExtract.loader, 'css-loader'],
-      // },
       {
         test: /\.scss$/,
         use: [
@@ -35,6 +33,10 @@ const config = {
         loader: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(png)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   experiments: {
@@ -45,6 +47,11 @@ const config = {
       template: path.resolve(__dirname, './src/index.html'),
     }),
     new MiniCssExtract(),
+    new CopyPlugin({
+      patterns: [
+        { from: "src/assets/", to: "assets" },
+      ],
+    }),
     new CleanWebpackPlugin(),
   ],
   devServer: {

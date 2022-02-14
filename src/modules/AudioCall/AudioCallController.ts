@@ -10,7 +10,8 @@ class AudioCallController extends AppController {
 
   bindButtons() {
     const form = document.getElementById('audio-call-form') as HTMLFormElement;
-
+    const firstInput = document.getElementById('level-1') as HTMLInputElement;
+    firstInput.checked = true;
     form.addEventListener('submit', (event) => {
       const checkedInput = document.querySelector(
         'input[name=audio-game]:checked'

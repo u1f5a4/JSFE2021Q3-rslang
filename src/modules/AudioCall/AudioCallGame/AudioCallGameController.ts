@@ -75,6 +75,8 @@ class AudioCallController extends AppController {
         btn.style.backgroundColor = 'red';
       }
     });
+    const soundImg = document.getElementById('sound-img') as HTMLImageElement;
+    soundImg.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.image}`;
   }
 
   async bindElements() {
@@ -88,6 +90,8 @@ class AudioCallController extends AppController {
         nextQuestionBtn.disabled = true;
       }
       this.switchBtnState(false);
+      const soundImg = document.getElementById('sound-img') as HTMLImageElement;
+      soundImg.src = `assets/images/sound.png`;
     });
   }
 

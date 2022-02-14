@@ -29,7 +29,7 @@ class AudioCallView extends AppView {
                       `              
                     <div class="${styles.level__item}">
                         <input type="radio" id="${level.levelId}" name="audio-game" class="${styles.level__input}" value="${level.levelValue}" >
-                        <label class="level__label" for="${level.levelId}">
+                        <label class="${styles.level__label}" for="${level.levelId}">
                             <span class="level__title">${level.levelTitle}</span>
                             <span class="level__name">${level.levelName}</span>
                         </label>
