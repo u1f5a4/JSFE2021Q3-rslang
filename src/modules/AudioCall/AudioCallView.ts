@@ -3,7 +3,7 @@ import AppView from '../../core/View';
 import styles from './AudioCallStyle.module.scss';
 import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
-import renderPageDescTemplate from "../../components/PageDesc/_renderPageDescTemplate";
+import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
 import levelData from './level-data';
 
 class AudioCallView extends AppView {
@@ -20,7 +20,10 @@ class AudioCallView extends AppView {
     return `
       ${renderHeaderTemplate()} 
       <main class="${styles.container}">
-        ${renderPageDescTemplate('Аудиовызов','В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего слова')}
+        ${renderPageDescTemplate(
+          'Аудиовызов',
+          'В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего слова'
+        )}
         <form class="${styles.form}" id="audio-call-form">
             <div class="${styles.level__list}">
                 ${levelData

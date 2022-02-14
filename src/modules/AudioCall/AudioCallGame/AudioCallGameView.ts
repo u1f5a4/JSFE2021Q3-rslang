@@ -4,7 +4,6 @@ import styles from './style.module.scss';
 import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
 
-
 class AudioCallGameView extends AppView {
   titlePage = 'Учебник английского с карточками и мини-играми';
 
@@ -22,7 +21,9 @@ class AudioCallGameView extends AppView {
         <div class="${styles.game}" id="game-container">
             <div class="${styles['game__sound-box']}">
                 <div class="${styles['audio-box']}" id="play-game-audio">
-                    <img alt="sound-img" class="${styles['audio-box__img']}" src="./assets/images/sound.png" id="sound-img">
+                    <img alt="sound-img" class="${
+                      styles['audio-box__img']
+                    }" src="./assets/images/sound.png" id="sound-img">
                 </div>
                 <audio id="round-audio"></audio>
             </div>

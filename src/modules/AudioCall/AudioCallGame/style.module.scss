@@ -20,7 +20,7 @@
   justify-content: center;
   cursor: pointer;
   background-color: rgba(70, 63, 102, 0.65);
-  &__img{
+  &__img {
     height: 100%;
     object-fit: cover;
     overflow: hidden;
@@ -30,6 +30,6 @@
 
 .game__options-box {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
