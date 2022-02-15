@@ -23,18 +23,17 @@ export async function getWordsByGroup(groupId: string) {
 function generateRoundData(data: Array<IWord>) {
   const maxNumberWords = 20;
   const maxOptionsNumber = 5;
-  const optionsData: [] = [];
+  const optionsData: IWord[] = [];
   const correctWordId: number = generateRandomNumber(0, maxNumberWords);
   const optionsId: number[] = [];
   optionsId.push(correctWordId);
   const correctWord: IWord = data[correctWordId];
-  // @ts-ignore
   optionsData.push(correctWord);
   // console.log(optionsData);
   while (optionsData.length < maxOptionsNumber) {
     const idx: number = generateRandomNumber();
     const option: IWord = data[idx];
-    console.log(data[idx]);
+    // console.log(data[idx]);
     if (optionsId.includes(idx)) {
       // eslint-disable-next-line no-continue
       continue;

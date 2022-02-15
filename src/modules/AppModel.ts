@@ -177,7 +177,7 @@ class AppModel {
     );
 
     const content = await response.json();
-    console.log(content);
+    // console.log(content);
     return content;
   }
 

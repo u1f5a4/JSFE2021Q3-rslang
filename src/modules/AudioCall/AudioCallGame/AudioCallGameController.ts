@@ -39,6 +39,7 @@ class AudioCallController extends AppController {
       'game-options-box'
     ) as HTMLElement;
     optionsBox.innerHTML = '';
+    // eslint-disable-next-line array-callback-return
     await qm.currentRoundOptions.map((option: { [x: string]: string }) => {
       const btn = document.createElement('button');
       btn.id = option?.id;
@@ -140,12 +141,12 @@ class AudioCallController extends AppController {
       'result-container'
     ) as HTMLDivElement;
     const quizScore = document.getElementById('quiz-score') as HTMLSpanElement;
-    const correctAnswersContainer = document.getElementById(
-      'correct-answers-container'
-    ) as HTMLDivElement;
-    const wrongAnswersContainer = document.getElementById(
-      'wrong-answers-container'
-    ) as HTMLDivElement;
+    // const correctAnswersContainer = document.getElementById(
+    //   'correct-answers-container'
+    // ) as HTMLDivElement;
+    // const wrongAnswersContainer = document.getElementById(
+    //   'wrong-answers-container'
+    // ) as HTMLDivElement;
 
     quizScore.innerText = qm.getQuizResult().points.toString();
 
