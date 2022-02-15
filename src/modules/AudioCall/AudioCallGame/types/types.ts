@@ -2,13 +2,13 @@ import IWord from '../../../../models/word-model';
 
 export interface INewWordData {
   correctWordId: number;
-  optionsData: Array<IWord>;
+  optionsData: IWord[];
 }
 
 export interface IQuizHistory {
   roundAnswer: IWord;
   roundNumber: number;
-  roundOptions: Array<IWord>;
+  roundOptions: IWord[];
   roundResult: string;
   userGuess: string;
 }

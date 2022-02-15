@@ -45,19 +45,18 @@ function generateRoundData(data: Array<IWord>) {
 }
 
 export async function createQuizData(level: string): Promise<Array<IWord[]>> {
-  const quizData: Promise<Array<IWord[]>> | [] = [];
+  const quizData: Array<IWord[]> | never = [];
   const correctWordIdArray: number[] = [];
   const maxQuizRounds = 10;
   const data: Array<IWord> = await getWordsByGroup(level);
   while (quizData.length < maxQuizRounds) {
-    const newRoundData: INewWordData = generateRoundData(data);
-    const newRoundOptionsData: Array<IWord> = newRoundData.optionsData;
+    const newRoundData: INewWordData | never = generateRoundData(data);
+    const newRoundOptionsData: IWord[] = newRoundData.optionsData;
 
     if (correctWordIdArray.includes(newRoundData.correctWordId)) {
       // eslint-disable-next-line no-continue
       continue;
     }
-    // @ts-ignore
     quizData.push(newRoundOptionsData);
     correctWordIdArray.push(newRoundData.correctWordId);
   }

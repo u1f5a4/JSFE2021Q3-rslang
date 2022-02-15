@@ -40,8 +40,7 @@ class AudioCallController extends AppController {
       'game-options-box'
     ) as HTMLElement;
     optionsBox.innerHTML = '';
-    // eslint-disable-next-line array-callback-return
-    qm.currentRoundOptions.map((option: IWord) => {
+    qm.currentRoundOptions.forEach((option: IWord) => {
       const btn = document.createElement('button');
       btn.id = <string>option?.id;
       btn.classList.add('quiz-options-btn');
@@ -100,7 +99,7 @@ class AudioCallController extends AppController {
     });
   }
 
-  switchBtnState(state: boolean) {
+  switchBtnState(isUserAnswered: boolean) {
     const nextQuestionBtn = document.getElementById(
       'next-question'
     ) as HTMLButtonElement;
@@ -108,7 +107,7 @@ class AudioCallController extends AppController {
       'show-answer'
     ) as HTMLButtonElement;
 
-    if (state) {
+    if (isUserAnswered) {
       showAnswerBtn.style.display = 'none';
       nextQuestionBtn.style.display = 'block';
     } else {
