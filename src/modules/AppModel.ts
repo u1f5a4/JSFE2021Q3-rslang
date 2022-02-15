@@ -104,10 +104,10 @@ class AppModel {
     const filtered = userWords.filter((elem) => elem.optional.difficulty);
     const wordIdList = filtered.map((elem) => elem.wordId);
 
-    const promiseArray: Promise<any>[] = [];
-    wordIdList.forEach((wordId) => {
-      promiseArray.push(this.getWord(String(wordId)));
-    });
+    const promiseArray: Promise<IWord>[] = [];
+    wordIdList.forEach((wordId) =>
+      promiseArray.push(this.getWord(String(wordId)))
+    );
     const commonWords = await Promise.all(promiseArray);
     const result = commonWords.map((elem, index) =>
       Object.assign(elem, { userWord: filtered[index] })
