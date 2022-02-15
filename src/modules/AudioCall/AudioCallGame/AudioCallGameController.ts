@@ -68,10 +68,13 @@ class AudioCallController extends AppController {
       '.quiz-options-btn'
     ) as NodeListOf<HTMLButtonElement>;
     allOptionBtnCollection.forEach((btn) => {
+      // eslint-disable-next-line no-param-reassign
       btn.disabled = true;
       if (btn.id === qm.currentRoundAnswer.id) {
+        // eslint-disable-next-line no-param-reassign
         btn.style.backgroundColor = '#278D9F';
       } else {
+        // eslint-disable-next-line no-param-reassign
         btn.style.backgroundColor = 'red';
       }
     });

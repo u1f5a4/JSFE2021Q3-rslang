@@ -1,4 +1,5 @@
 import { createQuizData, getShuffledArray } from './utils';
+import IWord from '../../../../models/word-model';
 
 export const ResultType = {
   WON: 'WON',
@@ -10,7 +11,7 @@ export class QuizManager {
 
   quizHistory: any[] = [];
 
-  quizData: any[] | undefined;
+  quizData: any | undefined;
 
   currentRoundNumber: number = -1;
 
@@ -48,6 +49,7 @@ export class QuizManager {
     this.setDefaultSettings();
     this.quizData = await createQuizData(this.level);
     await this.generateRound();
+    console.log(this.quizData);
   }
 
   async generateRound() {
@@ -78,12 +80,14 @@ export class QuizManager {
       roundNumber: this.currentRoundNumber,
       userGuess: this.currentRoundGuess,
     });
+    console.log(this.quizHistory);
   }
 
   getQuizResult() {
     const rightAnswers: any[] = [];
     const wrongAnswers: any[] = [];
     const points = this.quizHistory.reduce((acc: number, round) => {
+      // eslint-disable-next-line no-param-reassign
       acc += round.roundResult === ResultType.WON ? 1 : 0;
       if (round.roundResult === ResultType.WON) {
         rightAnswers.push(round.roundAnswer);

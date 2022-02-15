@@ -1,3 +1,6 @@
+import IWord from '../../../../models/word-model';
+import { INewWordData } from '../types/types';
+
 import AppModel from '../../../AppModel';
 
 const appManager = new AppModel();
@@ -17,19 +20,23 @@ export async function getWordsByGroup(groupId: string) {
   return data;
 }
 
-function generateRoundData(data: []) {
+function generateRoundData(data: Array<IWord>) {
   const maxNumberWords = 20;
   const maxOptionsNumber = 5;
   const optionsData: [] = [];
   const correctWordId: number = generateRandomNumber(0, maxNumberWords);
   const optionsId: number[] = [];
   optionsId.push(correctWordId);
-  const correctWord = data[correctWordId];
+  const correctWord: IWord = data[correctWordId];
+  // @ts-ignore
   optionsData.push(correctWord);
+  // console.log(optionsData);
   while (optionsData.length < maxOptionsNumber) {
-    const idx = generateRandomNumber();
-    const option = data[idx];
+    const idx: number = generateRandomNumber();
+    const option: IWord = data[idx];
+    console.log(data[idx]);
     if (optionsId.includes(idx)) {
+      // eslint-disable-next-line no-continue
       continue;
     }
     optionsData.push(option);
@@ -42,17 +49,19 @@ function generateRoundData(data: []) {
 }
 
 export async function createQuizData(level: string) {
-  const quizData = [];
+  const quizData: Array<IWord> | [] = [];
   const correctWordIdArray: number[] = [];
   const maxQuizRounds = 10;
-  const data = await getWordsByGroup(level);
+  const data: Array<IWord> = await getWordsByGroup(level);
   while (quizData.length < maxQuizRounds) {
-    const newRoundData = generateRoundData(data);
-    const newRoundOptionsData = newRoundData.optionsData;
+    const newRoundData: INewWordData = generateRoundData(data);
+    const newRoundOptionsData: Array<IWord> = newRoundData.optionsData;
 
     if (correctWordIdArray.includes(newRoundData.correctWordId)) {
+      // eslint-disable-next-line no-continue
       continue;
     }
+    // @ts-ignore
     quizData.push(newRoundOptionsData);
     correctWordIdArray.push(newRoundData.correctWordId);
   }
