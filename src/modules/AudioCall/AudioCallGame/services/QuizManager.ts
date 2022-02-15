@@ -17,7 +17,9 @@ export class QuizManager {
 
   currentRoundNumber: number = -1;
 
-  level: string = '0';
+  group: string = '0';
+
+  page: string = 'random';
 
   currentRoundQuestions?: IWord[];
 
@@ -37,21 +39,23 @@ export class QuizManager {
 
   model = new AppModel();
 
-  setDefaultSettings() {
+  setDefaultSettings(group: string, page: string) {
     this.remainingQuestions = 10;
     this.quizHistory = [];
     this.currentRoundNumber = -1;
     this.quizData = [];
     this.currentRoundResult = '';
-    // this.quizScore = 0;
-    // this.maxRoundNumber = 9;
-    // this.isGameFinished = false;
-    this.level = window.location.href.charAt(window.location.href.length - 1);
+    this.quizScore = 0;
+    this.maxRoundNumber = 9;
+    this.isGameFinished = false;
+    this.group =
+      group || window.location.href.charAt(window.location.href.length - 1);
+    this.page = page;
   }
 
-  async startRound() {
-    this.setDefaultSettings();
-    this.quizData = await createQuizData(this.level);
+  async startRound(group: string, page: string) {
+    this.setDefaultSettings(group, page);
+    this.quizData = await createQuizData(this.group, this.page);
     await this.generateRound();
   }
 

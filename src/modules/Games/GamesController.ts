@@ -16,7 +16,7 @@ class GamesController extends Controller {
   bindButton() {
     const buttonGoAudioGame = document.querySelector('#go-audio-game');
     buttonGoAudioGame?.addEventListener('click', () => {
-      document.location = '/#audioCall';
+      document.location = '/#audio-game';
     });
     const buttonGoSprintGame = document.querySelector('#go-sprint-game');
     buttonGoSprintGame?.addEventListener('click', () => {

@@ -9,11 +9,19 @@ function generateRandomNumber(min: number = 0, max: number = 20) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-export async function getWordsByGroup(groupId: string) {
+export async function getWordsByGroup(groupId: string, page: string) {
   const promiseArr: IWord[] = [];
   const maxPageNumber = 29;
-  const randomPageNumber = generateRandomNumber(0, maxPageNumber);
-  promiseArr.push(...(await appManager.getWords(groupId, randomPageNumber)));
+
+  let getWords;
+  if (page === 'random') {
+    const randomPageNumber = generateRandomNumber(0, maxPageNumber);
+    getWords = await appManager.getWords(groupId, randomPageNumber);
+  } else {
+    getWords = await appManager.getWords(groupId, Number(page));
+  }
+
+  promiseArr.push(...getWords);
 
   return promiseArr;
 }
@@ -52,11 +60,14 @@ function generateRoundData(data: IWord[]) {
   };
 }
 
-export async function createQuizData(level: string): Promise<Array<IWord[]>> {
+export async function createQuizData(
+  group: string,
+  page: string
+): Promise<Array<IWord[]>> {
   const quizData: IWord[][] = [];
   const correctWordIdArray: number[] = [];
   const maxQuizRounds = 10;
-  const data: Array<IWord> = await getWordsByGroup(level);
+  const data: Array<IWord> = await getWordsByGroup(group, page);
   while (quizData.length < maxQuizRounds) {
     const newRoundData: INewWordData | never = generateRoundData(data);
     const newRoundOptionsData: IWord[] = newRoundData.optionsData;

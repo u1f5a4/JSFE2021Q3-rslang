@@ -13,9 +13,9 @@ class AudioCallController extends AppController {
     super(view, model);
   }
 
-  async setEvents() {
+  async setEvents(group: string, page: string) {
     // START QUIZ
-    await qm.startRound();
+    await qm.startRound(group, page);
     await this.getQuizElements();
   }
 
@@ -29,11 +29,16 @@ class AudioCallController extends AppController {
   }
 
   async getAudio() {
-    const audio = document.getElementById('round-audio') as HTMLAudioElement;
+    try {
+      const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
-    audio.src = '';
-    audio.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.audio}`;
-    await audio.play();
+      audio.src = '';
+      audio.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.audio}`;
+
+      await audio.play();
+    } catch (error) {
+      // console.log(error);
+    }
   }
 
   async getOptions() {
@@ -98,6 +103,7 @@ class AudioCallController extends AppController {
         nextQuestionBtn.disabled = true;
       }
       this.switchBtnState(false);
+
       const soundImg = document.getElementById('sound-img') as HTMLImageElement;
       soundImg.src = `assets/images/sound.png`;
     });
@@ -121,7 +127,7 @@ class AudioCallController extends AppController {
     }
   }
 
-  bindButtons() {
+  async bindButtons() {
     const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
     const playAudioBtn = document.getElementById(
@@ -166,11 +172,11 @@ class AudioCallController extends AppController {
     gameContainer.classList.toggle('display-none');
   }
 
-  async displayPage() {
+  async displayPage(group: string, page: string) {
     this.view.drawPage();
-    await this.setEvents();
+    await this.setEvents(group, page);
+    await this.bindButtons();
     await this.bindElements();
-    this.bindButtons();
   }
 }
 
