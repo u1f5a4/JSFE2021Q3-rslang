@@ -19,7 +19,7 @@ class AudioCallView extends AppView {
   getHtml() {
     return `
       ${renderHeaderTemplate()} 
-      <main class="${styles.container}">
+      <main class="${styles.wrapper} ${styles.container}">
         ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
         <form class="${styles.form}" id="audio-call-form">
             <div class="${styles.level__list}">

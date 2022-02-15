@@ -4,6 +4,7 @@ import AppModel from '../../AppModel';
 import AudioCallView from './AudioCallGameView';
 import { QuizManager } from './services/QuizManager';
 import IWord from '../../../models/word-model';
+import styles from './style.module.scss';
 
 const qm = new QuizManager();
 
@@ -44,6 +45,9 @@ class AudioCallController extends AppController {
       const btn = document.createElement('button');
       btn.id = <string>option?.id;
       btn.classList.add('quiz-options-btn');
+      btn.classList.add(`${styles['element-font']}`);
+      btn.classList.add(`${styles['shadow-active']}`);
+      btn.classList.add(`${styles['white-button']}`);
       btn.innerText = option?.wordTranslate;
       optionsBox.appendChild(btn);
     });
@@ -72,11 +76,9 @@ class AudioCallController extends AppController {
       // eslint-disable-next-line no-param-reassign
       btn.disabled = true;
       if (btn.id === qm.currentRoundAnswer.id) {
-        // eslint-disable-next-line no-param-reassign
-        btn.style.backgroundColor = '#278D9F';
+        btn.classList.toggle(`${styles['white-button__success']}`);
       } else {
-        // eslint-disable-next-line no-param-reassign
-        btn.style.backgroundColor = 'red';
+        btn.classList.toggle(`${styles['white-button__wrong']}`);
       }
     });
     const soundImg = document.getElementById('sound-img') as HTMLImageElement;
@@ -87,6 +89,7 @@ class AudioCallController extends AppController {
     const nextQuestionBtn = document.getElementById(
       'next-question'
     ) as HTMLButtonElement;
+
     nextQuestionBtn.addEventListener('click', async () => {
       await qm.generateRound();
       await this.getQuizElements();
@@ -103,6 +106,7 @@ class AudioCallController extends AppController {
     const nextQuestionBtn = document.getElementById(
       'next-question'
     ) as HTMLButtonElement;
+
     const showAnswerBtn = document.getElementById(
       'show-answer'
     ) as HTMLButtonElement;
@@ -118,6 +122,7 @@ class AudioCallController extends AppController {
 
   bindButtons() {
     const audio = document.getElementById('round-audio') as HTMLAudioElement;
+
     const playAudioBtn = document.getElementById(
       'play-game-audio'
     ) as HTMLButtonElement;
@@ -155,6 +160,7 @@ class AudioCallController extends AppController {
     ) as HTMLDivElement;
 
     resultContainer.classList.toggle('display-none');
+    // resultContainer.classList.add(`${styles['result-container']}`);
 
     gameContainer.classList.toggle('display-none');
   }
