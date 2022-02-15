@@ -19,7 +19,8 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
-    "class-methods-use-this": "off",
+    'class-methods-use-this': 'off',
+    ' no-continue': 'off',
   },
   ignorePatterns: ['.eslintrc.js', 'webpack.config.js'],
 };

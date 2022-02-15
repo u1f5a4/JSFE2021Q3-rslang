@@ -116,6 +116,7 @@ class AuthController {
         } else {
           this.errorBlock = new ErrorContainer(
             this.view.formContainer.formHeader.node,
+            [{ message: 'string', path: ['string'] }],
             err
           );
         }
