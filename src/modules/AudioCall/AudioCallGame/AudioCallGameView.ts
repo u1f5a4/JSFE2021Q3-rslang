@@ -5,12 +5,12 @@ import renderHeaderTemplate from '../../../components/Header/_renderHeaderTempla
 import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
 
 class AudioCallGameView extends AppView {
-  titlePage = 'Учебник английского с карточками и мини-играми';
+  // titlePage = '';
 
-  subtitlePage = `Простой и понятный интерфейс нашего приложения позволит сконцентрироваться на изучении и достигнуть результата наблюдая за своим прогрессом`;
+  // subtitlePage = ``;
 
   drawPage() {
-    document.title = this.titlePage;
+    // document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 

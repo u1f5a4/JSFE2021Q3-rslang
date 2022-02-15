@@ -12,7 +12,7 @@ class AudioCallView extends AppView {
   subtitlePage = `В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего слова`;
 
   drawPage() {
-    document.title = this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 
