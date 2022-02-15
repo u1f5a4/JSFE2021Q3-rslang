@@ -11,11 +11,11 @@ import HomeView from './modules/Home/HomeView';
 import AuthModel from './modules/Auth/AuthModel';
 import GamesController from './modules/Games/GamesController';
 import GamesView from './modules/Games/GamesView';
+import { BEARER } from './core/constants/server-constants';
 
 const games = new GamesController(new GamesView(), new AppModel());
 
 const auth = new AuthController(new AuthView(), new AuthModel());
-auth.AppModel = new AppModel();
 
 const book = new BookController(new BookView(), new AppModel());
 const bookCard = new BookCardController(new BookCardView(), new AppModel());
@@ -43,3 +43,4 @@ window.addEventListener('load', () => {
   if (!hash) home.displayPage();
   router.go();
 });
+

@@ -6,8 +6,6 @@ import FormHeader from './components/form-header';
 import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
 import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
 
-
-
 class AuthView extends View {
   public onClick!: () => void;
 
@@ -21,18 +19,19 @@ class AuthView extends View {
 
   subtitlePage =
     'Получай дополнительные возможности приложения для более успешного изучения слов';
+
   titleBlock: Control<HTMLElement>;
 
   constructor() {
     super('div', 'auth');
     this.node.innerHTML = `${renderHeaderTemplate()}`;
-    this.imageBlock = new Control(
-      this.node,
+    this.imageBlock = new Control(this.node, 'div', 'auth__image', '');
+    this.authContainer = new Control(
+      this.imageBlock.node,
       'div',
-      'auth__image',
+      'auth__container',
       ''
     );
-    this.authContainer = new Control(this.imageBlock.node, 'div', 'auth__container', '');
     this.titleBlock = new Control(
       this.authContainer.node,
       'div',

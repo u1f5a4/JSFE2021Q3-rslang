@@ -7,7 +7,6 @@ import { emojiList } from '../AppModel';
 import styles from './BookStyle.module.scss';
 import '../../scss/_main.scss';
 
-
 class BookView extends AppView {
   isUser?: boolean;
 

@@ -5,10 +5,14 @@ export interface IBearer {
 }
 
 export const BEARER: IBearer = {
-  bearer: `Bearer ${JSON.parse(localStorage.getItem('user')!)}`,
+  bearer: `Bearer ${
+    JSON.parse(localStorage.getItem('rslang-localStorage') as string)
+      ? JSON.parse(localStorage.getItem('rslang-localStorage')!).token
+      : null
+  }`,
 };
 
 export const STATE = {
-  auth: JSON.parse(localStorage.getItem('user')!),
-  userName: JSON.parse(localStorage.getItem('user')!),
+  auth: JSON.parse(localStorage.getItem('rslang-localStorage')!).auth,
+  userName: JSON.parse(localStorage.getItem('rslang-localStorage')!).auth,
 };
