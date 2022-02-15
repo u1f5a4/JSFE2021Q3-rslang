@@ -10,14 +10,12 @@ function generateRandomNumber(min: number = 0, max: number = 20) {
 }
 
 export async function getWordsByGroup(groupId: string) {
-  const promiseArr: any[] = [];
+  const promiseArr: IWord[] = [];
   const maxPageNumber = 29;
   const randomPageNumber = generateRandomNumber(0, maxPageNumber);
   promiseArr.push(...(await appManager.getWords(groupId, randomPageNumber)));
 
-  const data: any = promiseArr;
-
-  return data;
+  return promiseArr;
 }
 
 function generateRoundData(data: Array<IWord>) {
@@ -29,15 +27,14 @@ function generateRoundData(data: Array<IWord>) {
   optionsId.push(correctWordId);
   const correctWord: IWord = data[correctWordId];
   optionsData.push(correctWord);
-  // console.log(optionsData);
   while (optionsData.length < maxOptionsNumber) {
     const idx: number = generateRandomNumber();
     const option: IWord = data[idx];
-    // console.log(data[idx]);
     if (optionsId.includes(idx)) {
       // eslint-disable-next-line no-continue
       continue;
     }
+
     optionsData.push(option);
     optionsId.push(idx);
   }
@@ -47,8 +44,8 @@ function generateRoundData(data: Array<IWord>) {
   };
 }
 
-export async function createQuizData(level: string) {
-  const quizData: Array<IWord> | [] = [];
+export async function createQuizData(level: string): Promise<Array<IWord[]>> {
+  const quizData: Promise<Array<IWord[]>> | [] = [];
   const correctWordIdArray: number[] = [];
   const maxQuizRounds = 10;
   const data: Array<IWord> = await getWordsByGroup(level);
@@ -67,7 +64,7 @@ export async function createQuizData(level: string) {
   return quizData;
 }
 
-export const getShuffledArray: (arr: any[]) => any = (arr) => {
+export const getShuffledArray: (arr: IWord[]) => IWord[] = (arr): IWord[] => {
   if (arr.length === 1) {
     return arr;
   }

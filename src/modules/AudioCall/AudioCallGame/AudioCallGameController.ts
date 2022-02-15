@@ -3,6 +3,7 @@ import AppController from '../../../core/Controller';
 import AppModel from '../../AppModel';
 import AudioCallView from './AudioCallGameView';
 import { QuizManager } from './services/QuizManager';
+import IWord from '../../../models/word-model';
 
 const qm = new QuizManager();
 
@@ -40,9 +41,9 @@ class AudioCallController extends AppController {
     ) as HTMLElement;
     optionsBox.innerHTML = '';
     // eslint-disable-next-line array-callback-return
-    await qm.currentRoundOptions.map((option: { [x: string]: string }) => {
+    qm.currentRoundOptions.map((option: IWord) => {
       const btn = document.createElement('button');
-      btn.id = option?.id;
+      btn.id = <string>option?.id;
       btn.classList.add('quiz-options-btn');
       btn.innerText = option?.wordTranslate;
       optionsBox.appendChild(btn);

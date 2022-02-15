@@ -1,5 +1,6 @@
 import { createQuizData, getShuffledArray } from './utils';
-// import IWord from '../../../../models/word-model';
+import IWord from '../../../../models/word-model';
+import { IQuizHistory } from '../types/types';
 
 export const ResultType = {
   WON: 'WON',
@@ -9,21 +10,21 @@ export const ResultType = {
 export class QuizManager {
   remainingQuestions: number = 10;
 
-  quizHistory: any[] = [];
+  quizHistory: Array<IQuizHistory> = [];
 
-  quizData: any | undefined;
+  quizData!: Array<IWord[]>;
 
   currentRoundNumber: number = -1;
 
   level: string = '0';
 
-  currentRoundQuestions: any;
+  currentRoundQuestions!: IWord[];
 
-  currentRoundAnswer: any;
+  currentRoundAnswer!: IWord;
 
-  currentRoundOptions: any;
+  currentRoundOptions!: IWord[];
 
-  currentRoundGuess: any;
+  currentRoundGuess!: string;
 
   currentRoundResult: string = '';
 
@@ -49,7 +50,6 @@ export class QuizManager {
     this.setDefaultSettings();
     this.quizData = await createQuizData(this.level);
     await this.generateRound();
-    // console.log(this.quizData);
   }
 
   async generateRound() {
@@ -59,15 +59,13 @@ export class QuizManager {
         this.currentRoundNumber
       ];
       this.currentRoundAnswer = await this.currentRoundQuestions[0];
-      this.currentRoundOptions = await getShuffledArray(
-        this.currentRoundQuestions
-      );
+      this.currentRoundOptions = getShuffledArray(this.currentRoundQuestions);
     } else {
       this.isGameFinished = true;
     }
   }
 
-  guessAnswer(answerId: any) {
+  guessAnswer(answerId: string) {
     this.currentRoundGuess = answerId;
     this.currentRoundResult =
       this.currentRoundGuess === this.currentRoundAnswer?.id
@@ -80,12 +78,11 @@ export class QuizManager {
       roundNumber: this.currentRoundNumber,
       userGuess: this.currentRoundGuess,
     });
-    // console.log(this.quizHistory);
   }
 
   getQuizResult() {
-    const rightAnswers: any[] = [];
-    const wrongAnswers: any[] = [];
+    const rightAnswers: IWord[] = [];
+    const wrongAnswers: IWord[] = [];
     const points = this.quizHistory.reduce((acc: number, round) => {
       // eslint-disable-next-line no-param-reassign
       acc += round.roundResult === ResultType.WON ? 1 : 0;
