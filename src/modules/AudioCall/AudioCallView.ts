@@ -7,9 +7,9 @@ import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTem
 import levelData from './level-data';
 
 class AudioCallView extends AppView {
-  titlePage = 'Учебник английского с карточками и мини-играми';
+  titlePage = 'Аудиовызов';
 
-  subtitlePage = `Простой и понятный интерфейс нашего приложения позволит сконцентрироваться на изучении и достигнуть результата наблюдая за своим прогрессом`;
+  subtitlePage = `В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего слова`;
 
   drawPage() {
     document.title = this.titlePage;
@@ -20,10 +20,7 @@ class AudioCallView extends AppView {
     return `
       ${renderHeaderTemplate()} 
       <main class="${styles.container}">
-        ${renderPageDescTemplate(
-          'Аудиовызов',
-          'В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего слова'
-        )}
+        ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
         <form class="${styles.form}" id="audio-call-form">
             <div class="${styles.level__list}">
                 ${levelData
@@ -32,8 +29,8 @@ class AudioCallView extends AppView {
                       `              
                     <div class="${styles.level__item}">
                         <input type="radio" id="${level.levelId}" name="audio-game" class="${styles.level__input}" value="${level.levelValue}" >
-                        <label class="${styles.level__label}" for="${level.levelId}">
-                            <span class="level__title">${level.levelTitle}</span>
+                        <label class="${styles.level__label} ${styles['body-font']}" for="${level.levelId}">
+                            <span class=" level__title">${level.levelTitle}</span>
                             <span class="level__name">${level.levelName}</span>
                         </label>
                     </div>
