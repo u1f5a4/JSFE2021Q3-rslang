@@ -1,5 +1,7 @@
 import Control from '../../../core/BaseElement';
 
+type ErrorMessage = { message: string; path: string[] };
+
 export default class ErrorContainer extends Control {
   public textList: Control<HTMLElement>;
 
@@ -9,7 +11,7 @@ export default class ErrorContainer extends Control {
 
   constructor(
     parentNode: HTMLElement,
-    public messageErrors: string[],
+    public messageErrors: ErrorMessage[],
     public messageText?: string
   ) {
     super(parentNode, 'div', 'auth__error', '');
@@ -27,14 +29,13 @@ export default class ErrorContainer extends Control {
         `${this.messageText}`
       );
     } else {
-      Array.from(this.messageErrors).map((message) => {
+      Array.from(this.messageErrors).forEach((message: ErrorMessage) => {
         this.errorItem = new Control(
           this.textList.node,
           'li',
           'error__item',
-          `${message}`
+          `${message.message}`
         );
-        return false;
       });
     }
   }
