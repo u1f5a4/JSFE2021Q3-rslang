@@ -1,22 +1,26 @@
 .auth {
   &__container {
     display: flex;
+    max-width: 1140px;
+    margin: 0 auto;
   }
 
   &__image {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    width: 50%;
-    min-height: 90vh;
-    padding: 0 60px;
     background-image: url(../../assets/images/auth-bg.png);
-    background-position: center;
-    background-size: cover;
+    background-position: left;
+    background-size: 50%;
     background-repeat: no-repeat;
   }
 
   &__title {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    min-height: 90vh;
+    width: 60%;
+  }
+
+  .title {
     display: flex;
     flex-direction: column;
     color: $color-black;
@@ -24,29 +28,8 @@
     width: 50%;
 
     span {
-      color: $color-two; 
+      color: $color-two;
     }
-    
-    &__container {
-        display: flex;
-        max-width: 1140px;
-        margin: 0 auto;
-    }
-
-    &__image {
-       
-        background-image: url(../../assets/images/auth-bg.png);
-        background-position: left;
-        background-size: 50%;
-        background-repeat: no-repeat;
-    }
-
-    &__title {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        min-height: 90vh;
-   
   }
 
   &__error {
@@ -66,17 +49,6 @@
       background-image: url(../../assets/svg/attention.svg);
       background-position: center;
       background-repeat: no-repeat;
-
-   .title {
-       display: flex;
-       flex-direction: column;
-       color: $color-black;
-       font-weight: 600;
-        width: 50%;
-
-        span {
-            color: $color-two;
-        }
     }
 
     .error__list {
@@ -88,9 +60,9 @@
 }
 
 .form__container {
-    width: 45%;
-    position: relative;
-    padding: 60px 0 0 40px;
+  width: 45%;
+  position: relative;
+  padding: 60px 0 0 40px;
 }
 
 .form__header {
