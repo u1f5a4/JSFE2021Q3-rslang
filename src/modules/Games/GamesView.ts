@@ -1,4 +1,3 @@
-
 import View from '../../core/View';
 import renderFooterTemplate from '../../сomponents/Footer/_renderFooterTemplate';
 import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
