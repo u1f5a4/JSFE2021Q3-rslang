@@ -26,7 +26,7 @@ export async function getWordsByGroupAndPage(groupId: string, page: string) {
   return promiseArr;
 }
 
-function generateRoundData(data: Array<IWord>) {
+function generateRoundData(data: IWord[]) {
   const maxNumberWords = 20;
   const maxOptionsNumber = 5;
   const optionsData: IWord[] = [];
@@ -53,7 +53,7 @@ function generateRoundData(data: Array<IWord>) {
 }
 
 export async function createQuizData(level: string): Promise<Array<IWord[]>> {
-  const quizData: Array<IWord[]> | never = [];
+  const quizData: IWord[][] = [];
   const correctWordIdArray: number[] = [];
   const maxQuizRounds = 10;
   const data: Array<IWord> = await getWordsByGroup(level);

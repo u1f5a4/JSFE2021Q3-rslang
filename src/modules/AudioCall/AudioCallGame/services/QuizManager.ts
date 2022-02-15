@@ -1,6 +1,7 @@
 import { createQuizData, getShuffledArray } from './utils';
 import IWord from '../../../../models/word-model';
 import { IQuizHistory } from '../types/types';
+import AppModel from '../../../AppModel';
 
 export const ResultType = {
   WON: 'WON',
@@ -12,13 +13,13 @@ export class QuizManager {
 
   quizHistory: Array<IQuizHistory> = [];
 
-  quizData!: Array<IWord[]>;
+  quizData!: IWord[][];
 
   currentRoundNumber: number = -1;
 
   level: string = '0';
 
-  currentRoundQuestions!: IWord[];
+  currentRoundQuestions?: IWord[];
 
   currentRoundAnswer!: IWord;
 
@@ -34,15 +35,17 @@ export class QuizManager {
 
   isGameFinished: boolean = false;
 
+  model = new AppModel();
+
   setDefaultSettings() {
     this.remainingQuestions = 10;
     this.quizHistory = [];
     this.currentRoundNumber = -1;
     this.quizData = [];
     this.currentRoundResult = '';
-    this.quizScore = 0;
-    this.maxRoundNumber = 9;
-    this.isGameFinished = false;
+    // this.quizScore = 0;
+    // this.maxRoundNumber = 9;
+    // this.isGameFinished = false;
     this.level = window.location.href.charAt(window.location.href.length - 1);
   }
 
@@ -55,22 +58,28 @@ export class QuizManager {
   async generateRound() {
     if (this.currentRoundNumber !== this.maxRoundNumber) {
       this.currentRoundNumber += 1;
-      this.currentRoundQuestions = await this.quizData?.[
-        this.currentRoundNumber
-      ];
-      this.currentRoundAnswer = await this.currentRoundQuestions[0];
+      this.currentRoundQuestions = this.quizData?.[this.currentRoundNumber];
+      // eslint-disable-next-line prefer-destructuring
+      this.currentRoundAnswer = this.currentRoundQuestions[0];
       this.currentRoundOptions = getShuffledArray(this.currentRoundQuestions);
     } else {
       this.isGameFinished = true;
     }
   }
 
-  guessAnswer(answerId: string) {
-    this.currentRoundGuess = answerId;
-    this.currentRoundResult =
-      this.currentRoundGuess === this.currentRoundAnswer?.id
-        ? ResultType.WON
-        : ResultType.LOST;
+  async guessAnswer(wordId: string) {
+    this.currentRoundGuess = wordId;
+    const wordIdRightWord = this.currentRoundAnswer?.id;
+    if (this.currentRoundGuess === wordIdRightWord) {
+      if (this.model.isUser()) {
+        const word = await this.model.getWord(this.currentRoundGuess);
+        this.model.rightWord(word);
+      }
+      this.currentRoundResult = ResultType.WON;
+    } else {
+      this.currentRoundResult = ResultType.LOST;
+    }
+
     this.quizHistory.push({
       roundOptions: this.currentRoundOptions,
       roundAnswer: this.currentRoundAnswer,
