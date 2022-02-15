@@ -1,9 +1,10 @@
 import './AuthStyle.scss';
 import View from '../../core/View-auth';
 import Control from '../../core/BaseElement';
-import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
+
 import FormHeader from './components/form-header';
-import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
+import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
 
 class AuthView extends View {
   public onClick!: () => void;
@@ -14,22 +15,30 @@ class AuthView extends View {
 
   public formContainer: FormHeader;
 
-  titlePage = 'Присоединяйся!';
+  titlePage = 'Добро пожаловать';
 
   subtitlePage =
     'Получай дополнительные возможности приложения для более успешного изучения слов';
 
+  titleBlock: Control<HTMLElement>;
+
   constructor() {
     super('div', 'auth');
     this.node.innerHTML = `${renderHeaderTemplate()}`;
-    this.authContainer = new Control(this.node, 'div', 'auth__container', '');
-    this.imageBlock = new Control(
-      this.authContainer.node,
+    this.imageBlock = new Control(this.node, 'div', 'auth__image', '');
+    this.authContainer = new Control(
+      this.imageBlock.node,
       'div',
-      'auth__image',
+      'auth__container',
       ''
     );
-    this.imageBlock.node.innerHTML = `${renderPageDescTemplate(
+    this.titleBlock = new Control(
+      this.authContainer.node,
+      'div',
+      'auth__title',
+      ''
+    );
+    this.titleBlock.node.innerHTML = `${renderPageDescTemplate(
       this.titlePage,
       this.subtitlePage
     )}`;

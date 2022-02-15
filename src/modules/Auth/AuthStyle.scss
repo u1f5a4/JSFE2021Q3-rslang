@@ -24,8 +24,29 @@
     width: 50%;
 
     span {
-      color: $color-two;
+      color: $color-two; 
     }
+    
+    &__container {
+        display: flex;
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+
+    &__image {
+       
+        background-image: url(../../assets/images/auth-bg.png);
+        background-position: left;
+        background-size: 50%;
+        background-repeat: no-repeat;
+    }
+
+    &__title {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        min-height: 90vh;
+   
   }
 
   &__error {
@@ -45,6 +66,17 @@
       background-image: url(../../assets/svg/attention.svg);
       background-position: center;
       background-repeat: no-repeat;
+
+   .title {
+       display: flex;
+       flex-direction: column;
+       color: $color-black;
+       font-weight: 600;
+        width: 50%;
+
+        span {
+            color: $color-two;
+        }
     }
 
     .error__list {
@@ -56,10 +88,9 @@
 }
 
 .form__container {
-  width: 30%;
-  position: relative;
-  padding: 0 40px;
-  margin: 70px auto auto;
+    width: 45%;
+    position: relative;
+    padding: 60px 0 0 40px;
 }
 
 .form__header {

@@ -32,7 +32,6 @@ const audioCallGame = new AudioCallGameController(
 );
 
 const home = new HomeController(new HomeView(), new AppModel());
-home.displayPage();
 
 const router = new Router();
 router.init();
@@ -55,3 +54,9 @@ router.add('audio-game/3', () => audioCallGame.displayPage());
 router.add('audio-game/4', () => audioCallGame.displayPage());
 router.add('audio-game/5', () => audioCallGame.displayPage());
 router.add('games', () => games.displayPage());
+
+window.addEventListener('load', () => {
+  const { hash } = window.location;
+  if (!hash) home.displayPage();
+  router.go();
+});

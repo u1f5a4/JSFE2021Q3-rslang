@@ -1,7 +1,7 @@
-import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 import { BEARER, STATE } from '../../core/constants/server-constants';
 import { AuthResponse } from '../../models/response/AuthResponse';
 import { IUser } from '../../models/user-model';
+import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
 // eslint-disable-next-line import/no-cycle
 import AppModel from '../AppModel';
 import AuthModel from './AuthModel';
@@ -32,6 +32,7 @@ class AuthController {
     if (loginBtn) {
       loginBtn.disabled = true;
     }
+    document.title = `RS Lang — Добро пожаловать`;
   }
 
   private async registrationUser(elem: SignUpForm): Promise<void> {

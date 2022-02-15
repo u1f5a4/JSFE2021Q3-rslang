@@ -1,8 +1,8 @@
-import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
-import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
-import renderPageDescTemplate from '../../../components/PageDesc/_renderPageDescTemplate';
 import AppView from '../../../core/View';
 import IWord from '../../../models/word-model';
+import renderFooterTemplate from '../../../сomponents/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../../сomponents/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../../сomponents/PageDesc/_renderPageDescTemplate';
 import { emojiList } from '../../AppModel';
 import css from './BookCardStyle.module.scss';
 
@@ -17,6 +17,8 @@ class BookCardView extends AppView {
 
   isUser?: boolean;
 
+  titlePage = ``;
+
   subtitlePage = `Нажимай на карточку и смотри перевод, добавляй
    в список сложных или лёгких слов, смотри изображение и слушай произношение`;
 
@@ -26,10 +28,20 @@ class BookCardView extends AppView {
 
   countDifficultWordsOnPage?: number;
 
+  typePage?: 'easy' | 'difficult' | 'mixed';
+
   async drawCardPage(word: IWord) {
     this.word = word;
-    if (this.group !== 'difficult') this.body!.innerHTML = this.getHtml();
-    else this.body!.innerHTML = this.getHtmlDifficult();
+    if (this.group !== 'difficult') {
+      this.body!.innerHTML = this.getHtml();
+      this.titlePage = `Группа #${Number(this.group) + 1}`;
+      this.isPage();
+    } else {
+      this.body!.innerHTML = this.getHtmlDifficult();
+      this.titlePage = `Сложные слова`;
+    }
+
+    document.title = this.titlemain + this.titlePage;
   }
 
   isState() {
@@ -66,10 +78,20 @@ class BookCardView extends AppView {
     card.style.borderColor = 'none';
   }
 
+  isPage() {
+    const pag = document.querySelector('#pag') as HTMLDivElement;
+    if (this.typePage === 'easy') {
+      pag?.classList.add(`${css['page-pagination__easy']}`);
+    }
+    if (this.typePage === 'difficult') {
+      pag?.classList.add(`${css['page-pagination__difficulty']}`);
+    }
+  }
+
   getHtml(): string {
     const ZeroCountCompensation = 1;
     return `${renderHeaderTemplate()}
-          <div class="${css.content} ${css['book-card__page']}">
+          <div class="${css.content} ${css['book-card__page']} ${css.wrapper}">
 
             ${renderPageDescTemplate(
               `${
@@ -195,10 +217,11 @@ class BookCardView extends AppView {
                                ${css['shadow-active']}
                                " id="prev-page"><</button>
 
-                <button class="${css['element-font']}
+                <button id="pag" class="${css['element-font']}
                                ${css['page-pagination__text']}
                                ${css['page-pagination__button']}">
-                  ${Number(this.page) + ZeroCountCompensation} / 30
+                  <b>${Number(this.page) + ZeroCountCompensation}</b>
+                   / 30 
                 </button>
 
                 <button class="${css['element-font']}
@@ -256,7 +279,6 @@ class BookCardView extends AppView {
 
               <div class="${css['book-card__container']}">
                 <div class="${css['book-card__card']} 
-                            ${this.isState()}
                             " id="flip">
 
                   <div class="${css['book-card__front']} 
@@ -296,16 +318,12 @@ class BookCardView extends AppView {
                                 ${css['book-card__text']} ">
                         ${this.word?.textExampleTranslate}
                       </p>
-                      ${(() => {
-                        if (this.isUser)
-                          return `<div class="${css['book-card__buttons-word']}">
+                     <div class="${css['book-card__buttons-word']}">
                         <button id="clear-word" class="${css.btn}
                         ${css['book-card__button-easy-word']}">
-                          убрать из списка сложных слов
+                          убрать из сложных слов
                         </button>
-                      </div>`;
-                        return '';
-                      })()}
+                      </div>
                       
                     </div>
                     <img class="${css['book-card__img']}" 

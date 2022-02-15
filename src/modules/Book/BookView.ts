@@ -1,10 +1,11 @@
-import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
-import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
-import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
+import renderFooterTemplate from '../../сomponents/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
 
 import AppView from '../../core/View';
 import { emojiList } from '../AppModel';
 import styles from './BookStyle.module.scss';
+import '../../scss/_main.scss';
 
 class BookView extends AppView {
   isUser?: boolean;
@@ -15,14 +16,14 @@ class BookView extends AppView {
   в каждой группе по тридцать страниц, а на каждой странице по двадцать слов`;
 
   drawPage() {
-    document.title = this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 
   getHtml(): string {
     return `
           ${renderHeaderTemplate()}
-            <div class="${styles.content}">
+            <div class="${styles.content} ${styles.wrapper}">
             ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
               <div class="${styles['book-cards']} app">
               ${(() => {

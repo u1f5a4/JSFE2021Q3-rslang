@@ -1,8 +1,8 @@
-import renderHeaderTemplate from '../components/Header/_renderHeaderTemplate';
 import { STATE } from '../core/constants/server-constants';
 import AppView from '../core/View';
 // eslint-disable-next-line import/no-cycle
 import IWord from '../models/word-model';
+import renderHeaderTemplate from '../сomponents/Header/_renderHeaderTemplate';
 // eslint-disable-next-line import/no-cycle
 import AuthController from './Auth/AuthController';
 import AuthModel from './Auth/AuthModel';
@@ -20,7 +20,11 @@ const emojiList = [
 
 type UserWord = {
   difficulty: string;
-  optional: { answers: string; difficulty: boolean; easy: boolean };
+  optional: {
+    answers: string;
+    difficulty: boolean;
+    easy: boolean;
+  };
   id?: string;
   wordId?: string;
 };
@@ -35,15 +39,75 @@ class AppModel {
 
   // === Работа со словами при авторизации === //
 
+  async rightWord(iWord: IWord) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { _id, word } = iWord;
+
+    try {
+      const userWord = await this.getUserWord(String(_id));
+      const { answers, difficulty, easy } = userWord.optional;
+      const newAnswers = Number(answers) + 1;
+      if (easy) {
+        return;
+      }
+      if (difficulty) {
+        const correctAnswersToMoveWord = 5;
+        if (newAnswers === correctAnswersToMoveWord)
+          this.setWordEasy(String(_id), word);
+        else
+          this.updateUserWord(
+            String(_id),
+            word,
+            difficulty,
+            easy,
+            String(newAnswers)
+          );
+      }
+      if (!easy && !difficulty) {
+        const correctAnswersToMoveWord = 3;
+        if (newAnswers === correctAnswersToMoveWord)
+          this.setWordEasy(String(_id), word);
+        else
+          this.updateUserWord(
+            String(_id),
+            word,
+            difficulty,
+            easy,
+            String(newAnswers)
+          );
+      }
+    } catch (error) {
+      this.createUserWord(String(_id), word);
+      this.rightWord(iWord);
+    }
+  }
+
+  async getUserWord(wordId: string): Promise<UserWord> {
+    const { userId, token } = this.getSetting('auth');
+
+    const response = await fetch(
+      `${this.domain}/users/${userId}/words/${wordId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      }
+    );
+
+    return response.json();
+  }
+
   async getAllDifficultWords(page: number): Promise<IWord[]> {
     const userWords = await this.getAllUserWords();
     const filtered = userWords.filter((elem) => elem.optional.difficulty);
     const wordIdList = filtered.map((elem) => elem.wordId);
 
-    const promiseArray: Promise<any>[] = [];
-    wordIdList.forEach((wordId) => {
-      promiseArray.push(this.getWord(String(wordId)));
-    });
+    const promiseArray: Promise<IWord>[] = [];
+    wordIdList.forEach((wordId) =>
+      promiseArray.push(this.getWord(String(wordId)))
+    );
     const commonWords = await Promise.all(promiseArray);
     const result = commonWords.map((elem, index) =>
       Object.assign(elem, { userWord: filtered[index] })
@@ -63,46 +127,57 @@ class AppModel {
   async getCountAllDifficultWords(): Promise<number> {
     const userWords = await this.getAllUserWords();
     const filtered = userWords.filter((elem) => elem.optional.difficulty);
-    return filtered.length;
+
+    const ZeroCountCompensation = 1;
+    const wordsOnPage = 20;
+    return Math.floor(
+      Number(Number(filtered.length) / (wordsOnPage + ZeroCountCompensation))
+    );
   }
 
   async setWordDifficult(wordId: string, word: string): Promise<void> {
     try {
-      await this.updateUserWord(wordId, word, '0', true, false);
+      await this.updateUserWord(wordId, word, true, false);
     } catch {
       await this.createUserWord(wordId, word);
-      await this.updateUserWord(wordId, word, '0', true, false);
+      await this.updateUserWord(wordId, word, true, false);
     }
   }
 
   async setWordEasy(wordId: string, word: string): Promise<void> {
     try {
-      await this.updateUserWord(wordId, word, '0', false, true);
+      await this.updateUserWord(wordId, word, false, true);
     } catch {
       await this.createUserWord(wordId, word);
-      await this.updateUserWord(wordId, word, '0', false, true);
+      await this.updateUserWord(wordId, word, false, true);
     }
   }
 
   async getTwentyUserWords(group: string, page: number): Promise<IWord[]> {
-    const one = (await this.getUserWords(group, page))[0].paginatedResults;
+    const one = (await this.getUserWords(group, page * 2))[0].paginatedResults;
 
-    const two = (await this.getUserWords(group, page + 1))[0].paginatedResults;
+    const two = (await this.getUserWords(group, page * 2 + 1))[0]
+      .paginatedResults;
 
     const array = one.concat(two);
 
     return array;
   }
 
-  async deleteUserWord(wordId: string): Promise<void> {
+  async deleteUserWord(wordId: string) {
     const { userId, token } = this.getSetting('auth');
 
-    await fetch(`${this.domain}/users/${userId}/words/${wordId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${this.domain}/users/${userId}/words/${wordId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.json();
   }
 
   private async getUserWords(group: string, page: number): Promise<UserWord2> {
@@ -128,7 +203,7 @@ class AppModel {
     const data = {
       difficulty: word,
       optional: {
-        correctAnswerCounter: '0',
+        answers: '0',
         difficulty: false,
         easy: false,
       },
@@ -148,9 +223,9 @@ class AppModel {
   private async updateUserWord(
     wordId: string,
     word: string,
-    answers: string,
     difficulty: boolean,
-    easy: boolean
+    easy: boolean,
+    answers = '0'
   ): Promise<UserWord> {
     const { userId, token } = this.getSetting('auth');
 
@@ -177,7 +252,6 @@ class AppModel {
     );
 
     const content = await response.json();
-    // console.log(content);
     return content;
   }
 

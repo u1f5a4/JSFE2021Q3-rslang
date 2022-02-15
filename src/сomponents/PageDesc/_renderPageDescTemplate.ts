@@ -9,6 +9,7 @@ function renderPageDescTemplate(title: string, text: string): string {
     ">${title}</h2>
     <p class="
         ${styles['title-page__text']}
+        ${styles.auth__text}
         ${styles['text-font']}
     ">${text}</p>
     </div>
