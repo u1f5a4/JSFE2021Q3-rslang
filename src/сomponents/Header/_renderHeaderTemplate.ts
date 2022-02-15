@@ -4,7 +4,7 @@ import styles from './headerStyle.module.scss';
 export function renderAuthUser(): string {
   if (STATE.auth) {
     return `
-        <button id="logout-btn" class="${styles.header__button} ${styles.btn}">Выйти из <b>&nbsp;${STATE.userName.name}</b></button>`;
+        <button id="logout-btn" class="${styles.header__button} ${styles.btn}">Выйти из <b>&nbsp;${STATE.userName.auth.name}</b></button>`;
   }
   return ` <a href="#auth" class="${styles.menu__link}"><button id="login" class="${styles.header__button} ${styles.btn}">
         Войти | Регистрация

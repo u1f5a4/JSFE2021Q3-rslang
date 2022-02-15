@@ -13,6 +13,6 @@ export const BEARER: IBearer = {
 };
 
 export const STATE = {
-  auth: JSON.parse(localStorage.getItem('rslang-localStorage')!).auth,
-  userName: JSON.parse(localStorage.getItem('rslang-localStorage')!).auth,
+  auth: JSON.parse(localStorage.getItem('rslang-localStorage')!),
+  userName: JSON.parse(localStorage.getItem('rslang-localStorage')!),
 };
