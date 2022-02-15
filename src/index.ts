@@ -8,18 +8,24 @@ import BookCardView from './modules/Book/Card/BookCardView';
 import Router from './modules/Router';
 import HomeController from './modules/Home/HomeController';
 import HomeView from './modules/Home/HomeView';
+import AuthModel from './modules/Auth/AuthModel';
+import GamesController from './modules/Games/GamesController';
+import GamesView from './modules/Games/GamesView';
 
-const auth = new AuthController(new AuthView(), new AppModel());
+const games = new GamesController(new GamesView(), new AppModel());
+
+const auth = new AuthController(new AuthView(), new AuthModel());
+auth.AppModel = new AppModel();
 
 const book = new BookController(new BookView(), new AppModel());
 const bookCard = new BookCardController(new BookCardView(), new AppModel());
 book.card = bookCard;
 
 const home = new HomeController(new HomeView(), new AppModel());
-home.displayPage();
 
 const router = new Router();
 router.init();
+
 router.add('', () => home.displayPage());
 router.add('book', () => book.displayPage());
 router.add('auth', () => auth.displayPage());
@@ -30,3 +36,10 @@ router.add('book/4', () => bookCard.displayPage('3'));
 router.add('book/5', () => bookCard.displayPage('4'));
 router.add('book/6', () => bookCard.displayPage('5'));
 router.add('book/difficult', () => bookCard.displayPage('difficult'));
+router.add('games', () => games.displayPage());
+
+window.addEventListener('load', () => {
+  const { hash } = window.location;
+  if (!hash) home.displayPage();
+  router.go();
+});

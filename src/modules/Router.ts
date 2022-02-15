@@ -1,7 +1,5 @@
 import AppView from '../core/View';
 
-// TODO: посмотреть как можно сделать рабочими стрелочки в браузере
-
 type Path = {
   path: string;
   handler: () => void;
@@ -34,6 +32,19 @@ class Router {
 
       currentRoute.handler();
     };
+  }
+
+  go() {
+    const currentRoutName = window.location.hash.slice(1);
+
+    const currentRoute = this.paths.find(
+      (obj: Path) => obj.path === currentRoutName
+    );
+
+    if (!currentRoute) return;
+    AppView.clear();
+
+    currentRoute!.handler();
   }
 }
 

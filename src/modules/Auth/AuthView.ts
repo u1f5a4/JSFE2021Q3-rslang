@@ -1,20 +1,49 @@
-import AppView from '../../core/View';
+import './AuthStyle.scss';
+import View from '../../core/View-auth';
+import Control from '../../core/BaseElement';
 
-class AuthView extends AppView {
-  text: string;
+import FormHeader from './components/form-header';
+import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
 
-  titlePage = 'auth';
+class AuthView extends View {
+  public onClick!: () => void;
+
+  private imageBlock: Control<HTMLElement>;
+
+  public authContainer: Control<HTMLElement>;
+
+  public formContainer: FormHeader;
+
+  titlePage = 'Добро пожаловать';
+
+  subtitlePage =
+    'Получай дополнительные возможности приложения для более успешного изучения слов';
+
+  titleBlock: Control<HTMLElement>;
 
   constructor() {
-    super();
-    this.text = 'Auth View';
-  }
+    super('div', 'auth');
+    this.node.innerHTML = `${renderHeaderTemplate()}`;
+    this.imageBlock = new Control(this.node, 'div', 'auth__image', '');
+    this.authContainer = new Control(
+      this.imageBlock.node,
+      'div',
+      'auth__container',
+      ''
+    );
+    this.titleBlock = new Control(
+      this.authContainer.node,
+      'div',
+      'auth__title',
+      ''
+    );
+    this.titleBlock.node.innerHTML = `${renderPageDescTemplate(
+      this.titlePage,
+      this.subtitlePage
+    )}`;
 
-  getHtml(): string {
-    return `
-            <h1>${this.text}</h1>
-            <a href="#">home</a>
-        `;
+    this.formContainer = new FormHeader(this.authContainer.node);
   }
 }
 

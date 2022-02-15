@@ -11,8 +11,10 @@ class BookController extends AppController {
   }
 
   async displayPage() {
+    this.view.isUser = this.model.isUser();
     this.view.drawPage();
     this.bindButtons();
+    this.model.logout();
   }
 
   bindButtons() {
@@ -20,6 +22,7 @@ class BookController extends AppController {
 
     Array.from(buttons).forEach((div) => {
       div.addEventListener('click', (event) => {
+        this.card!.wordNumber = 0;
         const group = this.getDataset(event, 'group');
         window.location.href = `${window.location.href}/${group}`;
       });
