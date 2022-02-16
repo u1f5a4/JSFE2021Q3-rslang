@@ -3,14 +3,15 @@ import AppView from '../../../core/View';
 import styles from './style.module.scss';
 import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
+import renderPageDescTemplate from '../../../components/PageDesc/_renderPageDescTemplate';
 
 class AudioCallGameView extends AppView {
-  // titlePage = '';
+  titlePage = 'Аудиовызов';
 
-  // subtitlePage = ``;
+  subtitlePage = `Слушай английскую речь и выбирай правильный перевод`;
 
   drawPage() {
-    // document.title = this.titlemain + this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 
@@ -18,6 +19,8 @@ class AudioCallGameView extends AppView {
     return `
       ${renderHeaderTemplate()}
       <main class="${styles.wrapper} ${styles.main}  ${styles.container}">
+      ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
+
         <div class="${styles.game}" id="game-container">
             <div class="${styles['game__sound-box']}">
                 <div class="${styles['audio-box']}" id="play-game-audio">
@@ -50,20 +53,21 @@ class AudioCallGameView extends AppView {
                 <div class="" id="correct-answers-container"></div>
                 <div class="" id="wrong-answers-container"></div>
             </div>
-            <div class="" id="quiz-controls">
-                <button class="${styles['element-font']}
-                ${styles['white-button']}
-                ${styles['shadow-active']}
-                " id="repeat-game">Повторить</button>
-                <button class="${styles['element-font']}
-                ${styles['white-button']}
-                ${styles['shadow-active']}
-                " id="repeat-game">Закончить</button>
-            </div>
         </div>
       </main>
       ${renderFooterTemplate()}
     `;
+
+    // <div class="" id="quiz-controls">
+    //             <button class="${styles['element-font']}
+    //             ${styles['white-button']}
+    //             ${styles['shadow-active']}
+    //             " id="repeat-game">Повторить</button>
+    //             <button class="${styles['element-font']}
+    //             ${styles['white-button']}
+    //             ${styles['shadow-active']}
+    //             " id="repeat-game">Закончить</button>
+    //         </div>
   }
 }
 
