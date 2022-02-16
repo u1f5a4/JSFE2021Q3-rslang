@@ -2,7 +2,7 @@ import { STATE } from '../core/constants/server-constants';
 import AppView from '../core/View';
 // eslint-disable-next-line import/no-cycle
 import IWord from '../models/word-model';
-import renderHeaderTemplate from '../сomponents/Header/_renderHeaderTemplate';
+import renderHeaderTemplate from '../components/Header/_renderHeaderTemplate';
 // eslint-disable-next-line import/no-cycle
 import AuthController from './Auth/AuthController';
 import AuthModel from './Auth/AuthModel';
@@ -41,10 +41,10 @@ class AppModel {
 
   async rightWord(iWord: IWord) {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { _id, word } = iWord;
+    const { id, word } = iWord;
 
     try {
-      const userWord = await this.getUserWord(String(_id));
+      const userWord = await this.getUserWord(String(id));
       const { answers, difficulty, easy } = userWord.optional;
       const newAnswers = Number(answers) + 1;
       if (easy) {
@@ -53,10 +53,10 @@ class AppModel {
       if (difficulty) {
         const correctAnswersToMoveWord = 5;
         if (newAnswers === correctAnswersToMoveWord)
-          this.setWordEasy(String(_id), word);
+          this.setWordEasy(String(id), word);
         else
           this.updateUserWord(
-            String(_id),
+            String(id),
             word,
             difficulty,
             easy,
@@ -66,10 +66,10 @@ class AppModel {
       if (!easy && !difficulty) {
         const correctAnswersToMoveWord = 3;
         if (newAnswers === correctAnswersToMoveWord)
-          this.setWordEasy(String(_id), word);
+          this.setWordEasy(String(id), word);
         else
           this.updateUserWord(
-            String(_id),
+            String(id),
             word,
             difficulty,
             easy,
@@ -77,8 +77,8 @@ class AppModel {
           );
       }
     } catch (error) {
-      this.createUserWord(String(_id), word);
-      this.rightWord(iWord);
+      await this.createUserWord(String(id), word);
+      await this.rightWord(iWord);
     }
   }
 
@@ -208,16 +208,20 @@ class AppModel {
         easy: false,
       },
     };
+    const response = await fetch(
+      `${this.domain}/users/${userId}/words/${wordId}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
-    await fetch(`${this.domain}/users/${userId}/words/${wordId}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    return response.json();
   }
 
   private async updateUserWord(
