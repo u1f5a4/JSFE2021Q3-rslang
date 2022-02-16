@@ -390,28 +390,6 @@ class BookCardView extends AppView {
                           ${css['shadow-active']}
                           " id="next-page-difficult">></button>
           </div>
-          
-          <div class="${css['game-list']}">
-            <div id="go-audio-game"
-                 class="${css['game-list__card']}
-                 ${css['shadow-active']}">
-              <p class="${css['game-list__emoji']} ${css['title-font']}
-              ">📢</p>
-              <p class="${css['game-list__title']} ${css['header-font']}"
-              >“Аудиовызов” мини-игра</p>
-            </div>
-
-            <div id="go-sprint-game"
-                 class="${css['game-list__card']}
-                 ${css['shadow-active']}">
-              <p class="${css['game-list__emoji']} 
-              ${css['title-font']}">😥</p>
-              <p class="${css['game-list__title']} ${css['header-font']}">
-              “Спринт” мини-игра</p>
-            </div>
-          </div>
-          
-     
     </div>
     ${renderFooterTemplate()}
 `;
