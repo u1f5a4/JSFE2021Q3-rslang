@@ -39,6 +39,20 @@ class AppModel {
 
   // === Работа со словами при авторизации === //
 
+  // TODO: со страницы учебника использовать AggregatedWords
+
+  async wrongWord(iWord: IWord) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { id } = iWord;
+
+    try {
+      const userWord = await this.getUserWord(String(id));
+      if (userWord.optional.easy) this.deleteUserWord(String(id));
+    } catch (error) {
+      // console.log(error);
+    }
+  }
+
   async rightWord(iWord: IWord) {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { id, word } = iWord;

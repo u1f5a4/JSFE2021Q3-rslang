@@ -76,11 +76,15 @@ export class QuizManager {
     const wordIdRightWord = this.currentRoundAnswer?.id;
     if (this.currentRoundGuess === wordIdRightWord) {
       if (this.model.isUser()) {
-        const word = await this.model.getWord(this.currentRoundGuess);
+        const word = await this.model.getWord(wordIdRightWord);
         this.model.rightWord(word);
       }
       this.currentRoundResult = ResultType.WON;
     } else {
+      if (this.model.isUser()) {
+        const word = await this.model.getWord(String(wordIdRightWord));
+        this.model.wrongWord(word);
+      }
       this.currentRoundResult = ResultType.LOST;
     }
 
