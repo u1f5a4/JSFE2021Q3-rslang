@@ -41,6 +41,45 @@ class AppModel {
 
   // TODO: со страницы учебника использовать AggregatedWords
 
+  async getTwentyUserWordsWithoutEasy(
+    group: string,
+    page: number
+  ): Promise<IWord[]> {
+    const one = (await this.getUserWordsWithoutEasy(group, page * 2))[0]
+      .paginatedResults;
+
+    const two = (await this.getUserWordsWithoutEasy(group, page * 2 + 1))[0]
+      .paginatedResults;
+
+    const array = one.concat(two);
+
+    return array;
+  }
+
+  async getUserWordsWithoutEasy(
+    group: string,
+    page: number
+  ): Promise<UserWord2> {
+    const { userId, token } = this.getSetting('auth');
+
+    const rawResponse = await fetch(
+      `${this.domain}/users/${userId}/aggregatedWords?group=${group}
+      &page=${page}
+      &filter={"$or":[{"userWord.optional.easy":false},{"userWord":null}]}
+      `,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    return rawResponse.json();
+  }
+
   async wrongWord(iWord: IWord) {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { id } = iWord;
