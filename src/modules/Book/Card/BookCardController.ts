@@ -174,14 +174,14 @@ class BookCardController extends AppController {
     const buttonDifficult = document.querySelector('#complicate-word');
     buttonDifficult?.addEventListener('click', async () => {
       const word = this.words[this.wordNumber];
-      this.model.setWordDifficult(String(word._id), word.word);
+      this.model.setWordDifficult(String(word.id), word.word);
       this.view.changeCardToDifficulty();
     });
 
     const buttonEasy = document.querySelector('#easy-word');
     buttonEasy?.addEventListener('click', () => {
       const word = this.words[this.wordNumber];
-      this.model.setWordEasy(String(word._id), word.word);
+      this.model.setWordEasy(String(word.id), word.word);
       this.view.changeCardToEasy();
     });
 

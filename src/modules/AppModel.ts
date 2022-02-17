@@ -135,21 +135,26 @@ class AppModel {
     }
   }
 
-  async getUserWord(wordId: string): Promise<UserWord> {
-    const { userId, token } = this.getSetting('auth');
+  async getUserWord(wordId: string) {
+    try {
+      const { userId, token } = this.getSetting('auth');
 
-    const response = await fetch(
-      `${this.domain}/users/${userId}/words/${wordId}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-        },
-      }
-    );
+      const response = await fetch(
+        `${this.domain}/users/${userId}/words/${wordId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          },
+        }
+      );
 
-    return response.json();
+      return await response.json();
+    } catch (error) {
+      // console.log(error);
+      return null;
+    }
   }
 
   async getAllDifficultWords(page: number): Promise<IWord[]> {
@@ -207,14 +212,14 @@ class AppModel {
   }
 
   async getTwentyUserWords(group: string, page: number): Promise<IWord[]> {
-    const one = (await this.getUserWords(group, page * 2))[0].paginatedResults;
-
-    const two = (await this.getUserWords(group, page * 2 + 1))[0]
-      .paginatedResults;
-
-    const array = one.concat(two);
-
-    return array;
+    const words: IWord[] = await this.getWords(group, page);
+    const wordId = words.map((word) => word.id);
+    const promiseArray = wordId.map((id) => this.getUserWord(String(id)));
+    const userWords: UserWord[] = await Promise.all(promiseArray);
+    const result = words.map((word, index) =>
+      Object.assign(word, { userWord: userWords[index] })
+    );
+    return result;
   }
 
   async deleteUserWord(wordId: string) {
@@ -233,23 +238,23 @@ class AppModel {
     return response.json();
   }
 
-  private async getUserWords(group: string, page: number): Promise<UserWord2> {
-    const { userId, token } = this.getSetting('auth');
+  // private async getUserWords(group: string, page: number): Promise<UserWord2> {
+  //   const { userId, token } = this.getSetting('auth');
 
-    const rawResponse = await fetch(
-      `${this.domain}/users/${userId}/aggregatedWords?group=${group}&page=${page}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  //   const rawResponse = await fetch(
+  //     `${this.domain}/users/${userId}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20`,
+  //     {
+  //       method: 'GET',
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //     }
+  //   );
 
-    return rawResponse.json();
-  }
+  //   return rawResponse.json();
+  // }
 
   private async createUserWord(wordId: string, word: string): Promise<void> {
     const { userId, token } = this.getSetting('auth');

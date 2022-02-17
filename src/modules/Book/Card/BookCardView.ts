@@ -1,8 +1,8 @@
 import AppView from '../../../core/View';
 import IWord from '../../../models/word-model';
-import renderFooterTemplate from '../../../сomponents/Footer/_renderFooterTemplate';
-import renderHeaderTemplate from '../../../сomponents/Header/_renderHeaderTemplate';
-import renderPageDescTemplate from '../../../сomponents/PageDesc/_renderPageDescTemplate';
+import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../../components/PageDesc/_renderPageDescTemplate';
 import { emojiList } from '../../AppModel';
 import css from './BookCardStyle.module.scss';
 
@@ -56,6 +56,47 @@ class BookCardView extends AppView {
       }
     }
     return false;
+  }
+
+  rightAnswers() {
+    try {
+      if (this.isUser) {
+        const { word } = this;
+        if (
+          !word?.userWord!.optional.easy &&
+          !word?.userWord!.optional.difficulty
+        ) {
+          const answers = word?.userWord?.optional.answers;
+          return `${this.genSquareAnswers(3, Number(answers))}`;
+        }
+        if (
+          !word?.userWord!.optional.easy &&
+          word?.userWord!.optional.difficulty
+        ) {
+          const answers = word?.userWord?.optional.answers;
+          return `${this.genSquareAnswers(5, Number(answers))}`;
+        }
+      }
+      return '';
+    } catch (error) {
+      return `${this.genSquareAnswers(3, 0)}`;
+    }
+  }
+
+  genSquareAnswers(qty: number, qtyAnswers: number) {
+    let result = '';
+    for (let i = 0; i !== qty; i += 1) {
+      if (i < qtyAnswers) {
+        // console.log('1');
+        result += `<div class="${css['book-card__answers-dot']}
+        ${css['book-card__answers-dot-right']}"></div>`;
+      } else {
+        // console.log('0');
+        result += `<div class="${css['book-card__answers-dot']}"></div>`;
+      }
+    }
+
+    return result;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -136,6 +177,8 @@ class BookCardView extends AppView {
                                         ${css['book-card__text']}">
                                 ${this.word?.textExample}
                               </p>
+                              <div class='${css['book-card__answers']}
+                              '>${this.rightAnswers()}</div>
                         </div>
       
                         <div class="${css['book-card__back']} 
