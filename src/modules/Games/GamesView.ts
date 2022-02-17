@@ -1,7 +1,7 @@
 import View from '../../core/View';
-import renderFooterTemplate from '../../сomponents/Footer/_renderFooterTemplate';
-import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
-import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
+import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
 import css from './GamesStyles.module.scss';
 
 class GamesView extends View {
