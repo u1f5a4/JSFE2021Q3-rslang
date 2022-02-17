@@ -1,6 +1,5 @@
 import Control from '../../../core/BaseElement';
 
-
 type ErrorMessage = { message: string; path: string[] };
 
 export default class ErrorContainer extends Control {
@@ -22,12 +21,12 @@ export default class ErrorContainer extends Control {
   }
 
   renderErrorMessage() {
-    if (typeof this.messageErrors === 'string') {
+    if (this.messageText) {
       this.errorItem = new Control(
         this.textList.node,
         'li',
         'error__item',
-        `${this.messageErrors}`
+        `${this.messageText}`
       );
     } else {
       Array.from(this.messageErrors).forEach((message: ErrorMessage) => {

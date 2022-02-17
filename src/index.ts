@@ -15,7 +15,8 @@ import AudioCallGameView from './modules/AudioCall/AudioCallGame/AudioCallGameVi
 import AuthModel from './modules/Auth/AuthModel';
 import GamesController from './modules/Games/GamesController';
 import GamesView from './modules/Games/GamesView';
-import { BEARER } from './core/constants/server-constants';
+import SprintController from './modules/SprintGame/SprintController';
+import SprintView from './modules/SprintGame/SprintView';
 
 const games = new GamesController(new GamesView(), new AppModel());
 
@@ -30,6 +31,8 @@ const audioCallGame = new AudioCallGameController(
   new AudioCallGameView(),
   new AppModel()
 );
+
+const sprint = new SprintController(new SprintView(), new AppModel());
 
 const home = new HomeController(new HomeView(), new AppModel());
 
@@ -47,6 +50,7 @@ router.add('book/5', () => bookCard.displayPage('4'));
 router.add('book/6', () => bookCard.displayPage('5'));
 router.add('book/difficult', () => bookCard.displayPage('difficult'));
 router.add('audioCall', () => audioCall.displayPage());
+router.add('sprint', () => sprint.displayPage());
 router.add('audio-game/0', () => audioCallGame.displayPage());
 router.add('audio-game/1', () => audioCallGame.displayPage());
 router.add('audio-game/2', () => audioCallGame.displayPage());
@@ -60,4 +64,3 @@ window.addEventListener('load', () => {
   if (!hash) home.displayPage();
   router.go();
 });
-
