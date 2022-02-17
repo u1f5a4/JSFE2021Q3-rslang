@@ -10,6 +10,7 @@ class GamesController extends Controller {
   displayPage() {
     this.view.drawPage();
     this.bindButton();
+    this.model.logout();
   }
 
   // eslint-disable-next-line class-methods-use-this
