@@ -11,7 +11,7 @@ export const ResultType = {
 export class QuizManager {
   remainingQuestions: number = 10;
 
-  quizHistory: Array<IQuizHistory> = [];
+  quizHistory: IQuizHistory[] = [];
 
   quizData!: IWord[][];
 
@@ -98,6 +98,8 @@ export class QuizManager {
   }
 
   getQuizResult() {
+    if (this.model.isUser()) this.saveStat(this.quizHistory);
+
     const rightAnswers: IWord[] = [];
     const wrongAnswers: IWord[] = [];
     const points = this.quizHistory.reduce((acc: number, round) => {
@@ -116,5 +118,36 @@ export class QuizManager {
       rightAnswers,
       wrongAnswers,
     };
+  }
+
+  saveStat(history: IQuizHistory[]) {
+    const words = history.map((elem) => String(elem.roundAnswer.id));
+    const right = history.filter((elem) => elem.roundResult === 'WON').length;
+    const wrong = history.filter((elem) => elem.roundResult === 'LOST').length;
+    const series = this.getSeries(history);
+
+    const data = { words, right, wrong, series };
+    this.model.updateGameStat('audioGame', data);
+  }
+
+  getSeries(data: IQuizHistory[]) {
+    let result = 0;
+    const array = data.map((elem) => (elem.roundResult === 'WON' ? '1' : '0'));
+    let index = 0;
+    const tall = array.length - 1;
+    let tempCount = 0;
+    while (index <= tall) {
+      if (array[index] === '1') tempCount += 1;
+      else {
+        result = result < tempCount ? tempCount : result;
+        tempCount = 0;
+      }
+
+      if (index === tall) result = result < tempCount ? tempCount : result;
+
+      index += 1;
+    }
+
+    return result;
   }
 }
