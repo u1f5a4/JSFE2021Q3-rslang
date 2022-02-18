@@ -34,11 +34,18 @@ export default function renderHeaderTemplate(): string {
                           styles.menu__link
                         }">Мини-игры</a>
                     </li>
-                    <li class="${styles.menu__item}">
-                        <a href="/#stat" class="${
-                          styles.menu__link
-                        }">Статистика</a>
-                    </li> 
+
+                    ${
+                      // eslint-disable-next-line consistent-return
+                      (() => {
+                        if (STATE.auth)
+                          return `<li class="${styles.menu__item}">
+                                     <a href="/#stat" class="${styles.menu__link}">Статистика</a>
+                                  </li> `;
+                        return '';
+                      })()
+                    }
+                    
                 </ul>
             </nav>
            ${renderAuthUser()}
