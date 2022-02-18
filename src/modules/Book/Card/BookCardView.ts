@@ -63,6 +63,7 @@ class BookCardView extends AppView {
       if (this.isUser) {
         const { word } = this;
         if (
+          word?.userWord &&
           !word?.userWord!.optional.easy &&
           !word?.userWord!.optional.difficulty
         ) {
@@ -79,7 +80,7 @@ class BookCardView extends AppView {
       }
       return '';
     } catch (error) {
-      return `${this.genSquareAnswers(3, 0)}`;
+      return '';
     }
   }
 
@@ -228,7 +229,6 @@ class BookCardView extends AppView {
                   <div class="${css['list-dot']}">
                     ${(() => {
                       let result = '';
-                      // TODO: список сложных слов может быть больше 20ти
                       for (let i = 0; i < 20; i += 1) {
                         if (this.wordNumber === i) {
                           result += `<div class="${css['list-dot__dot']} ${css['list-dot__dot-active']}"></div>`;
