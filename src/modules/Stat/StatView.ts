@@ -38,37 +38,49 @@ class StatView extends View {
     const audioNew = document.querySelector('#audio-new');
     audioNew!.textContent = String(dayStat?.audioGame.words.length);
 
-    const audioRight = document.querySelector('#audio-right');
-    const audioOneProcent = dayStat!.audioGame.words.length / 100;
-    const audioAvg = dayStat.audioGame.right / audioOneProcent;
-    audioRight!.textContent = String(`${audioAvg}%`);
-
     const audioSeries = document.querySelector('#audio-series');
     audioSeries!.textContent = String(dayStat?.audioGame.series);
 
     const sprintNew = document.querySelector('#sprint-new');
     sprintNew!.textContent = String(dayStat?.sprintGame.words.length);
 
-    const sprintRight = document.querySelector('#sprint-right');
-    const sprintOneProcent = dayStat!.audioGame.words.length / 100;
-    const sprintAvg = dayStat.sprintGame.right / sprintOneProcent;
-    sprintRight!.textContent = String(`${sprintAvg}%`);
-
     const sprintSeries = document.querySelector('#sprint-series');
     sprintSeries!.textContent = String(dayStat?.sprintGame.series);
 
+    const { wordAvg, audioAvg, sprintAvg } = this.countRightAnswers(dayStat);
+    const audioRight = document.querySelector('#audio-right');
+    audioRight!.textContent = String(`${audioAvg}%`);
+
+    const sprintRight = document.querySelector('#sprint-right');
+    sprintRight!.textContent = String(`${sprintAvg}%`);
+
     const wordRight = document.querySelector('#word-right');
-    wordRight!.textContent = String(
-      `${this.countRightAnswers(dayStat, audioAvg, sprintAvg)}%`
-    );
+    wordRight!.textContent = String(`${wordAvg}%`);
   }
 
   // eslint-disable-next-line consistent-return
-  countRightAnswers(dayStat: StatDate, audioAvg: number, sprintAvg: number) {
-    if (dayStat.audioGame.words.length) return audioAvg;
-    if (dayStat.sprintGame.words.length) return sprintAvg;
-    if (dayStat.sprintGame.words.length && dayStat.audioGame.words.length)
-      return (audioAvg + sprintAvg) / 2;
+  countRightAnswers(dayStat: StatDate) {
+    const audioLen = dayStat.audioGame.words.length;
+    const sprintLen = dayStat.sprintGame.words.length;
+
+    let audioAvg = 0;
+    let sprintAvg = 0;
+    let wordAvg = 0;
+
+    const audioOneProcent = dayStat!.audioGame.words.length / 100;
+    const sprintOneProcent = dayStat!.audioGame.words.length / 100;
+
+    if (audioLen && !sprintLen) {
+      audioAvg = dayStat.audioGame.right / audioOneProcent;
+    }
+    if (sprintLen && !audioLen) {
+      sprintAvg = dayStat.sprintGame.right / sprintOneProcent;
+    }
+    if (audioLen && sprintLen) {
+      wordAvg = (audioAvg + sprintAvg) / 2;
+    }
+
+    return { wordAvg, audioAvg, sprintAvg };
   }
 
   getHtml() {

@@ -54,38 +54,6 @@ class AppModel {
 
   // === Статистика === //
 
-  async countStat() {
-    const stat = await this.getStat();
-
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
-    const dayStat = stat.optional.data.find((elem) => elem.date === date);
-
-    const sprintGame = dayStat!.sprintGame.words;
-    const audioGame = dayStat!.audioGame.words;
-
-    const words = Array.from(new Set(...sprintGame, ...audioGame));
-
-    dayStat!.words.words = words.length;
-
-    stat.learnedWords = stat.optional.data.reduce(
-      (prev, curr) => prev + curr.words.easyQty,
-      0
-    );
-
-    this.writeStat(stat);
-  }
-
-  async plusOneIntoEasyStat() {
-    const stat = await this.getStat();
-
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
-    const dayStat = stat.optional.data.find((elem) => elem.date === date);
-
-    dayStat!.words.easyQty += 1;
-
-    this.writeStat(stat);
-  }
-
   async updateGameStat(game: 'audioGame' | 'sprintGame', data: GameStat) {
     try {
       const stat = await this.getStat();
@@ -109,26 +77,6 @@ class AppModel {
     }
   }
 
-  async createZeroStat() {
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
-
-    const data = {
-      learnedWords: 0,
-      optional: {
-        data: [
-          {
-            date,
-            words: { words: 0, easyQty: 0 },
-            audioGame: { words: [], right: 0, wrong: 0, series: 0 },
-            sprintGame: { words: [], right: 0, wrong: 0, series: 0 },
-          },
-        ],
-      },
-    };
-
-    return this.writeStat(data);
-  }
-
   async getStat(): Promise<UserStat> {
     const { userId, token } = this.getSetting('auth');
 
@@ -146,13 +94,47 @@ class AppModel {
     const stat = await rawResponse.json();
 
     // распаковывает статистику в массив из строки
-    const resultStat = { ...stat };
+    const resultStat: UserStat = { ...stat };
     resultStat.optional.data = JSON.parse(stat.optional.data);
 
+    // если есть статистика других дней, то создаём новый день
+    const dateNow = new Date().toLocaleDateString(); // '18/02/2022'
+    const dayStat = resultStat.optional.data.find(
+      (elem) => elem.date === dateNow
+    );
+    if (!dayStat) {
+      const dataStat = stat.optional.data;
+      dataStat.push(await this.createDayZeroStat());
+    }
+
+    console.log(resultStat);
     return resultStat;
   }
 
-  async writeStat(data: any) {
+  async countStat() {
+    const stat = await this.getStat();
+
+    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const dayStat = stat.optional.data.find((elem) => elem.date === date);
+
+    const sprintGame = dayStat!.sprintGame.words;
+    const audioGame = dayStat!.audioGame.words;
+
+    const words = Array.from(new Set(...sprintGame, ...audioGame));
+    // console.log(words);
+
+    dayStat!.words.words = words.length;
+
+    stat.learnedWords = stat.optional.data.reduce(
+      (prev, curr) => prev + curr.words.easyQty,
+      0
+    );
+
+    this.writeStat(stat);
+    // return stat;
+  }
+
+  private async writeStat(data: any) {
     const { userId, token } = this.getSetting('auth');
 
     const stat = { ...data };
@@ -170,10 +152,42 @@ class AppModel {
     });
 
     const content = await response.json();
-    this.countStat();
+
     return content;
   }
 
+  private async createZeroStat() {
+    const data = {
+      learnedWords: 0,
+      optional: {
+        data: [this.createDayZeroStat()],
+      },
+    };
+
+    return this.writeStat(data);
+  }
+
+  private async createDayZeroStat() {
+    const date = new Date().toLocaleDateString(); // '18/02/2022'
+
+    return {
+      date,
+      words: { words: 0, easyQty: 0 },
+      audioGame: { words: [], right: 0, wrong: 0, series: 0 },
+      sprintGame: { words: [], right: 0, wrong: 0, series: 0 },
+    };
+  }
+
+  private async plusOneIntoEasyStat() {
+    const stat = await this.getStat();
+
+    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const dayStat = stat.optional.data.find((elem) => elem.date === date);
+
+    dayStat!.words.easyQty += 1;
+
+    this.writeStat(stat);
+  }
   // === Работа со словами при авторизации === //
 
   async getTwentyUserWordsWithoutEasy(
