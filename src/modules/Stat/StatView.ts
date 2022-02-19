@@ -1,3 +1,6 @@
+import Chartist from 'chartist';
+import './chartist.scss';
+
 import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
 import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
@@ -6,15 +9,9 @@ import View from '../../core/View';
 import { StatDate, UserStat } from '../AppModel';
 
 class StatView extends View {
-  titlePage = `Статистика за день`;
+  titlePage = `Статистика`;
 
   subtitlePage = `Отслеживай свой прогресс и корректируй своё обучение`;
-
-  descAudioGame = `В игре “Аудиовызов”, к слову на английском языке будет 
-    предложен перевод, правильный он или нет, решаешь ты`;
-
-  descSprintGame = `В игре “Спринт”, произносится слово на английском, 
-    а ты выбираешь правильный перевод из пяти вариантов`;
 
   drawPage() {
     document.title = this.titlemain + this.titlePage;
@@ -70,11 +67,13 @@ class StatView extends View {
     const audioOneProcent = dayStat!.audioGame.words.length / 100;
     const sprintOneProcent = dayStat!.audioGame.words.length / 100;
 
-    if (audioLen && !sprintLen) {
+    if (audioLen) {
       audioAvg = dayStat.audioGame.right / audioOneProcent;
+      wordAvg = audioAvg;
     }
-    if (sprintLen && !audioLen) {
+    if (sprintLen) {
       sprintAvg = dayStat.sprintGame.right / sprintOneProcent;
+      wordAvg = sprintAvg;
     }
     if (audioLen && sprintLen) {
       wordAvg = (audioAvg + sprintAvg) / 2;
@@ -83,11 +82,48 @@ class StatView extends View {
     return { wordAvg, audioAvg, sprintAvg };
   }
 
+  graphNewWord(dates: string[], data: number[]) {
+    // eslint-disable-next-line no-new
+    new Chartist.Line(
+      '.ct-new-word',
+      {
+        labels: dates,
+        series: [data],
+      },
+      {
+        fullWidth: true,
+        chartPadding: {
+          right: 60,
+        },
+      }
+    );
+  }
+
+  graphLearnWord(dates: string[], data: number[]) {
+    // eslint-disable-next-line no-new
+    new Chartist.Line(
+      '.ct-new-learn-word',
+      {
+        labels: dates,
+        series: [data],
+      },
+      {
+        fullWidth: true,
+        chartPadding: {
+          right: 60,
+        },
+      }
+    );
+  }
+
   getHtml() {
     return `
         ${renderHeaderTemplate()} 
         <div class="${css.content}">
-          ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
+          ${renderPageDescTemplate(
+            `${this.titlePage} за сегодня`,
+            this.subtitlePage
+          )}
               <div class="${css.wrapper}">
                 <div class="${css.list}">
                   <div class="${css.card}">
@@ -167,7 +203,16 @@ class StatView extends View {
                     </div>
                   </div>
                 </div>
+
+                <div class="${css.block}">
+                  ${renderPageDescTemplate(`Новых слов за всё время`, '')}
+                  <div class="ct-new-word"></div>
+                </div>
+              <div class="${css.block}">
+                ${renderPageDescTemplate(`Изученных слов за всё время`, '')}
+                <div class="ct-new-learn-word"></div>
               </div>
+            </div>
         </div>
         ${renderFooterTemplate()}
       `;
