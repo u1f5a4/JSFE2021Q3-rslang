@@ -52,8 +52,12 @@ class AudioCallController extends AppController {
       optionsBox.appendChild(btn);
     });
 
-    const correctAudio = document.getElementById('correct-audio') as HTMLAudioElement;
-    const errorAudio = document.getElementById('error-audio') as HTMLAudioElement;
+    const correctAudio = document.getElementById(
+      'correct-audio'
+    ) as HTMLAudioElement;
+    const errorAudio = document.getElementById(
+      'error-audio'
+    ) as HTMLAudioElement;
 
     const onAnswer = (event: MouseEvent): void => {
       event.preventDefault();
@@ -142,6 +146,9 @@ class AudioCallController extends AppController {
     const showAnswerBtn = document.getElementById(
       'show-answer'
     ) as HTMLButtonElement;
+    const nextQuestionBtn = document.getElementById(
+      'next-question'
+    ) as HTMLButtonElement;
     const errorAudio = document.getElementById(
       'error-audio'
     ) as HTMLAudioElement;
@@ -152,6 +159,57 @@ class AudioCallController extends AppController {
       this.switchBtnState(true);
       errorAudio.play();
     });
+
+    const gameOptionsBox = document.getElementById(
+      'game-options-box'
+    ) as HTMLDivElement;
+
+    window.addEventListener(
+      'keydown',
+      (event) => {
+        const gameOptionsFirstBtn = gameOptionsBox
+          .children[0] as HTMLButtonElement;
+        const gameOptionsSecondBtn = gameOptionsBox
+          .children[1] as HTMLButtonElement;
+        const gameOptionsThirdBtn = gameOptionsBox
+          .children[2] as HTMLButtonElement;
+        const gameOptionsFourthBtn = gameOptionsBox
+          .children[3] as HTMLButtonElement;
+        const gameOptionsFifthBtn = gameOptionsBox
+          .children[4] as HTMLButtonElement;
+
+        switch (event.key) {
+          case '1':
+            gameOptionsFirstBtn.click();
+            break;
+          case '2':
+            gameOptionsSecondBtn.click();
+            break;
+          case '3':
+            gameOptionsThirdBtn.click();
+            break;
+          case '4':
+            gameOptionsFourthBtn.click();
+            break;
+          case '5':
+            gameOptionsFifthBtn.click();
+            break;
+          case ' ':
+            if (nextQuestionBtn.style.display === 'none') {
+              showAnswerBtn.click();
+              break;
+            } else {
+              nextQuestionBtn.click();
+              break;
+            }
+          default:
+            return;
+            break;
+        }
+        event.preventDefault();
+      },
+      true
+    );
   }
 
   showResultContainer() {
@@ -178,9 +236,9 @@ class AudioCallController extends AppController {
         <td class="${styles['result-table-data']}" >${
         data.roundAnswer.wordTranslate
       }</td>
-        <td class="${styles['result-table-data']} ${styles['audio-controller']}" id="${
-        data.roundAnswer.id
-      }-audio-contoller">🔊</td>
+        <td class="${styles['result-table-data']} ${
+        styles['audio-controller']
+      }" id="${data.roundAnswer.id}-audio-contoller">🔊</td>
         <td class="${styles['result-table-data']}"  >${
         data.roundResult !== 'WON' ? '❌' : '✅'
       }</td>
@@ -207,7 +265,7 @@ class AudioCallController extends AppController {
     ) as HTMLDivElement;
 
     resultContainer.classList.toggle('display-none');
-    // resultContainer.classList.add(`${styles['result-container']}`);
+    resultContainer.classList.add(`${styles['result-container']}`);
 
     gameContainer.classList.toggle('display-none');
   }

@@ -31,7 +31,7 @@ class AudioCallGameView extends AppView {
             </div>
             <div class="${styles['game__options-box']}" id="game-options-box">
             </div>
-            <div class="${styles['game__control-box']}">
+            <div id="game-control-box" class="${styles['game__control-box']}">
                 <button class="${styles['element-font']}
                 ${styles['white-button']}
                 ${styles['shadow-active']}
