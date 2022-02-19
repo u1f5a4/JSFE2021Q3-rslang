@@ -79,3 +79,18 @@
     color: $color-two;
   }
 }
+
+.table {
+  min-width: 500px;
+  border: 2px solid #463f66;
+  border-radius: 50%;
+}
+
+.result-table-data {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.audio-controller {
+  cursor: pointer;
+}

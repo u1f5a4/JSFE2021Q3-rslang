@@ -52,6 +52,9 @@ class AudioCallController extends AppController {
       optionsBox.appendChild(btn);
     });
 
+    const correctAudio = document.getElementById('correct-audio') as HTMLAudioElement;
+    const errorAudio = document.getElementById('error-audio') as HTMLAudioElement;
+
     const onAnswer = (event: MouseEvent): void => {
       event.preventDefault();
       const target = <HTMLBodyElement>event.target;
@@ -63,6 +66,12 @@ class AudioCallController extends AppController {
       this.switchBtnState(true);
       optionsBox.removeEventListener('click', onAnswer);
       this.changeOptionsColor();
+
+      if (qm.currentRoundResult === 'WON') {
+        correctAudio.play();
+      } else {
+        errorAudio.play();
+      }
     };
 
     optionsBox.addEventListener('click', onAnswer);
@@ -133,11 +142,15 @@ class AudioCallController extends AppController {
     const showAnswerBtn = document.getElementById(
       'show-answer'
     ) as HTMLButtonElement;
+    const errorAudio = document.getElementById(
+      'error-audio'
+    ) as HTMLAudioElement;
     showAnswerBtn.addEventListener('click', () => {
       qm.guessAnswer('wrong-answer');
       this.changeOptionsColor();
 
       this.switchBtnState(true);
+      errorAudio.play();
     });
   }
 
@@ -146,13 +159,47 @@ class AudioCallController extends AppController {
       'result-container'
     ) as HTMLDivElement;
     const quizScore = document.getElementById('quiz-score') as HTMLSpanElement;
-    // const correctAnswersContainer = document.getElementById(
-    //   'correct-answers-container'
-    // ) as HTMLDivElement;
-    // const wrongAnswersContainer = document.getElementById(
-    //   'wrong-answers-container'
-    // ) as HTMLDivElement;
 
+    const tableBody = document.getElementById(
+      'result-table-body'
+    ) as HTMLTableElement;
+
+    qm.quizHistory.forEach((data) => {
+      console.log(data);
+
+      const tableRow = document.createElement('tr') as HTMLTableRowElement;
+      tableRow.innerHTML = `
+        <td class="${styles['result-table-data']}" >${
+        data.roundAnswer.word
+      }</td>
+        <td class="${styles['result-table-data']}" >${
+        data.roundAnswer.transcription
+      }</td>
+        <td class="${styles['result-table-data']}" >${
+        data.roundAnswer.wordTranslate
+      }</td>
+        <td class="${styles['result-table-data']} ${styles['audio-controller']}" id="${
+        data.roundAnswer.id
+      }-audio-contoller">🔊</td>
+        <td class="${styles['result-table-data']}"  >${
+        data.roundResult !== 'WON' ? '❌' : '✅'
+      }</td>
+        <audio src="${this.model.getDomain()}/${data.roundAnswer.audio}" id="${
+        data.roundAnswer.id
+      }-audio"></audio>
+      `;
+      tableBody.appendChild(tableRow);
+      const tableAudioController = document.getElementById(
+        `${data.roundAnswer.id}-audio-contoller`
+      ) as HTMLTableElement;
+      const tableAudio = document.getElementById(
+        `${data.roundAnswer.id}-audio`
+      ) as HTMLAudioElement;
+
+      tableAudioController.addEventListener('click', () => {
+        tableAudio.play();
+      });
+    });
     quizScore.innerText = qm.getQuizResult().points.toString();
 
     const gameContainer = document.getElementById(

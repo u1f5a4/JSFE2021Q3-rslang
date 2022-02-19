@@ -26,6 +26,8 @@ class AudioCallGameView extends AppView {
                     }" src="./assets/images/sound.png" id="sound-img">
                 </div>
                 <audio id="round-audio"></audio>
+                <audio src="./assets/audio/correct.mp3" id="correct-audio"></audio>
+                <audio src="./assets/audio/error.mp3" id="error-audio"></audio>
             </div>
             <div class="${styles['game__options-box']}" id="game-options-box">
             </div>
@@ -47,18 +49,26 @@ class AudioCallGameView extends AppView {
             ">Ваш результат: <span class="${styles['result-container__score']}
             " id="quiz-score"></span></h5>
             <div class="" id="user-answers-container">
-                <div class="" id="correct-answers-container"></div>
-                <div class="" id="wrong-answers-container"></div>
+                <table class="${styles.table} element-font">
+                    <thead>
+                        <tr>
+                            <th>Слово</th>
+                            <th>Транскрипт</th>
+                            <th>Перевод</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="result-table-body">
+                        
+                    </tbody>                   
+                </table>
             </div>
             <div class="" id="quiz-controls">
                 <button class="${styles['element-font']}
                 ${styles['white-button']}
                 ${styles['shadow-active']}
-                " id="repeat-game">Повторить</button>
-                <button class="${styles['element-font']}
-                ${styles['white-button']}
-                ${styles['shadow-active']}
-                " id="repeat-game">Закончить</button>
+                " id="end-audio-game">Закончить</button>
             </div>
         </div>
       </main>
