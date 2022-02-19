@@ -6,21 +6,21 @@ import { QuizManager } from './services/QuizManager';
 import IWord from '../../../models/word-model';
 import styles from './style.module.scss';
 
-const qm = new QuizManager();
-
 class AudioCallController extends AppController {
+  qm = new QuizManager();
+
   constructor(public view: AudioCallView, public model: AppModel) {
     super(view, model);
   }
 
   async setEvents() {
     // START QUIZ
-    await qm.startRound();
+    await this.qm.startRound();
     await this.getQuizElements();
   }
 
   async getQuizElements() {
-    if (!qm.isGameFinished) {
+    if (!this.qm.isGameFinished) {
       await this.getOptions();
       await this.getAudio();
     } else {
@@ -32,7 +32,7 @@ class AudioCallController extends AppController {
     const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
     audio.src = '';
-    audio.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.audio}`;
+    audio.src = `${this.model.getDomain()}/${this.qm.currentRoundAnswer?.audio}`;
     await audio.play();
   }
 
@@ -41,7 +41,7 @@ class AudioCallController extends AppController {
       'game-options-box'
     ) as HTMLElement;
     optionsBox.innerHTML = '';
-    qm.currentRoundOptions.forEach((option: IWord) => {
+    this.qm.currentRoundOptions.forEach((option: IWord) => {
       const btn = document.createElement('button');
       btn.id = <string>option?.id;
       btn.classList.add('quiz-options-btn');
@@ -64,14 +64,14 @@ class AudioCallController extends AppController {
       const target = <HTMLBodyElement>event.target;
       const targetId = target.id;
       if (target.classList.contains('quiz-options-btn')) {
-        qm.guessAnswer(targetId);
+        this.qm.guessAnswer(targetId);
       }
 
       this.switchBtnState(true);
       optionsBox.removeEventListener('click', onAnswer);
       this.changeOptionsColor();
 
-      if (qm.currentRoundResult === 'WON') {
+      if (this.qm.currentRoundResult === 'WON') {
         correctAudio.play();
       } else {
         errorAudio.play();
@@ -88,14 +88,14 @@ class AudioCallController extends AppController {
     allOptionBtnCollection.forEach((btn) => {
       // eslint-disable-next-line no-param-reassign
       btn.disabled = true;
-      if (btn.id === qm.currentRoundAnswer.id) {
+      if (btn.id === this.qm.currentRoundAnswer.id) {
         btn.classList.toggle(`${styles['white-button__success']}`);
       } else {
         btn.classList.toggle(`${styles['white-button__wrong']}`);
       }
     });
     const soundImg = document.getElementById('sound-img') as HTMLImageElement;
-    soundImg.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.image}`;
+    soundImg.src = `${this.model.getDomain()}/${this.qm.currentRoundAnswer?.image}`;
   }
 
   async bindElements() {
@@ -104,9 +104,9 @@ class AudioCallController extends AppController {
     ) as HTMLButtonElement;
 
     nextQuestionBtn.addEventListener('click', async () => {
-      await qm.generateRound();
+      await this.qm.generateRound();
       await this.getQuizElements();
-      if (qm.isGameFinished) {
+      if (this.qm.isGameFinished) {
         nextQuestionBtn.disabled = true;
       }
       this.switchBtnState(false);
@@ -153,7 +153,7 @@ class AudioCallController extends AppController {
       'error-audio'
     ) as HTMLAudioElement;
     showAnswerBtn.addEventListener('click', () => {
-      qm.guessAnswer('wrong-answer');
+      this.qm.guessAnswer('wrong-answer');
       this.changeOptionsColor();
 
       this.switchBtnState(true);
@@ -222,7 +222,7 @@ class AudioCallController extends AppController {
       'result-table-body'
     ) as HTMLTableElement;
 
-    qm.quizHistory.forEach((data) => {
+    this.qm.quizHistory.forEach((data) => {
       console.log(data);
 
       const tableRow = document.createElement('tr') as HTMLTableRowElement;
@@ -258,7 +258,7 @@ class AudioCallController extends AppController {
         tableAudio.play();
       });
     });
-    quizScore.innerText = qm.getQuizResult().points.toString();
+    quizScore.innerText = this.qm.getQuizResult().points.toString();
 
     const gameContainer = document.getElementById(
       'game-container'
