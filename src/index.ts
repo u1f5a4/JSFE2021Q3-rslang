@@ -42,9 +42,10 @@ const router = new Router();
 router.init();
 
 router.add('', () => home.displayPage());
-router.add('book', () => book.displayPage());
 router.add('auth', () => auth.displayPage());
 router.add('stat', () => stat.displayPage());
+
+router.add('book', () => book.displayPage());
 router.add('book/1', () => bookCard.displayPage('0'));
 router.add('book/2', () => bookCard.displayPage('1'));
 router.add('book/3', () => bookCard.displayPage('2'));
@@ -52,6 +53,7 @@ router.add('book/4', () => bookCard.displayPage('3'));
 router.add('book/5', () => bookCard.displayPage('4'));
 router.add('book/6', () => bookCard.displayPage('5'));
 router.add('book/difficult', () => bookCard.displayPage('difficult'));
+
 router.add('games', () => games.displayPage());
 router.add('audio-game', () => audioCall.displayPage());
 router.add('audio-game/0', () => audioCallGame.displayPage('0', 'random'));
