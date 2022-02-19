@@ -32,8 +32,11 @@ class AudioCallController extends AppController {
     const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
     audio.src = '';
-    audio.src = `${this.model.getDomain()}/${this.qm.currentRoundAnswer?.audio}`;
+    audio.src = `${this.model.getDomain()}/${
+      this.qm.currentRoundAnswer?.audio
+    }`;
     await audio.play();
+    this.playRoundWord();
   }
 
   async getOptions() {
@@ -95,7 +98,9 @@ class AudioCallController extends AppController {
       }
     });
     const soundImg = document.getElementById('sound-img') as HTMLImageElement;
-    soundImg.src = `${this.model.getDomain()}/${this.qm.currentRoundAnswer?.image}`;
+    soundImg.src = `${this.model.getDomain()}/${
+      this.qm.currentRoundAnswer?.image
+    }`;
   }
 
   async bindElements() {
@@ -133,14 +138,27 @@ class AudioCallController extends AppController {
     }
   }
 
+  playRoundWord() {
+    const playAudioBtn = document.getElementById(
+      'play-game-audio'
+    ) as HTMLButtonElement;
+    playAudioBtn.classList.add('heartbeat');
+    setTimeout(() => {
+      playAudioBtn.classList.remove('heartbeat');
+    }, 1000);
+  }
+
   bindButtons() {
     const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
     const playAudioBtn = document.getElementById(
       'play-game-audio'
     ) as HTMLButtonElement;
+
+    this.playRoundWord();
     playAudioBtn.addEventListener('click', () => {
       audio.play();
+      this.playRoundWord();
     });
 
     const showAnswerBtn = document.getElementById(
@@ -194,6 +212,10 @@ class AudioCallController extends AppController {
           case '5':
             gameOptionsFifthBtn.click();
             break;
+          case 'p':
+          case 'P':
+            playAudioBtn.click();
+            break;
           case ' ':
             if (nextQuestionBtn.style.display === 'none') {
               showAnswerBtn.click();
@@ -223,8 +245,6 @@ class AudioCallController extends AppController {
     ) as HTMLTableElement;
 
     this.qm.quizHistory.forEach((data) => {
-      console.log(data);
-
       const tableRow = document.createElement('tr') as HTMLTableRowElement;
       tableRow.innerHTML = `
         <td class="${styles['result-table-data']}" >${
@@ -238,7 +258,7 @@ class AudioCallController extends AppController {
       }</td>
         <td class="${styles['result-table-data']} ${
         styles['audio-controller']
-      }" id="${data.roundAnswer.id}-audio-contoller">🔊</td>
+      }" id="${data.roundAnswer.id}-audio-controller">🔊</td>
         <td class="${styles['result-table-data']}"  >${
         data.roundResult !== 'WON' ? '❌' : '✅'
       }</td>
@@ -248,7 +268,7 @@ class AudioCallController extends AppController {
       `;
       tableBody.appendChild(tableRow);
       const tableAudioController = document.getElementById(
-        `${data.roundAnswer.id}-audio-contoller`
+        `${data.roundAnswer.id}-audio-controller`
       ) as HTMLTableElement;
       const tableAudio = document.getElementById(
         `${data.roundAnswer.id}-audio`

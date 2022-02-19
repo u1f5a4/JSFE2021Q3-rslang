@@ -3,6 +3,7 @@ import AppView from '../../../core/View';
 import styles from './style.module.scss';
 import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
+import './style.scss';
 
 class AudioCallGameView extends AppView {
   titlePage = 'Учебник английского с карточками и мини-играми';
@@ -63,12 +64,6 @@ class AudioCallGameView extends AppView {
                         
                     </tbody>                   
                 </table>
-            </div>
-            <div class="" id="quiz-controls">
-                <button class="${styles['element-font']}
-                ${styles['white-button']}
-                ${styles['shadow-active']}
-                " id="end-audio-game">Закончить</button>
             </div>
         </div>
       </main>
