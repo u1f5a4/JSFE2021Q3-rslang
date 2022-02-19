@@ -94,34 +94,30 @@ class AppModel {
     const stat = await rawResponse.json();
 
     // распаковывает статистику в массив из строки
-    const resultStat: UserStat = { ...stat };
-    resultStat.optional.data = JSON.parse(stat.optional.data);
+    const arrayDates = await JSON.parse(stat.optional.data);
+    const result: UserStat = Object.assign(stat, {
+      optional: { data: arrayDates },
+    });
 
     // если есть статистика других дней, то создаём новый день
     const dateNow = new Date().toLocaleDateString(); // '18/02/2022'
-    const dayStat = resultStat.optional.data.find(
-      (elem) => elem.date === dateNow
-    );
+    const dayStat = result.optional.data.find((elem) => elem.date === dateNow);
     if (!dayStat) {
-      const dataStat = stat.optional.data;
+      const dataStat = result.optional.data;
       dataStat.push(await this.createDayZeroStat());
     }
-
-    console.log(resultStat);
-    return resultStat;
+    return result;
   }
 
   async countStat() {
     const stat = await this.getStat();
-
     const date = new Date().toLocaleDateString(); // '18/02/2022'
     const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
-    const sprintGame = dayStat!.sprintGame.words;
     const audioGame = dayStat!.audioGame.words;
+    const sprintGame = dayStat!.sprintGame.words;
 
-    const words = Array.from(new Set(...sprintGame, ...audioGame));
-    // console.log(words);
+    const words = Array.from(new Set([...sprintGame, ...audioGame]));
 
     dayStat!.words.words = words.length;
 
@@ -131,7 +127,7 @@ class AppModel {
     );
 
     this.writeStat(stat);
-    // return stat;
+    return stat;
   }
 
   private async writeStat(data: any) {

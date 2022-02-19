@@ -11,13 +11,8 @@ class StatController extends Controller {
     this.view.drawPage();
     this.model.logout();
 
-    console.log('=== start ===');
-    console.log('one call:');
     await this.model.countStat();
-
-    console.log('two call:');
     const stat = await this.model.getStat();
-    console.log('=== finish ===');
 
     this.view.drawNumbers(stat);
   }
