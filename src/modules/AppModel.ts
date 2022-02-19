@@ -29,10 +29,6 @@ type UserWord = {
   wordId?: string;
 };
 
-type UserWord2 = [
-  { paginatedResults: IWord[]; totalCount: [{ count: number }] }
-];
-
 type UserStat = { learnedWords: number; optional: { data: StatDate[] } };
 
 type GameStat = {
@@ -190,39 +186,28 @@ class AppModel {
     group: string,
     page: number
   ): Promise<IWord[]> {
-    const one = (await this.getUserWordsWithoutEasy(group, page * 2))[0]
-      .paginatedResults;
-
-    const two = (await this.getUserWordsWithoutEasy(group, page * 2 + 1))[0]
-      .paginatedResults;
-
-    const array = one.concat(two);
-
-    return array;
-  }
-
-  async getUserWordsWithoutEasy(
-    group: string,
-    page: number
-  ): Promise<UserWord2> {
-    const { userId, token } = this.getSetting('auth');
-
-    const rawResponse = await fetch(
-      `${this.domain}/users/${userId}/aggregatedWords?group=${group}
-      &page=${page}
-      &filter={"$or":[{"userWord.optional.easy":false},{"userWord":null}]}
-      `,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
+    const result: IWord[] = [];
+    const wordsPage = await this.getTwentyUserWords(group, page);
+    const wordsPageNotEasy = wordsPage.filter(
+      (word) => !word.userWord?.optional.easy
     );
+    result.push(...wordsPageNotEasy);
 
-    return rawResponse.json();
+    let currentPage = 0;
+    const lastPage = 29;
+    while (result.length < 20) {
+      if (currentPage === lastPage + 1) currentPage = 0;
+
+      // eslint-disable-next-line no-await-in-loop
+      const words = await this.getTwentyUserWords(group, currentPage);
+      const wordsNotEasy = words.filter(
+        (word) => !word.userWord?.optional.easy
+      );
+      result.push(...wordsNotEasy);
+      currentPage += 1;
+    }
+
+    return result.slice(0, 20);
   }
 
   async wrongWord(iWord: IWord) {
