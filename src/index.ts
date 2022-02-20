@@ -65,7 +65,7 @@ router.add('audio-game/2', () => audioCallGame.displayPage('2', 'random'));
 router.add('audio-game/3', () => audioCallGame.displayPage('3', 'random'));
 router.add('audio-game/4', () => audioCallGame.displayPage('4', 'random'));
 router.add('audio-game/5', () => audioCallGame.displayPage('5', 'random'));
-router.add('sprint', () => sprint.displayPage());
+router.add('sprint-game', () => sprint.displayPage());
 
 window.addEventListener('load', () => {
   const { hash } = window.location;
