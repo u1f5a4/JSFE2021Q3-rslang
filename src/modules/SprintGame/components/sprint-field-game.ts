@@ -11,7 +11,7 @@ export default class SprintFieldGame extends Control {
 
   public gameButtons!: SprintButtons;
 
-  public index = 0;
+  public index: number;
 
   public dataWord: Question;
 
@@ -24,10 +24,12 @@ export default class SprintFieldGame extends Control {
   private wordText!: string;
 
   private translationText!: string;
+
   public audio!: string;
 
   constructor(parentNode: HTMLElement, public result: Question[]) {
     super(parentNode, 'div', 'game-field', '');
+    this.index = 0;
     const [dataWord] = this.result;
     this.dataWord = dataWord;
     this.markerContainer = new Control(this.node, 'div', 'marker-container');
@@ -38,18 +40,18 @@ export default class SprintFieldGame extends Control {
     this.dataWord.answersCorrect.forEach((word: IWord) => {
       this.answerArr.push(word.word);
     });
-    
+
     if (this.answerArr.includes(this.dataWord.answers.word[this.index].word)) {
       this.wordText = this.dataWord.answers.word[this.index].word;
       this.translationText =
         this.dataWord.answersCorrect[
           this.answerArr.indexOf(this.dataWord.answers.word[this.index].word)
         ].wordTranslate;
-        this.audio = this.dataWord.answers.word[this.index].audio
+      this.audio = this.dataWord.answers.word[this.index].audio;
     } else {
       this.wordText = this.dataWord.answers.word[this.index].word;
       this.translationText = this.dataWord.answers.translate[this.index];
-      this.audio = this.dataWord.answers.word[this.index].audio
+      this.audio = this.dataWord.answers.word[this.index].audio;
     }
     this.word = new Control(
       this.node,

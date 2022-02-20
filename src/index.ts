@@ -28,7 +28,6 @@ const audioCallGame = new AudioCallGameController(
 
 const sprint = new SprintController(new SprintView(), new AppModel());
 
-
 const games = new GamesController(new GamesView(), new AppModel());
 
 const auth = new AuthController(new AuthView(), new AuthModel());

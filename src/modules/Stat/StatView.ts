@@ -67,7 +67,7 @@ class StatView extends View {
     let wordAvg = 0;
 
     const audioOneProcent = dayStat!.audioGame.words.length / 100;
-    const sprintOneProcent = dayStat!.audioGame.words.length / 100;
+    const sprintOneProcent = dayStat!.sprintGame.words.length / 100;
 
     if (audioLen) {
       audioAvg = +(dayStat.audioGame.right / audioOneProcent).toFixed(1);

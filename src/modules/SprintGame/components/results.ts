@@ -1,6 +1,5 @@
 import Control from '../../../core/BaseElement';
 import IWord from '../../../models/word-model';
-import styles from '../../../components/Header/headerStyle.module.scss';
 
 export default class SprintResults extends Control {
   public errorList: Control<HTMLElement>;
@@ -12,8 +11,6 @@ export default class SprintResults extends Control {
   private resultButtonsContainer: Control<HTMLElement>;
 
   private finishButton: Control<HTMLElement>;
-
-  private repeatButton: Control<HTMLElement>;
 
   public errorItem!: Control<HTMLElement>[];
 
@@ -42,24 +39,14 @@ export default class SprintResults extends Control {
       'div',
       'buttons-field'
     );
-    this.repeatButton = new Control(
-      this.resultButtonsContainer.node,
-      'button',
-      'game-button',
-      'Повторить'
-    );
-   // this.repeatButton.node.innerHTML = `<a href="#sprint" class="${styles.menu__link}">Повторить</a>`;
     this.finishButton = new Control(
       this.resultButtonsContainer.node,
       'button',
       'game-button',
-      'Закончить'
+      'Закончить игру'
     );
     this.finishButton.node.onclick = () => {
       window.location.replace('/');
-    };
-    this.repeatButton.node.onclick = () => {
-      window.location.replace('#sprint');
     };
   }
 

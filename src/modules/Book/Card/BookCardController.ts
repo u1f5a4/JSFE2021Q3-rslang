@@ -19,7 +19,7 @@ class BookCardController extends AppController {
 
   audioGame?: AudioCallGameController;
 
-  sprintGame!: SprintController
+  sprintGame!: SprintController;
 
   isUser?: boolean;
 
@@ -176,11 +176,10 @@ class BookCardController extends AppController {
       if (this.isUser) {
         AppView.clear();
         sprint.playGame(group, String(this.page));
-      } 
-      else {
+      } else {
         AppView.clear();
         sprint.playGame(group, String(this.page));
-      } 
+      }
     });
 
     const buttonDifficult = document.querySelector('#complicate-word');

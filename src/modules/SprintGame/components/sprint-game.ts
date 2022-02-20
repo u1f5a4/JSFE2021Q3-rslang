@@ -6,6 +6,7 @@ import renderHeaderTemplate from '../../../components/Header/_renderHeaderTempla
 import SprintFieldGame from './sprint-field-game';
 import Timer from './timer';
 import styles from '../SprintStyle.module.scss';
+// eslint-disable-next-line import/no-cycle
 import { Question } from '../SprintController';
 
 export default class SprintGame extends View {
@@ -16,8 +17,10 @@ export default class SprintGame extends View {
   public timer: Timer;
 
   public sprintContainer: Control<HTMLElement>;
+
   public soundButton: Control<HTMLElement>;
-  public onPlayAudio!: () => void
+
+  public onPlayAudio!: () => void;
 
   constructor(public scoreValue: number, public result: Question[]) {
     super('div', 'sprint');
@@ -28,7 +31,12 @@ export default class SprintGame extends View {
       `sprint__container ${styles.wrapper}`
     );
     this.timer = new Timer(this.sprintContainer.node);
-    this.soundButton = new Control(this.sprintContainer.node, 'div', 'sprint__audio', `🔊`)
+    this.soundButton = new Control(
+      this.sprintContainer.node,
+      'div',
+      'sprint__audio',
+      `🔊`
+    );
     this.score = new Control(
       this.sprintContainer.node,
       'span',
@@ -38,7 +46,7 @@ export default class SprintGame extends View {
     this.gameField = new SprintFieldGame(this.sprintContainer.node, result);
     this.timer.start(TIME);
     this.soundButton.node.onclick = () => {
-      this.onPlayAudio()
-    }
+      this.onPlayAudio();
+    };
   }
 }
