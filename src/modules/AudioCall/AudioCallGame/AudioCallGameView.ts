@@ -4,14 +4,15 @@ import styles from './style.module.scss';
 import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
 import './style.scss';
+import renderPageDescTemplate from '../../../components/PageDesc/_renderPageDescTemplate';
 
 class AudioCallGameView extends AppView {
-  titlePage = 'Учебник английского с карточками и мини-играми';
+  titlePage = 'Аудиовызов';
 
-  subtitlePage = `Простой и понятный интерфейс нашего приложения позволит сконцентрироваться на изучении и достигнуть результата наблюдая за своим прогрессом`;
+  subtitlePage = `Слушай английскую речь и выбирай правильный перевод`;
 
   drawPage() {
-    document.title = this.titlePage;
+    document.title = this.titlemain + this.titlePage;
     this.body!.innerHTML = this.getHtml();
   }
 
@@ -19,6 +20,8 @@ class AudioCallGameView extends AppView {
     return `
       ${renderHeaderTemplate()}
       <main class="${styles.wrapper} ${styles.main}  ${styles.container}">
+      ${renderPageDescTemplate(this.titlePage, this.subtitlePage)}
+
         <div class="${styles.game}" id="game-container">
             <div class="${styles['game__sound-box']}">
                 <div class="${styles['audio-box']}" id="play-game-audio">

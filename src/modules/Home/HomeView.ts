@@ -3,9 +3,9 @@ import AppView from '../../core/View';
 import './HomeStyle.scss';
 import styles from './HomeStyle.module.scss';
 import pageCardsData from './page-cards-data';
-import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
-import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
-import renderFooterTemplate from '../../сomponents/Footer/_renderFooterTemplate';
+import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
+import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
 
 class HomeView extends AppView {
   titlePage = `Изучение английского по карточкам и мини-играми`;

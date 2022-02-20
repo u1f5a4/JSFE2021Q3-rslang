@@ -13,9 +13,9 @@ class AudioCallController extends AppController {
     super(view, model);
   }
 
-  async setEvents() {
+  async setEvents(group: string, page: string) {
     // START QUIZ
-    await this.qm.startRound();
+    await this.qm.startRound(group, page);
     await this.getQuizElements();
   }
 
@@ -29,7 +29,8 @@ class AudioCallController extends AppController {
   }
 
   async getAudio() {
-    const audio = document.getElementById('round-audio') as HTMLAudioElement;
+    try {
+      const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
     audio.src = '';
     audio.src = `${this.model.getDomain()}/${
@@ -37,6 +38,13 @@ class AudioCallController extends AppController {
     }`;
     await audio.play();
     this.playRoundWord();
+      audio.src = '';
+      audio.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.audio}`;
+
+      await audio.play();
+    } catch (error) {
+      // console.log(error);
+    }
   }
 
   async getOptions() {
@@ -65,6 +73,7 @@ class AudioCallController extends AppController {
     const onAnswer = (event: MouseEvent): void => {
       event.preventDefault();
       const target = <HTMLBodyElement>event.target;
+      if (target.nodeName === 'DIV') return;
       const targetId = target.id;
       if (target.classList.contains('quiz-options-btn')) {
         this.qm.guessAnswer(targetId);
@@ -115,6 +124,7 @@ class AudioCallController extends AppController {
         nextQuestionBtn.disabled = true;
       }
       this.switchBtnState(false);
+
       const soundImg = document.getElementById('sound-img') as HTMLImageElement;
       soundImg.src = `assets/images/sound.png`;
     });
@@ -148,7 +158,7 @@ class AudioCallController extends AppController {
     }, 1000);
   }
 
-  bindButtons() {
+  async bindButtons() {
     const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
     const playAudioBtn = document.getElementById(
@@ -290,11 +300,11 @@ class AudioCallController extends AppController {
     gameContainer.classList.toggle('display-none');
   }
 
-  async displayPage() {
+  async displayPage(group: string, page: string) {
     this.view.drawPage();
-    await this.setEvents();
+    await this.setEvents(group, page);
+    await this.bindButtons();
     await this.bindElements();
-    this.bindButtons();
   }
 }
 

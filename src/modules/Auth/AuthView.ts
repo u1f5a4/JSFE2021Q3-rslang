@@ -3,8 +3,8 @@ import View from '../../core/View-auth';
 import Control from '../../core/BaseElement';
 
 import FormHeader from './components/form-header';
-import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
-import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
+import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
 
 class AuthView extends View {
   public onClick!: () => void;

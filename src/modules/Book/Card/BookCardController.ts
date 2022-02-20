@@ -3,6 +3,7 @@ import AppModel from '../../AppModel';
 import BookCardView from './BookCardView';
 import IWord from '../../../models/word-model';
 import AppController from '../../../core/Controller';
+import AudioCallGameController from '../../AudioCall/AudioCallGame/AudioCallGameController';
 
 class BookCardController extends AppController {
   page: number;
@@ -13,6 +14,10 @@ class BookCardController extends AppController {
 
   countDifficultWords?: number;
 
+  audioGame?: AudioCallGameController;
+
+  isUser?: boolean;
+
   constructor(public view: BookCardView, public model: AppModel) {
     super(view, model);
     this.page = 0;
@@ -21,7 +26,8 @@ class BookCardController extends AppController {
   }
 
   async displayPage(group: string) {
-    this.view.isUser = this.model.isUser();
+    this.isUser = this.model.isUser();
+    this.view.isUser = this.isUser;
 
     const localPage = Number(this.model.getSetting(`group/${group}`));
     if (Number.isNaN(localPage)) {
@@ -35,17 +41,17 @@ class BookCardController extends AppController {
     this.view.group = group;
     this.view.wordNumber = this.wordNumber;
 
-    if (this.view.isUser && group === 'difficult') {
+    if (this.isUser && group === 'difficult') {
       this.words = await this.model.getAllDifficultWords(this.page);
       this.countDifficultWords = await this.model.getCountAllDifficultWords();
       this.view.countDifficultWords = this.countDifficultWords;
       this.view.countDifficultWordsOnPage = this.words.length;
     }
-    if (this.view.isUser && group !== 'difficult') {
+    if (this.isUser && group !== 'difficult') {
       this.words = await this.model.getTwentyUserWords(group, this.page);
       this.view.typePage = this.isTypePage();
     }
-    if (!this.view.isUser) {
+    if (!this.isUser) {
       this.words = await this.model.getWords(group, this.page);
     }
 
@@ -155,25 +161,27 @@ class BookCardController extends AppController {
 
     const buttonGoAudioGame = document.querySelector('#go-audio-game');
     buttonGoAudioGame?.addEventListener('click', () => {
-      document.location = '/#book';
+      if (this.isUser) this.audioGame!.displayPage(group, String(this.page));
+      else this.audioGame!.displayPage(group, String(this.page));
     });
 
     const buttonGoSprintGame = document.querySelector('#go-sprint-game');
     buttonGoSprintGame?.addEventListener('click', () => {
-      document.location = '/#book';
+      // document.location = '/#book';
+      // console.log(group, this.page);
     });
 
     const buttonDifficult = document.querySelector('#complicate-word');
     buttonDifficult?.addEventListener('click', async () => {
       const word = this.words[this.wordNumber];
-      this.model.setWordDifficult(String(word._id), word.word);
+      this.model.setWordDifficult(String(word.id), word.word);
       this.view.changeCardToDifficulty();
     });
 
     const buttonEasy = document.querySelector('#easy-word');
     buttonEasy?.addEventListener('click', () => {
       const word = this.words[this.wordNumber];
-      this.model.setWordEasy(String(word._id), word.word);
+      this.model.setWordEasy(String(word.id), word.word);
       this.view.changeCardToEasy();
     });
 
