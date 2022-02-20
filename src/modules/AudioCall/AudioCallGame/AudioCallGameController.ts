@@ -31,12 +31,12 @@ class AudioCallController extends AppController {
   async getAudio() {
     try {
       const audio = document.getElementById('round-audio') as HTMLAudioElement;
-
       audio.src = '';
       audio.src = `${this.model.getDomain()}/${
         this.qm.currentRoundAnswer?.audio
       }`;
       await audio.play();
+
       this.playRoundWord();
       audio.src = '';
       audio.src = `${this.model.getDomain()}/${
@@ -65,13 +65,6 @@ class AudioCallController extends AppController {
       optionsBox.appendChild(btn);
     });
 
-    const correctAudio = document.getElementById(
-      'correct-audio'
-    ) as HTMLAudioElement;
-    const errorAudio = document.getElementById(
-      'error-audio'
-    ) as HTMLAudioElement;
-
     const onAnswer = (event: MouseEvent): void => {
       event.preventDefault();
       const target = <HTMLBodyElement>event.target;
@@ -84,12 +77,6 @@ class AudioCallController extends AppController {
       this.switchBtnState(true);
       optionsBox.removeEventListener('click', onAnswer);
       this.changeOptionsColor();
-
-      if (this.qm.currentRoundResult === 'WON') {
-        correctAudio.play();
-      } else {
-        errorAudio.play();
-      }
     };
 
     optionsBox.addEventListener('click', onAnswer);
@@ -179,15 +166,12 @@ class AudioCallController extends AppController {
     const nextQuestionBtn = document.getElementById(
       'next-question'
     ) as HTMLButtonElement;
-    const errorAudio = document.getElementById(
-      'error-audio'
-    ) as HTMLAudioElement;
+
     showAnswerBtn.addEventListener('click', () => {
       this.qm.guessAnswer('wrong-answer');
       this.changeOptionsColor();
 
       this.switchBtnState(true);
-      errorAudio.play();
     });
 
     const gameOptionsBox = document.getElementById(

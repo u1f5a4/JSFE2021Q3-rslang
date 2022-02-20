@@ -72,15 +72,25 @@ export class QuizManager {
   }
 
   async guessAnswer(wordId: string) {
+    const correctAudio = document.getElementById(
+      'correct-audio'
+    ) as HTMLAudioElement;
+    const errorAudio = document.getElementById(
+      'error-audio'
+    ) as HTMLAudioElement;
+
     this.currentRoundGuess = wordId;
     const wordIdRightWord = this.currentRoundAnswer?.id;
     if (this.currentRoundGuess === wordIdRightWord) {
+      correctAudio.play();
+
       if (this.model.isUser()) {
         const word = await this.model.getWord(wordIdRightWord);
         this.model.rightWord(word);
       }
       this.currentRoundResult = ResultType.WON;
     } else {
+      errorAudio.play();
       if (this.model.isUser()) {
         const word = await this.model.getWord(String(wordIdRightWord));
         this.model.wrongWord(word);
