@@ -1,7 +1,7 @@
 import Control from '../../../core/BaseElement';
 import { TIME } from '../../../core/constants/server-constants';
 import View from '../../../core/View-auth';
-import renderHeaderTemplate from '../../../сomponents/Header/_renderHeaderTemplate';
+import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 // eslint-disable-next-line import/no-cycle
 import SprintFieldGame from './sprint-field-game';
 import Timer from './timer';

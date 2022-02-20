@@ -1,4 +1,4 @@
-import renderFooterTemplate from '../сomponents/Footer/_renderFooterTemplate';
+import renderFooterTemplate from '../components/Footer/_renderFooterTemplate';
 
 class View<NodeType extends HTMLElement = HTMLElement> {
   body = document.querySelector('body');
