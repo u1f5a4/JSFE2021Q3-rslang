@@ -205,7 +205,6 @@ export default class SprintController {
 
   private renderPoints(): void {
     if (this.rightWords.length < COUNT_RIGHT_ANSWERS) {
-      // this.scorePoints;
       this.game.gameField.marker = new Control(
         this.game.gameField.markerContainer.node,
         'span',
@@ -240,10 +239,13 @@ export default class SprintController {
         this.errorAnswersArr,
         this.correctAnswersArr
       );
+      this.scoreValue = 0
+      this.errorAnswersArr = []
+      this.correctAnswersArr = []
     };
   }
 
-  private keyHandler() {
+  private keyHandler(): void {
     document.onkeydown = (e) => {
       if (e.keyCode === 37) {
         this.onClickFalseButton();
@@ -257,5 +259,6 @@ export default class SprintController {
   public displayPage(): void {
     this.view.drawPage();
     this.bindButtons();
+    this.model.logout();
   }
 }

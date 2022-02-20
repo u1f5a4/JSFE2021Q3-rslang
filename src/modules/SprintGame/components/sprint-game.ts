@@ -27,6 +27,6 @@ export default class SprintGame extends View {
       `${this.scoreValue}`
     );
     this.gameField = new SprintFieldGame(this.sprintContainer.node, result);
-    this.timer.start(TIME);
+    this.timer.start(5);
   }
 }

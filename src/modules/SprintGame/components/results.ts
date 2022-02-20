@@ -48,7 +48,7 @@ export default class SprintResults extends Control {
       'game-button',
       'Повторить'
     );
-    this.repeatButton.node.innerHTML = `<a href="#sprint" class="${styles.menu__link}">Повторить</a>`;
+   // this.repeatButton.node.innerHTML = `<a href="#sprint" class="${styles.menu__link}">Повторить</a>`;
     this.finishButton = new Control(
       this.resultButtonsContainer.node,
       'button',
@@ -57,6 +57,9 @@ export default class SprintResults extends Control {
     );
     this.finishButton.node.onclick = () => {
       window.location.replace('/');
+    };
+    this.repeatButton.node.onclick = () => {
+      window.location.replace('#sprint');
     };
   }
 

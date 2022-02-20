@@ -280,7 +280,7 @@ class AppModel {
     ) as HTMLButtonElement;
     if (logoutBtn) {
       logoutBtn.onclick = () => {
-        localStorage.removeItem(`rslang-localStorage.auth`);
+        localStorage.clear();
         STATE.auth = JSON.parse(localStorage.getItem('rslang-localStorage')!);
         STATE.userName = JSON.parse(
           localStorage.getItem('rslang-localStorage')!
