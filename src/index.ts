@@ -65,7 +65,14 @@ router.add('audio-game/2', () => audioCallGame.displayPage('2', 'random'));
 router.add('audio-game/3', () => audioCallGame.displayPage('3', 'random'));
 router.add('audio-game/4', () => audioCallGame.displayPage('4', 'random'));
 router.add('audio-game/5', () => audioCallGame.displayPage('5', 'random'));
+
 router.add('sprint-game', () => sprint.displayPage());
+router.add('sprint-game/0', () => sprint.playGame('0', 'random'));
+router.add('sprint-game/1', () => sprint.playGame('1', 'random'));
+router.add('sprint-game/2', () => sprint.playGame('2', 'random'));
+router.add('sprint-game/3', () => sprint.playGame('3', 'random'));
+router.add('sprint-game/4', () => sprint.playGame('4', 'random'));
+router.add('sprint-game/5', () => sprint.playGame('5', 'random'));
 
 window.addEventListener('load', () => {
   const { hash } = window.location;
