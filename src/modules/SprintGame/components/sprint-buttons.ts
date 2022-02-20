@@ -15,13 +15,13 @@ export default class SprintButtons extends Control {
       this.node,
       'button',
       'game-button true-button',
-      'НЕВЕРНО'
+      'Неверно'
     );
     this.trueButton = new Control(
       this.node,
       'button',
       'game-button false-button',
-      'ВЕРНО'
+      'Верно'
     );
     this.trueButton.node.onclick = () => {
       this.onClickNextWordTrue();
