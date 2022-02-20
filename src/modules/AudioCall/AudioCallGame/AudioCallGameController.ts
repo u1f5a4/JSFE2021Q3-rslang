@@ -32,14 +32,16 @@ class AudioCallController extends AppController {
     try {
       const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
-    audio.src = '';
-    audio.src = `${this.model.getDomain()}/${
-      this.qm.currentRoundAnswer?.audio
-    }`;
-    await audio.play();
-    this.playRoundWord();
       audio.src = '';
-      audio.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.audio}`;
+      audio.src = `${this.model.getDomain()}/${
+        this.qm.currentRoundAnswer?.audio
+      }`;
+      await audio.play();
+      this.playRoundWord();
+      audio.src = '';
+      audio.src = `${this.model.getDomain()}/${
+        this.qm.currentRoundAnswer?.audio
+      }`;
 
       await audio.play();
     } catch (error) {
