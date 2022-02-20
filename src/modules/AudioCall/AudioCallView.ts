@@ -9,7 +9,7 @@ import levelData from './level-data';
 class AudioCallView extends AppView {
   titlePage = 'Аудиовызов';
 
-  subtitlePage = `В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего слова`;
+  subtitlePage = `Слушай английскую речь и выбирай правильный перевод`;
 
   drawPage() {
     document.title = this.titlemain + this.titlePage;

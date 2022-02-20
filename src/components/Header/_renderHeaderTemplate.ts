@@ -4,7 +4,7 @@ import styles from './headerStyle.module.scss';
 export function renderAuthUser(): string {
   if (STATE.auth) {
     return `
-        <button id="logout-btn" class="${styles.header__button} ${styles.btn}">Выйти из ${STATE.userName.name}</button>`;
+        <button id="logout-btn" class="${styles.header__button} ${styles.btn}">Выйти из <b>&nbsp;${STATE.userName.name}</b></button>`;
   }
   return ` <a href="#auth" class="${styles.menu__link}"><button id="login" class="${styles.header__button} ${styles.btn}">
         Войти | Регистрация
@@ -34,11 +34,18 @@ export default function renderHeaderTemplate(): string {
                           styles.menu__link
                         }">Мини-игры</a>
                     </li>
-                    <li class="${styles.menu__item}">
-                        <a href="/#stat" class="${
-                          styles.menu__link
-                        }">Статистика</a>
-                    </li> 
+
+                    ${
+                      // eslint-disable-next-line consistent-return
+                      (() => {
+                        if (STATE.auth)
+                          return `<li class="${styles.menu__item}">
+                                     <a href="/#stat" class="${styles.menu__link}">Статистика</a>
+                                  </li> `;
+                        return '';
+                      })()
+                    }
+                    
                 </ul>
             </nav>
            ${renderAuthUser()}
