@@ -170,7 +170,7 @@ export default class SprintController {
         item.word ===
         this.game.gameField.dataWord.answers.word[this.game.gameField.index]
     );
-    this.correctAnswersArr.push(this.correctWord!);
+    if (this.correctWord) this.correctAnswersArr.push(this.correctWord);
     this.renderPoints();
     this.rightWords.push(true);
     this.scoreValue += this.scorePoints;
@@ -189,7 +189,7 @@ export default class SprintController {
         item.word ===
         this.game.gameField.dataWord.answers.word[this.game.gameField.index]
     );
-    this.errorAnswersArr.push(this.errorWord!);
+    if (this.errorWord) this.errorAnswersArr.push(this.errorWord);
     this.game.gameField.markerContainer.destroy();
     this.game.gameField.markerContainer = new Control(
       this.game.gameField.node,
@@ -235,6 +235,7 @@ export default class SprintController {
   private stopGame(): void {
     this.game.timer.onTimeOut = () => {
       this.game.sprintContainer.destroy();
+
       this.result = new SprintResults(
         this.game.node,
         this.errorAnswersArr,
