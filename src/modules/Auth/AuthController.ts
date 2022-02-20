@@ -18,7 +18,7 @@ class AuthController {
   public signUpForm!: SignUpForm;
 
   public errorBlock!: ErrorContainer;
-
+  
   appModel: AppModel;
 
   constructor(public view: AuthView, public model: AuthModel) {

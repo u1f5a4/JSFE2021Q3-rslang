@@ -1,10 +1,10 @@
 import View from '../../core/View-auth';
 import './SprintStyle.scss';
 import styles from './SprintStyle.module.scss';
-import renderFooterTemplate from '../../сomponents/Footer/_renderFooterTemplate';
-import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
-import renderPageDescTemplate from '../../сomponents/PageDesc/_renderPageDescTemplate';
 import levelData from '../AudioCall/level-data';
+import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
+import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 
 export default class SprintView extends View {
   public titlePage = 'Спринт';
