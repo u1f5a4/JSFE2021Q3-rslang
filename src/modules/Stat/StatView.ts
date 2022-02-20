@@ -68,15 +68,15 @@ class StatView extends View {
     const sprintOneProcent = dayStat!.audioGame.words.length / 100;
 
     if (audioLen) {
-      audioAvg = dayStat.audioGame.right / audioOneProcent;
+      audioAvg = +(dayStat.audioGame.right / audioOneProcent).toFixed(1);
       wordAvg = audioAvg;
     }
     if (sprintLen) {
-      sprintAvg = dayStat.sprintGame.right / sprintOneProcent;
+      sprintAvg = +(dayStat.sprintGame.right / sprintOneProcent).toFixed(1);
       wordAvg = sprintAvg;
     }
     if (audioLen && sprintLen) {
-      wordAvg = (audioAvg + sprintAvg) / 2;
+      wordAvg = +((audioAvg + sprintAvg) / 2).toFixed(1);
     }
 
     return { wordAvg, audioAvg, sprintAvg };
