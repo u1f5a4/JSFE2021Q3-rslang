@@ -1,10 +1,11 @@
-import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 import Control from '../../../core/BaseElement';
 import { TIME } from '../../../core/constants/server-constants';
 import View from '../../../core/View-auth';
+import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
 // eslint-disable-next-line import/no-cycle
 import SprintFieldGame from './sprint-field-game';
 import Timer from './timer';
+import styles from '../SprintStyle.module.scss';
 
 export default class SprintGame extends View {
   public score: Control<HTMLElement>;
@@ -19,7 +20,11 @@ export default class SprintGame extends View {
   constructor(public scoreValue: number, public result: any) {
     super('div', 'sprint');
     this.node.innerHTML = `${renderHeaderTemplate()}`;
-    this.sprintContainer = new Control(this.node, 'div', 'sprint__container');
+    this.sprintContainer = new Control(
+      this.node,
+      'div',
+      `sprint__container ${styles.wrapper}`
+    );
     this.soundButton = new Control(this.sprintContainer.node, '', `🔊`)
     this.timer = new Timer(this.sprintContainer.node);
     this.score = new Control(

@@ -5,7 +5,7 @@ import AppModel from '../../../AppModel';
 
 const appManager = new AppModel();
 
-function generateRandomNumber(min: number = 0, max: number = 20) {
+export function generateRandomNumber(min: number = 0, max: number = 20) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 

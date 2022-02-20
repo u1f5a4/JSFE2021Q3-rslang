@@ -6,9 +6,9 @@ import {
   START_POINTS,
 } from '../../core/constants/server-constants';
 import delay from '../../core/delay';
-import AppView from '../../core/View';
 import IWord from '../../models/word-model';
 import AppModel from '../AppModel';
+import { generateRandomNumber } from '../AudioCall/AudioCallGame/services/utils';
 import SprintResults from './components/results';
 // eslint-disable-next-line import/no-cycle
 import SprintFieldGame from './components/sprint-field-game';
@@ -30,7 +30,7 @@ export default class SprintController {
 
   game!: SprintGame;
 
-  checkedInputValue!: string;
+  group?: string;
 
   pageIndex: number = 0;
 
@@ -60,17 +60,9 @@ export default class SprintController {
       const checkedInput = document.querySelector(
         'input[name=audio-game]:checked'
       ) as HTMLInputElement;
-      this.checkedInputValue = checkedInput.value;
-      AppView.clear();
-      window.location.href = `/#sprint-game/${this.checkedInputValue}`;
-      this.data = await this.model.getWords(
-        this.checkedInputValue,
-        this.pageIndex
-      );
-      this.game = new SprintGame(this.scoreValue, this.getWordsPerPage());
-      this.game.drawPage();
-      this.checkAnswers();
-      this.stopGame();
+
+      window.location.href = `/#sprint-game/${checkedInput.value}`;
+
       event.preventDefault();
     });
   }
@@ -111,13 +103,13 @@ export default class SprintController {
     this.game.gameField.renderWords();
     this.checkAnswers();
     this.keyHandler();
-    this.swithOnNextPage();
+    this.switchOnNextPage();
   }
 
-  private async swithOnNextPage(): Promise<void> {
+  private async switchOnNextPage(): Promise<void> {
     if (this.game.gameField.index === MAX_COUNT_WORD_PER_PAGE) {
       this.data = await this.model.getWords(
-        this.checkedInputValue,
+        String(this.group),
         this.pageIndex + 1
       );
       this.game.gameField.destroy();
@@ -131,14 +123,14 @@ export default class SprintController {
 
   private checkAnswers(): void {
     this.game.gameField.gameButtons.onClickNextWordTrue = async () => {
-      await this.onClicTrueButton();
+      await this.onClickTrueButton();
     };
     this.game.gameField.gameButtons.onClickNextWordFalse = async () => {
       await this.onClickFalseButton();
     };
   }
 
-  private async onClicTrueButton(): Promise<void> {
+  private async onClickTrueButton(): Promise<void> {
     if (
       this.game.gameField.answerArr.includes(
         this.game.gameField.dataWord.answers.word[this.game.gameField.index]
@@ -170,7 +162,7 @@ export default class SprintController {
         item.word ===
         this.game.gameField.dataWord.answers.word[this.game.gameField.index]
     );
-    this.correctAnswersArr.push(this.correctWord!);
+    if (this.correctWord) this.correctAnswersArr.push(this.correctWord);
     this.renderPoints();
     this.rightWords.push(true);
     this.scoreValue += this.scorePoints;
@@ -189,7 +181,7 @@ export default class SprintController {
         item.word ===
         this.game.gameField.dataWord.answers.word[this.game.gameField.index]
     );
-    this.errorAnswersArr.push(this.errorWord!);
+    if (this.errorWord) this.errorAnswersArr.push(this.errorWord);
     this.game.gameField.markerContainer.destroy();
     this.game.gameField.markerContainer = new Control(
       this.game.gameField.node,
@@ -234,6 +226,9 @@ export default class SprintController {
   private stopGame(): void {
     this.game.timer.onTimeOut = () => {
       this.game.sprintContainer.destroy();
+
+      // this.saveStat(this.errorAnswersArr);
+
       this.result = new SprintResults(
         this.game.node,
         this.errorAnswersArr,
@@ -251,14 +246,45 @@ export default class SprintController {
         this.onClickFalseButton();
       }
       if (e.keyCode === 39) {
-        this.onClicTrueButton();
+        this.onClickTrueButton();
       }
     };
   }
 
-  public displayPage(): void {
+  public async displayPage(): Promise<void> {
     this.view.drawPage();
     this.bindButtons();
     this.model.logout();
+  }
+
+  public async playGame(group: string, page: string) {
+    this.group = group;
+    this.data = await this.genData(group, page);
+
+    this.game = new SprintGame(this.scoreValue, this.getWordsPerPage());
+    this.game.drawPage();
+    this.checkAnswers();
+    this.stopGame();
+  }
+
+  // saveStat(one: IWord[]) {
+  // const array = one.concat(two);
+  // const uniqResult: IWord[] = [];
+
+  // one.forEach((word) => {
+  //   const { id } = word;
+  //   const isUniq = uniqResult.every((uniqWord) => uniqWord.id !== id);
+  //   if (isUniq) uniqResult.push(word);
+  // });
+
+  // console.log(array, uniqResult);
+  // }
+
+  async genData(group: string, page: string) {
+    if (page === 'random') {
+      const randomPage = generateRandomNumber(0, 29);
+      return this.model.getWords(group, randomPage);
+    }
+    return this.model.getWords(group, Number(page));
   }
 }
