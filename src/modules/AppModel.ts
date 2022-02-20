@@ -119,25 +119,30 @@ class AppModel {
     return result;
   }
 
+  // eslint-disable-next-line consistent-return
   async countStat() {
-    const stat = await this.getStat();
-    const date = this.getStringDate();
-    const dayStat = stat.optional.data.find((elem) => elem.date === date);
+    try {
+      const stat = await this.getStat();
+      const date = this.getStringDate();
+      const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
-    const audioGame = dayStat!.audioGame.words;
-    const sprintGame = dayStat!.sprintGame.words;
+      const audioGame = dayStat!.audioGame.words;
+      const sprintGame = dayStat!.sprintGame.words;
 
-    const words = Array.from(new Set([...sprintGame, ...audioGame]));
+      const words = Array.from(new Set([...sprintGame, ...audioGame]));
 
-    dayStat!.words.words = words.length;
+      dayStat!.words.words = words.length;
 
-    stat.learnedWords = stat.optional.data.reduce(
-      (prev, curr) => prev + curr.words.easyQty,
-      0
-    );
+      stat.learnedWords = stat.optional.data.reduce(
+        (prev, curr) => prev + curr.words.easyQty,
+        0
+      );
 
-    this.writeStat(stat);
-    return stat;
+      this.writeStat(stat);
+      return stat;
+    } catch (error) {
+      // console.log(error);
+    }
   }
 
   private async writeStat(data: any) {
