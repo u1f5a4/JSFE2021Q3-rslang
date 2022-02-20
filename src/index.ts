@@ -17,8 +17,10 @@ import GamesController from './modules/Games/GamesController';
 import GamesView from './modules/Games/GamesView';
 import StatController from './modules/Stat/StatController';
 import StatView from './modules/Stat/StatView';
+import SprintController from './modules/SprintGame/SprintController';
+import SprintView from './modules/SprintGame/SprintView';
 
-const stat = new StatController(new StatView(), new AppModel());
+const sprint = new SprintController(new SprintView(), new AppModel());
 
 const audioCall = new AudioCallController(new AudioCallView(), new AppModel());
 const audioCallGame = new AudioCallGameController(
@@ -29,7 +31,8 @@ const audioCallGame = new AudioCallGameController(
 const games = new GamesController(new GamesView(), new AppModel());
 
 const auth = new AuthController(new AuthView(), new AuthModel());
-auth.AppModel = new AppModel();
+
+const stat = new StatController(new StatView(), new AppModel());
 
 const book = new BookController(new BookView(), new AppModel());
 const bookCard = new BookCardController(new BookCardView(), new AppModel());
@@ -62,6 +65,7 @@ router.add('audio-game/2', () => audioCallGame.displayPage('2', 'random'));
 router.add('audio-game/3', () => audioCallGame.displayPage('3', 'random'));
 router.add('audio-game/4', () => audioCallGame.displayPage('4', 'random'));
 router.add('audio-game/5', () => audioCallGame.displayPage('5', 'random'));
+router.add('sprint', () => sprint.displayPage());
 
 window.addEventListener('load', () => {
   const { hash } = window.location;
