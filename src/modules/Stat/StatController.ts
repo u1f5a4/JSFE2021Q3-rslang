@@ -10,9 +10,12 @@ class StatController extends Controller {
   async displayPage() {
     this.view.drawPage();
     this.model.logout();
+    this.view.model = this.model;
 
     await this.model.countStat();
     const stat = await this.model.getStat();
+
+    console.log(stat);
 
     this.view.drawNumbers(stat);
     this.drawGraphs(stat);

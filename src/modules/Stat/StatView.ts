@@ -6,9 +6,11 @@ import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTem
 import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
 import css from './StatStyles.module.scss';
 import View from '../../core/View';
-import { StatDate, UserStat } from '../AppModel';
+import AppModel, { StatDate, UserStat } from '../AppModel';
 
 class StatView extends View {
+  model?: AppModel;
+
   titlePage = `Статистика`;
 
   subtitlePage = `Отслеживай свой прогресс и корректируй своё обучение`;
@@ -21,7 +23,7 @@ class StatView extends View {
   drawNumbers(stat: UserStat) {
     // console.log(stat);
 
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const date = this.model?.getStringDate(); // '18/02/2022'
     const dayStat = stat.optional.data.find(
       (elem) => elem.date === date
     ) as StatDate;

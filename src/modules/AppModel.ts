@@ -50,11 +50,20 @@ class AppModel {
 
   // === Статистика === //
 
+  getStringDate(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = `0${date.getMonth() + 1}`.slice(-2);
+    const day = `0${date.getDate()}`.slice(-2);
+
+    return `${day}/${month}/${year}`;
+  }
+
   async updateGameStat(game: 'audioGame' | 'sprintGame', data: GameStat) {
     try {
       const stat = await this.getStat();
 
-      const date = new Date().toLocaleDateString(); // '18/02/2022'
+      const date = this.getStringDate();
       const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
       const gameAudioStat = dayStat![game];
@@ -87,6 +96,11 @@ class AppModel {
       }
     );
 
+    if (rawResponse.status === 404) {
+      this.createZeroStat();
+      return this.getStat();
+    }
+
     const stat = await rawResponse.json();
 
     // распаковывает статистику в массив из строки
@@ -96,7 +110,7 @@ class AppModel {
     });
 
     // если есть статистика других дней, то создаём новый день
-    const dateNow = new Date().toLocaleDateString(); // '18/02/2022'
+    const dateNow = this.getStringDate();
     const dayStat = result.optional.data.find((elem) => elem.date === dateNow);
     if (!dayStat) {
       const dataStat = result.optional.data;
@@ -107,7 +121,7 @@ class AppModel {
 
   async countStat() {
     const stat = await this.getStat();
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const date = this.getStringDate();
     const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
     const audioGame = dayStat!.audioGame.words;
@@ -130,6 +144,7 @@ class AppModel {
     const { userId, token } = this.getSetting('auth');
 
     const stat = { ...data };
+
     stat.optional.data = JSON.stringify(data.optional.data);
     delete stat.id;
 
@@ -152,7 +167,7 @@ class AppModel {
     const data = {
       learnedWords: 0,
       optional: {
-        data: [this.createDayZeroStat()],
+        data: [await this.createDayZeroStat()],
       },
     };
 
@@ -160,7 +175,7 @@ class AppModel {
   }
 
   private async createDayZeroStat() {
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const date = this.getStringDate();
 
     return {
       date,
@@ -173,7 +188,7 @@ class AppModel {
   private async plusOneIntoEasyStat() {
     const stat = await this.getStat();
 
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const date = this.getStringDate();
     const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
     dayStat!.words.easyQty += 1;
