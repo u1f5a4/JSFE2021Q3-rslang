@@ -26,3 +26,6 @@ export const START_POINTS = 10;
 export const COUNT_RIGHT_ANSWERS = 3;
 
 export const TIME = 59;
+
+export const ERROR_SOUND = 'error.mp3'
+export const CORRECT_SOUND = 'correct.mp3'

@@ -1,7 +1,9 @@
 import Control from '../../core/BaseElement';
 import {
+  CORRECT_SOUND,
   COUNT_RIGHT_ANSWERS,
   delayBorderHighlight,
+  ERROR_SOUND,
   MAX_COUNT_WORD_PER_PAGE,
   START_POINTS,
 } from '../../core/constants/server-constants';
@@ -14,13 +16,13 @@ import SprintResults from './components/results';
 import SprintFieldGame from './components/sprint-field-game';
 // eslint-disable-next-line import/no-cycle
 import SprintGame from './components/sprint-game';
-import shuffle from './services/utils';
+import { shuffle, playAudio } from './services/utils';
 import SprintView from './SprintView';
 
 export type Question = {
   answersCorrect: IWord[];
   answers: {
-    word: string[];
+    word: IWord[];
     translate: string[];
   };
 };
@@ -49,8 +51,13 @@ export default class SprintController {
   errorWord: IWord | undefined;
 
   result!: SprintResults;
+  newWords: Set<string>;
 
-  constructor(public view: SprintView, public model: AppModel) {}
+  seriesArr: boolean[] = []
+ 
+  constructor(public view: SprintView, public model: AppModel) {
+    this.newWords = new Set()
+  }
 
   private bindButtons(): void {
     const form = document.getElementById('audio-call-form') as HTMLFormElement;
@@ -68,7 +75,7 @@ export default class SprintController {
   }
 
   private getWordsPerPage(): Question[] {
-    const answers: Array<string> = [];
+    const answers: Array<IWord> = [];
     const translate: Array<string> = [];
     const result: Array<Question> = [];
     const set = new Set<IWord>();
@@ -79,7 +86,7 @@ export default class SprintController {
       set.add(this.data[correctAnswerIndex]);
     }
     this.data.forEach((word) => {
-      answers.push(word.word);
+      answers.push(word);
       translate.push(word.wordTranslate);
       shuffle(answers);
       shuffle(translate);
@@ -88,14 +95,15 @@ export default class SprintController {
       answersCorrect: [...set],
       answers: {
         word: answers,
-        translate,
+        translate
       },
     };
     result.push(question);
     return result;
   }
 
-  private buttonsHandler(): void {
+  private async buttonsHandler(): Promise<void> { 
+    await this.switchOnNextPage();
     this.game.gameField.index += 1;
     this.game.gameField.word.destroy();
     this.game.gameField.translation.destroy();
@@ -103,11 +111,13 @@ export default class SprintController {
     this.game.gameField.renderWords();
     this.checkAnswers();
     this.keyHandler();
-    this.switchOnNextPage();
+   this.newWords.add(this.game.gameField.dataWord.answers.word[this.game.gameField.index].id!)
+   console.log([...this.newWords])
   }
 
   private async switchOnNextPage(): Promise<void> {
-    if (this.game.gameField.index === MAX_COUNT_WORD_PER_PAGE) {
+    console.log(this.game.gameField.index)
+    if (this.game.gameField.index === 19) {
       this.data = await this.model.getWords(
         String(this.group),
         this.pageIndex + 1
@@ -117,7 +127,6 @@ export default class SprintController {
         this.game.sprintContainer.node,
         this.getWordsPerPage()
       );
-      this.buttonsHandler();
     }
   }
 
@@ -133,38 +142,41 @@ export default class SprintController {
   private async onClickTrueButton(): Promise<void> {
     if (
       this.game.gameField.answerArr.includes(
-        this.game.gameField.dataWord.answers.word[this.game.gameField.index]
+        this.game.gameField.dataWord.answers.word[this.game.gameField.index].word
       )
     ) {
       this.getRightAnswer();
     } else {
       await this.getWrongAnswer();
     }
-    this.buttonsHandler();
+    await this.buttonsHandler();
   }
 
   private async onClickFalseButton(): Promise<void> {
     if (
       !this.game.gameField.answerArr.includes(
-        this.game.gameField.dataWord.answers.word[this.game.gameField.index]
+        this.game.gameField.dataWord.answers.word[this.game.gameField.index].word
       )
     ) {
       this.getRightAnswer();
     } else {
       await this.getWrongAnswer();
     }
-    this.buttonsHandler();
+    await this.buttonsHandler();
   }
 
   private getRightAnswer(): void {
     this.correctWord = this.data.find(
       (item) =>
         item.word ===
-        this.game.gameField.dataWord.answers.word[this.game.gameField.index]
+        this.game.gameField.dataWord.answers.word[this.game.gameField.index].word
     );
     if (this.correctWord) this.correctAnswersArr.push(this.correctWord);
+    const track = `assets/audio/${CORRECT_SOUND}`
+    playAudio(track)
     this.renderPoints();
     this.rightWords.push(true);
+    this.seriesArr.push(true)
     this.scoreValue += this.scorePoints;
     this.game.score.destroy();
     this.game.score = new Control(
@@ -179,7 +191,7 @@ export default class SprintController {
     this.errorWord = this.data.find(
       (item) =>
         item.word ===
-        this.game.gameField.dataWord.answers.word[this.game.gameField.index]
+        this.game.gameField.dataWord.answers.word[this.game.gameField.index].word
     );
     if (this.errorWord) this.errorAnswersArr.push(this.errorWord);
     this.game.gameField.markerContainer.destroy();
@@ -189,8 +201,11 @@ export default class SprintController {
       'marker-container'
     );
     this.rightWords = [];
+    this.seriesArr = []
     this.scorePoints = START_POINTS;
     this.game.gameField.node.classList.add('animate');
+    const track = `assets/audio/${ERROR_SOUND}`
+    playAudio(track)
     await delay(delayBorderHighlight);
     this.game.gameField.node.classList.remove('animate');
   }
@@ -223,11 +238,18 @@ export default class SprintController {
     }
   }
 
+  onPlayAudio() {
+    this.game.onPlayAudio = () => {
+      const track = `${this.model.getDomain()}/${this.game.gameField.audio}`;
+      playAudio(track)
+    }
+  }
+
   private stopGame(): void {
     this.game.timer.onTimeOut = () => {
       this.game.sprintContainer.destroy();
 
-      // this.saveStat(this.errorAnswersArr);
+      this.saveStat();
 
       this.result = new SprintResults(
         this.game.node,
@@ -248,6 +270,11 @@ export default class SprintController {
       if (e.keyCode === 39) {
         this.onClickTrueButton();
       }
+      if (e.keyCode === 32) {
+        const track = `${this.model.getDomain()}/${this.game.gameField.audio}`;
+        playAudio(track);
+        e.preventDefault()
+      }
     };
   }
 
@@ -260,11 +287,22 @@ export default class SprintController {
   public async playGame(group: string, page: string) {
     this.group = group;
     this.data = await this.genData(group, page);
-
     this.game = new SprintGame(this.scoreValue, this.getWordsPerPage());
     this.game.drawPage();
+    this.onPlayAudio()
     this.checkAnswers();
+    this.keyHandler();
     this.stopGame();
+  }
+
+  saveStat() {
+    const words = [...this.newWords];
+    const right = this.correctAnswersArr.length;
+    const wrong = this.errorAnswersArr.length;
+    const series = this.seriesArr.length;
+    const data = { words, right, wrong, series };
+    console.log('data', data)
+    this.model.updateGameStat('sprintGame', data);
   }
 
   // saveStat(one: IWord[]) {
