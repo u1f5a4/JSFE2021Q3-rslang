@@ -349,8 +349,8 @@ class AppModel {
 
   async setWordEasy(wordId: string, word: string): Promise<void> {
     try {
-      await this.updateUserWord(wordId, word, false, true);
       await this.plusOneIntoEasyStat();
+      await this.updateUserWord(wordId, word, false, true);
     } catch {
       await this.createUserWord(wordId, word);
       await this.updateUserWord(wordId, word, false, true);
