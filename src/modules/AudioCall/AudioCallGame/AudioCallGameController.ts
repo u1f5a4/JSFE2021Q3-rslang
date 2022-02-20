@@ -55,6 +55,7 @@ class AudioCallController extends AppController {
     const onAnswer = (event: MouseEvent): void => {
       event.preventDefault();
       const target = <HTMLBodyElement>event.target;
+      if (target.nodeName === 'DIV') return;
       const targetId = target.id;
       if (target.classList.contains('quiz-options-btn')) {
         qm.guessAnswer(targetId);
