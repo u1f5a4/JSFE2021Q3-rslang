@@ -21,7 +21,7 @@ class GamesController extends Controller {
     });
     const buttonGoSprintGame = document.querySelector('#go-sprint-game');
     buttonGoSprintGame?.addEventListener('click', () => {
-      // document.location = '/#book';
+      document.location = '/#sprint-game';
     });
   }
 }

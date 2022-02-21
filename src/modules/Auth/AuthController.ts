@@ -19,10 +19,11 @@ class AuthController {
 
   public errorBlock!: ErrorContainer;
 
-  AppModel!: AppModel;
+  appModel: AppModel;
 
   constructor(public view: AuthView, public model: AuthModel) {
     this.registrationUser(this.view.formContainer.formAuth);
+    this.appModel = new AppModel();
     this.toggleAuthModal();
   }
 
@@ -67,11 +68,10 @@ class AuthController {
     }
     if (response.ok) {
       this.userData = await response.json();
-      this.AppModel.addSetting({ auth: await this.userData });
-      localStorage.setItem('user', JSON.stringify(this.userData));
+      this.appModel.addSetting({ auth: this.userData });
       BEARER.bearer = `Bearer ${this.userData.token}`;
-      STATE.auth = JSON.parse(localStorage.getItem('user')!);
-      STATE.userName = JSON.parse(localStorage.getItem('user')!);
+      STATE.auth = JSON.parse(localStorage.getItem('rslang-localStorage')!);
+      STATE.userName = JSON.parse(localStorage.getItem('rslang-localStorage')!);
       window.location.replace('/');
       renderHeaderTemplate();
     }

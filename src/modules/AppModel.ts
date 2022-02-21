@@ -50,11 +50,20 @@ class AppModel {
 
   // === Статистика === //
 
+  getStringDate(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = `0${date.getMonth() + 1}`.slice(-2);
+    const day = `0${date.getDate()}`.slice(-2);
+
+    return `${day}/${month}/${year}`;
+  }
+
   async updateGameStat(game: 'audioGame' | 'sprintGame', data: GameStat) {
     try {
       const stat = await this.getStat();
 
-      const date = new Date().toLocaleDateString(); // '18/02/2022'
+      const date = this.getStringDate();
       const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
       const gameAudioStat = dayStat![game];
@@ -87,6 +96,11 @@ class AppModel {
       }
     );
 
+    if (rawResponse.status === 404) {
+      this.createZeroStat();
+      return this.getStat();
+    }
+
     const stat = await rawResponse.json();
 
     // распаковывает статистику в массив из строки
@@ -96,7 +110,7 @@ class AppModel {
     });
 
     // если есть статистика других дней, то создаём новый день
-    const dateNow = new Date().toLocaleDateString(); // '18/02/2022'
+    const dateNow = this.getStringDate();
     const dayStat = result.optional.data.find((elem) => elem.date === dateNow);
     if (!dayStat) {
       const dataStat = result.optional.data;
@@ -105,31 +119,37 @@ class AppModel {
     return result;
   }
 
+  // eslint-disable-next-line consistent-return
   async countStat() {
-    const stat = await this.getStat();
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
-    const dayStat = stat.optional.data.find((elem) => elem.date === date);
+    try {
+      const stat = await this.getStat();
+      const date = this.getStringDate();
+      const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
-    const audioGame = dayStat!.audioGame.words;
-    const sprintGame = dayStat!.sprintGame.words;
+      const audioGame = dayStat!.audioGame.words;
+      const sprintGame = dayStat!.sprintGame.words;
 
-    const words = Array.from(new Set([...sprintGame, ...audioGame]));
+      const words = Array.from(new Set([...sprintGame, ...audioGame]));
 
-    dayStat!.words.words = words.length;
+      dayStat!.words.words = words.length;
 
-    stat.learnedWords = stat.optional.data.reduce(
-      (prev, curr) => prev + curr.words.easyQty,
-      0
-    );
+      stat.learnedWords = stat.optional.data.reduce(
+        (prev, curr) => prev + curr.words.easyQty,
+        0
+      );
 
-    this.writeStat(stat);
-    return stat;
+      this.writeStat(stat);
+      return stat;
+    } catch (error) {
+      // console.log(error);
+    }
   }
 
   private async writeStat(data: any) {
     const { userId, token } = this.getSetting('auth');
 
     const stat = { ...data };
+
     stat.optional.data = JSON.stringify(data.optional.data);
     delete stat.id;
 
@@ -152,7 +172,7 @@ class AppModel {
     const data = {
       learnedWords: 0,
       optional: {
-        data: [this.createDayZeroStat()],
+        data: [await this.createDayZeroStat()],
       },
     };
 
@@ -160,7 +180,7 @@ class AppModel {
   }
 
   private async createDayZeroStat() {
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const date = this.getStringDate();
 
     return {
       date,
@@ -173,7 +193,7 @@ class AppModel {
   private async plusOneIntoEasyStat() {
     const stat = await this.getStat();
 
-    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const date = this.getStringDate();
     const dayStat = stat.optional.data.find((elem) => elem.date === date);
 
     dayStat!.words.easyQty += 1;
@@ -334,8 +354,8 @@ class AppModel {
 
   async setWordEasy(wordId: string, word: string): Promise<void> {
     try {
-      await this.updateUserWord(wordId, word, false, true);
       await this.plusOneIntoEasyStat();
+      await this.updateUserWord(wordId, word, false, true);
     } catch {
       await this.createUserWord(wordId, word);
       await this.updateUserWord(wordId, word, false, true);
@@ -456,8 +476,10 @@ class AppModel {
     if (logoutBtn) {
       logoutBtn.onclick = () => {
         localStorage.clear();
-        STATE.auth = JSON.parse(localStorage.getItem('user')!);
-        STATE.userName = JSON.parse(localStorage.getItem('user')!);
+        STATE.auth = JSON.parse(localStorage.getItem('rslang-localStorage')!);
+        STATE.userName = JSON.parse(
+          localStorage.getItem('rslang-localStorage')!
+        );
         AppView.clear();
         const auth = new AuthController(new AuthView(), new AuthModel());
         auth.displayPage();

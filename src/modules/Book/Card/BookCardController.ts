@@ -4,6 +4,9 @@ import BookCardView from './BookCardView';
 import IWord from '../../../models/word-model';
 import AppController from '../../../core/Controller';
 import AudioCallGameController from '../../AudioCall/AudioCallGame/AudioCallGameController';
+import SprintController from '../../SprintGame/SprintController';
+import SprintView from '../../SprintGame/SprintView';
+import AppView from '../../../core/View';
 
 class BookCardController extends AppController {
   page: number;
@@ -15,6 +18,8 @@ class BookCardController extends AppController {
   countDifficultWords?: number;
 
   audioGame?: AudioCallGameController;
+
+  sprintGame!: SprintController;
 
   isUser?: boolean;
 
@@ -167,8 +172,14 @@ class BookCardController extends AppController {
 
     const buttonGoSprintGame = document.querySelector('#go-sprint-game');
     buttonGoSprintGame?.addEventListener('click', () => {
-      // document.location = '/#book';
-      // console.log(group, this.page);
+      const sprint = new SprintController(new SprintView(), new AppModel());
+      if (this.isUser) {
+        AppView.clear();
+        sprint.playGame(group, String(this.page));
+      } else {
+        AppView.clear();
+        sprint.playGame(group, String(this.page));
+      }
     });
 
     const buttonDifficult = document.querySelector('#complicate-word');
