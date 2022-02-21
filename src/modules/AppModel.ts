@@ -145,12 +145,14 @@ class AppModel {
     }
   }
 
-  private async writeStat(data: any) {
+  private async writeStat(data: UserStat) {
     const { userId, token } = this.getSetting('auth');
 
     const stat = { ...data };
 
+    // @ts-ignore
     stat.optional.data = JSON.stringify(data.optional.data);
+    // @ts-ignore
     delete stat.id;
 
     const response = await fetch(`${this.domain}/users/${userId}/statistics`, {
