@@ -3,7 +3,6 @@ import './SprintStyle.scss';
 import styles from './SprintStyle.module.scss';
 import levelData from '../AudioCall/level-data';
 import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
-import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
 import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 
 export default class SprintView extends View {
@@ -46,7 +45,6 @@ export default class SprintView extends View {
             <button type="submit" class="${styles.btn}">Play</button>
         </form>
       </main>
-      ${renderFooterTemplate()}
     `;
   }
 }

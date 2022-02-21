@@ -1,5 +1,3 @@
-import renderFooterTemplate from '../components/Footer/_renderFooterTemplate';
-
 class View<NodeType extends HTMLElement = HTMLElement> {
   body = document.querySelector('body');
 
@@ -13,7 +11,7 @@ class View<NodeType extends HTMLElement = HTMLElement> {
 
   drawPage() {
     this.body!.appendChild(this.node);
-    this.body?.insertAdjacentHTML('beforeend', `${renderFooterTemplate()}`);
+    this.body?.insertAdjacentHTML('beforeend', '');
   }
 
   public destroy(): void {

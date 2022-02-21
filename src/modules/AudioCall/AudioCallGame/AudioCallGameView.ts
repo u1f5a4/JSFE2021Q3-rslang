@@ -2,7 +2,7 @@
 import AppView from '../../../core/View';
 import styles from './style.module.scss';
 import renderHeaderTemplate from '../../../components/Header/_renderHeaderTemplate';
-import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
+// import renderFooterTemplate from '../../../components/Footer/_renderFooterTemplate';
 import './style.scss';
 import renderPageDescTemplate from '../../../components/PageDesc/_renderPageDescTemplate';
 
@@ -70,7 +70,6 @@ class AudioCallGameView extends AppView {
             </div>
         </div>
       </main>
-      ${renderFooterTemplate()}
     `;
   }
 }

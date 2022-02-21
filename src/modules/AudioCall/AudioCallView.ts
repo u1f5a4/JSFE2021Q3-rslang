@@ -2,7 +2,6 @@
 import AppView from '../../core/View';
 import styles from './AudioCallStyle.module.scss';
 import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
-import renderFooterTemplate from '../../components/Footer/_renderFooterTemplate';
 import renderPageDescTemplate from '../../components/PageDesc/_renderPageDescTemplate';
 import levelData from './level-data';
 
@@ -41,7 +40,6 @@ class AudioCallView extends AppView {
             <button type="submit" class="${styles.btn}">Play</button>
         </form>
       </main>
-      ${renderFooterTemplate()}
     `;
   }
 }
