@@ -47,6 +47,7 @@ class StatView extends View {
     sprintSeries!.textContent = String(dayStat?.sprintGame.series);
 
     const { wordAvg, audioAvg, sprintAvg } = this.countRightAnswers(dayStat);
+
     const audioRight = document.querySelector('#audio-right');
     audioRight!.textContent = String(`${audioAvg}%`);
 
@@ -66,15 +67,20 @@ class StatView extends View {
     let sprintAvg = 0;
     let wordAvg = 0;
 
-    const audioOneProcent = dayStat!.audioGame.words.length / 100;
-    const sprintOneProcent = dayStat!.sprintGame.words.length / 100;
-
     if (audioLen) {
-      audioAvg = +(dayStat.audioGame.right / audioOneProcent).toFixed(1);
+      audioAvg = +(
+        (dayStat.audioGame.right /
+          (dayStat.audioGame.right + dayStat.audioGame.wrong)) *
+        100
+      ).toFixed(1);
       wordAvg = audioAvg;
     }
     if (sprintLen) {
-      sprintAvg = +(dayStat.sprintGame.right / sprintOneProcent).toFixed(1);
+      sprintAvg = +(
+        (dayStat.sprintGame.right /
+          (dayStat.sprintGame.right + dayStat.sprintGame.wrong)) *
+        100
+      ).toFixed(1);
       wordAvg = sprintAvg;
     }
     if (audioLen && sprintLen) {
