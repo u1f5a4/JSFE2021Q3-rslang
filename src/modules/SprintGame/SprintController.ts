@@ -109,11 +109,11 @@ export default class SprintController {
 
   private async buttonsHandler(): Promise<void> {
     this.game.gameField.index += 1;
-    await this.switchOnNextPage(); 
+    await this.switchOnNextPage();
     this.game.gameField.word.destroy();
     this.game.gameField.translation.destroy();
-    this.game.gameField.gameButtons.destroy(); 
-    this.game.gameField.renderWords();  
+    this.game.gameField.gameButtons.destroy();
+    this.game.gameField.renderWords();
     this.game.gameField.gameButtons.falseButton.node.disabled = false;
     this.game.gameField.gameButtons.trueButton.node.disabled = false;
     enable();
@@ -125,7 +125,7 @@ export default class SprintController {
   }
 
   private async switchOnNextPage(): Promise<void> {
-    if (this.game.gameField.index === 20) { 
+    if (this.game.gameField.index === 20) {
       this.data = await this.model.getWords(
         String(this.group),
         this.pageIndex + 1
@@ -144,15 +144,11 @@ export default class SprintController {
     this.game.gameField.gameButtons.onClickNextWordTrue = async () => {
       this.game.gameField.gameButtons.falseButton.node.disabled = true;
       this.game.gameField.gameButtons.trueButton.node.disabled = true;
-      console.log(this.game.gameField.dataWord.answers.translate[this.game.gameField.index], this.game.gameField.dataWord.answers.word[this.game.gameField.index]
-        .wordTranslate)
       await this.onClickTrueButton();
     };
     this.game.gameField.gameButtons.onClickNextWordFalse = async () => {
       this.game.gameField.gameButtons.falseButton.node.disabled = true;
       this.game.gameField.gameButtons.trueButton.node.disabled = true;
-      console.log(this.game.gameField.dataWord.answers.translate[this.game.gameField.index], this.game.gameField.dataWord.answers.word[this.game.gameField.index]
-        .wordTranslate)
       await this.onClickFalseButton();
     };
   }
@@ -161,7 +157,12 @@ export default class SprintController {
     if (
       this.game.gameField.answerArr.includes(
         this.game.gameField.dataWord.answers.word[this.game.gameField.index]
-          .word) || this.game.gameField.dataWord.answers.translate[this.game.gameField.index] === this.game.gameField.dataWord.answers.word[this.game.gameField.index]
+          .word
+      ) ||
+      this.game.gameField.dataWord.answers.translate[
+        this.game.gameField.index
+      ] ===
+        this.game.gameField.dataWord.answers.word[this.game.gameField.index]
           .wordTranslate
     ) {
       this.getRightAnswer();
@@ -340,7 +341,7 @@ export default class SprintController {
       // eslint-disable-next-line no-underscore-dangle
       getWords = getWords.map((elem) => ({ id: elem._id, ...elem }));
     } else {
-      getWords = this.model.getWords(group, Number(page))
+      getWords = this.model.getWords(group, Number(page));
     }
     return getWords;
   }
