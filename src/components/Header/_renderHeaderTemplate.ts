@@ -36,6 +36,9 @@ export default function renderHeaderTemplate(): string {
                         <a href="" class="${styles.menu__link}">Главная</a>
                     </li>
                     <li class="${styles.menu__item}">
+                    <a class="${styles.menu__link}" href="/#team">О команде</a>
+                </li>
+                    <li class="${styles.menu__item}">
                         <a href="/#book" class="${
                           styles.menu__link
                         }">Учебник</a>
@@ -46,10 +49,12 @@ export default function renderHeaderTemplate(): string {
                         }">Мини-игры</a>
                     </li>
 
+
+
                     ${
                       // eslint-disable-next-line consistent-return
                       (() => {
-                        if (STATE.auth)
+                        if (isUser())
                           return `<li class="${styles.menu__item}">
                                      <a href="/#stat" class="${styles.menu__link}">Статистика</a>
                                   </li> `;
