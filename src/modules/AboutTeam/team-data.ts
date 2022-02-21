@@ -10,7 +10,7 @@ const teamData: TeamType = [
     name: 'muhammed03',
     src: 'https://avatars.githubusercontent.com/u/23382222?v=4',
     href: 'https://github.com/muhammed03',
-    func: 'Бекенд, Главная страница приложения, Мини-игрa "Аудиовызов"',
+    func: 'TEAMLEAD, Бекенд, Главная страница приложения, Мини-игрa "Аудиовызов"',
   },
   {
     name: 'u1f5a4',
