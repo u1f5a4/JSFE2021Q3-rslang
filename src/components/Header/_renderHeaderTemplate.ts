@@ -1,8 +1,19 @@
 import { STATE } from '../../core/constants/server-constants';
 import styles from './headerStyle.module.scss';
 
+function isUser() {
+  try {
+    const set = localStorage.getItem('rslang-localStorage');
+    const setting = JSON.parse(String(set));
+
+    return 'name' in setting.auth;
+  } catch (error) {
+    return false;
+  }
+}
+
 export function renderAuthUser(): string {
-  if (STATE.auth) {
+  if (isUser()) {
     return `
         <button id="logout-btn" class="${styles.header__button} ${styles.btn}">Выйти из <b>&nbsp;${STATE.userName.auth.name}</b></button>`;
   }
