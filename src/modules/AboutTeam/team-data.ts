@@ -22,7 +22,7 @@ const teamData: TeamType = [
     name: 'OlgaSavitsk',
     src: 'https://avatars.githubusercontent.com/u/78305019?v=4',
     href: 'https://github.com/OlgaSavitsk',
-    func: 'Главная страница приложения, Авторизация, Мини-игра "Спринт"',
+    func: 'О команде, Авторизация, Мини-игра "Спринт"',
   },
 ];
 
