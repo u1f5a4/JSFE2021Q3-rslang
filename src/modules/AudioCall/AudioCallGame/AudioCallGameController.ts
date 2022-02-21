@@ -200,7 +200,9 @@ class AudioCallController extends AppController {
 
     document.onkeydown = (e) => {
       if (
+        // eslint-disable-next-line no-restricted-globals
         location.hash.slice(1, -2) === 'book' ||
+        // eslint-disable-next-line no-restricted-globals
         location.hash.slice(1, -2) === 'audio-game'
       ) {
         switch (e.keyCode) {

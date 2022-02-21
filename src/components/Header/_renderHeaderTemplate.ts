@@ -33,9 +33,6 @@ export default function renderHeaderTemplate(): string {
             <nav content="${styles.menu}">
                 <ul class=${styles.menu__list}">
                     <li class="${styles.menu__item}">
-                        <a href="" class="${styles.menu__link}">Главная</a>
-                    </li>
-                    <li class="${styles.menu__item}">
                     <a class="${styles.menu__link}" href="/#team">О команде</a>
                 </li>
                     <li class="${styles.menu__item}">
