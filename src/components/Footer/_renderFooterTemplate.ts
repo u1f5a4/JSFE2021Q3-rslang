@@ -8,6 +8,7 @@ export default function renderFooterTemplate(): string {
         </div>
 
         <div class="${styles.footer__list}">
+          <a class="${styles.about}" href="/#team">О команде</a>
           <a class="${styles.github}" href="https://github.com/OlgaSavitsk"></a>
           <a class="${styles.github}" href="https://github.com/muhammed03"></a>
           <a class="${styles.github}" href="https://github.com/u1f5a4"></a>
