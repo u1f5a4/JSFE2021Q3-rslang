@@ -6,21 +6,21 @@ import { QuizManager } from './services/QuizManager';
 import IWord from '../../../models/word-model';
 import styles from './style.module.scss';
 
-const qm = new QuizManager();
-
 class AudioCallController extends AppController {
+  qm = new QuizManager();
+
   constructor(public view: AudioCallView, public model: AppModel) {
     super(view, model);
   }
 
-  async setEvents() {
+  async setEvents(group: string, page: string) {
     // START QUIZ
-    await qm.startRound();
+    await this.qm.startRound(group, page);
     await this.getQuizElements();
   }
 
   async getQuizElements() {
-    if (!qm.isGameFinished) {
+    if (!this.qm.isGameFinished) {
       await this.getOptions();
       await this.getAudio();
     } else {
@@ -29,11 +29,24 @@ class AudioCallController extends AppController {
   }
 
   async getAudio() {
-    const audio = document.getElementById('round-audio') as HTMLAudioElement;
+    try {
+      const audio = document.getElementById('round-audio') as HTMLAudioElement;
+      audio.src = '';
+      audio.src = `${this.model.getDomain()}/${
+        this.qm.currentRoundAnswer?.audio
+      }`;
+      await audio.play();
 
-    audio.src = '';
-    audio.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.audio}`;
-    await audio.play();
+      this.playRoundWord();
+      audio.src = '';
+      audio.src = `${this.model.getDomain()}/${
+        this.qm.currentRoundAnswer?.audio
+      }`;
+
+      await audio.play();
+    } catch (error) {
+      // console.log(error);
+    }
   }
 
   async getOptions() {
@@ -41,7 +54,7 @@ class AudioCallController extends AppController {
       'game-options-box'
     ) as HTMLElement;
     optionsBox.innerHTML = '';
-    qm.currentRoundOptions.forEach((option: IWord) => {
+    this.qm.currentRoundOptions.forEach((option: IWord) => {
       const btn = document.createElement('button');
       btn.id = <string>option?.id;
       btn.classList.add('quiz-options-btn');
@@ -55,9 +68,10 @@ class AudioCallController extends AppController {
     const onAnswer = (event: MouseEvent): void => {
       event.preventDefault();
       const target = <HTMLBodyElement>event.target;
+      if (target.nodeName === 'DIV') return;
       const targetId = target.id;
       if (target.classList.contains('quiz-options-btn')) {
-        qm.guessAnswer(targetId);
+        this.qm.guessAnswer(targetId);
       }
 
       this.switchBtnState(true);
@@ -75,14 +89,16 @@ class AudioCallController extends AppController {
     allOptionBtnCollection.forEach((btn) => {
       // eslint-disable-next-line no-param-reassign
       btn.disabled = true;
-      if (btn.id === qm.currentRoundAnswer.id) {
+      if (btn.id === this.qm.currentRoundAnswer.id) {
         btn.classList.toggle(`${styles['white-button__success']}`);
       } else {
         btn.classList.toggle(`${styles['white-button__wrong']}`);
       }
     });
     const soundImg = document.getElementById('sound-img') as HTMLImageElement;
-    soundImg.src = `${this.model.getDomain()}/${qm.currentRoundAnswer?.image}`;
+    soundImg.src = `${this.model.getDomain()}/${
+      this.qm.currentRoundAnswer?.image
+    }`;
   }
 
   async bindElements() {
@@ -91,12 +107,13 @@ class AudioCallController extends AppController {
     ) as HTMLButtonElement;
 
     nextQuestionBtn.addEventListener('click', async () => {
-      await qm.generateRound();
+      await this.qm.generateRound();
       await this.getQuizElements();
-      if (qm.isGameFinished) {
+      if (this.qm.isGameFinished) {
         nextQuestionBtn.disabled = true;
       }
       this.switchBtnState(false);
+
       const soundImg = document.getElementById('sound-img') as HTMLImageElement;
       soundImg.src = `assets/images/sound.png`;
     });
@@ -120,25 +137,97 @@ class AudioCallController extends AppController {
     }
   }
 
-  bindButtons() {
+  playRoundWord() {
+    const playAudioBtn = document.getElementById(
+      'play-game-audio'
+    ) as HTMLButtonElement;
+    playAudioBtn.classList.add('heartbeat');
+    setTimeout(() => {
+      playAudioBtn.classList.remove('heartbeat');
+    }, 1000);
+  }
+
+  async bindButtons() {
     const audio = document.getElementById('round-audio') as HTMLAudioElement;
 
     const playAudioBtn = document.getElementById(
       'play-game-audio'
     ) as HTMLButtonElement;
+
+    this.playRoundWord();
     playAudioBtn.addEventListener('click', () => {
       audio.play();
+      this.playRoundWord();
     });
 
     const showAnswerBtn = document.getElementById(
       'show-answer'
     ) as HTMLButtonElement;
+    const nextQuestionBtn = document.getElementById(
+      'next-question'
+    ) as HTMLButtonElement;
+
     showAnswerBtn.addEventListener('click', () => {
-      qm.guessAnswer('wrong-answer');
+      this.qm.guessAnswer('wrong-answer');
       this.changeOptionsColor();
 
       this.switchBtnState(true);
     });
+
+    const gameOptionsBox = document.getElementById(
+      'game-options-box'
+    ) as HTMLDivElement;
+
+    window.addEventListener(
+      'keydown',
+      (event) => {
+        const gameOptionsFirstBtn = gameOptionsBox
+          .children[0] as HTMLButtonElement;
+        const gameOptionsSecondBtn = gameOptionsBox
+          .children[1] as HTMLButtonElement;
+        const gameOptionsThirdBtn = gameOptionsBox
+          .children[2] as HTMLButtonElement;
+        const gameOptionsFourthBtn = gameOptionsBox
+          .children[3] as HTMLButtonElement;
+        const gameOptionsFifthBtn = gameOptionsBox
+          .children[4] as HTMLButtonElement;
+
+        switch (event.key) {
+          case '1':
+            gameOptionsFirstBtn.click();
+            break;
+          case '2':
+            gameOptionsSecondBtn.click();
+            break;
+          case '3':
+            gameOptionsThirdBtn.click();
+            break;
+          case '4':
+            gameOptionsFourthBtn.click();
+            break;
+          case '5':
+            gameOptionsFifthBtn.click();
+            break;
+          case 'p':
+          case 'P':
+            playAudioBtn.click();
+            break;
+          case ' ':
+            if (nextQuestionBtn.style.display === 'none') {
+              showAnswerBtn.click();
+              break;
+            } else {
+              nextQuestionBtn.click();
+              break;
+            }
+          default:
+            return;
+            break;
+        }
+        event.preventDefault();
+      },
+      true
+    );
   }
 
   showResultContainer() {
@@ -146,30 +235,62 @@ class AudioCallController extends AppController {
       'result-container'
     ) as HTMLDivElement;
     const quizScore = document.getElementById('quiz-score') as HTMLSpanElement;
-    // const correctAnswersContainer = document.getElementById(
-    //   'correct-answers-container'
-    // ) as HTMLDivElement;
-    // const wrongAnswersContainer = document.getElementById(
-    //   'wrong-answers-container'
-    // ) as HTMLDivElement;
 
-    quizScore.innerText = qm.getQuizResult().points.toString();
+    const tableBody = document.getElementById(
+      'result-table-body'
+    ) as HTMLTableElement;
+
+    this.qm.quizHistory.forEach((data) => {
+      const tableRow = document.createElement('tr') as HTMLTableRowElement;
+      tableRow.innerHTML = `
+        <td class="${styles['result-table-data']}" >${
+        data.roundAnswer.word
+      }</td>
+        <td class="${styles['result-table-data']}" >${
+        data.roundAnswer.transcription
+      }</td>
+        <td class="${styles['result-table-data']}" >${
+        data.roundAnswer.wordTranslate
+      }</td>
+        <td class="${styles['result-table-data']} ${
+        styles['audio-controller']
+      }" id="${data.roundAnswer.id}-audio-controller">🔊</td>
+        <td class="${styles['result-table-data']}"  >${
+        data.roundResult !== 'WON' ? '❌' : '✅'
+      }</td>
+        <audio src="${this.model.getDomain()}/${data.roundAnswer.audio}" id="${
+        data.roundAnswer.id
+      }-audio"></audio>
+      `;
+      tableBody.appendChild(tableRow);
+      const tableAudioController = document.getElementById(
+        `${data.roundAnswer.id}-audio-controller`
+      ) as HTMLTableElement;
+      const tableAudio = document.getElementById(
+        `${data.roundAnswer.id}-audio`
+      ) as HTMLAudioElement;
+
+      tableAudioController.addEventListener('click', () => {
+        tableAudio.play();
+      });
+    });
+    quizScore.innerText = this.qm.getQuizResult().points.toString();
 
     const gameContainer = document.getElementById(
       'game-container'
     ) as HTMLDivElement;
 
     resultContainer.classList.toggle('display-none');
-    // resultContainer.classList.add(`${styles['result-container']}`);
+    resultContainer.classList.add(`${styles['result-container']}`);
 
     gameContainer.classList.toggle('display-none');
   }
 
-  async displayPage() {
+  async displayPage(group: string, page: string) {
     this.view.drawPage();
-    await this.setEvents();
+    await this.setEvents(group, page);
+    await this.bindButtons();
     await this.bindElements();
-    this.bindButtons();
   }
 }
 

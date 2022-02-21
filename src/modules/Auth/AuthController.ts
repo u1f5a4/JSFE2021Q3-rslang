@@ -1,7 +1,7 @@
 import { BEARER, STATE } from '../../core/constants/server-constants';
 import { AuthResponse } from '../../models/response/AuthResponse';
 import { IUser } from '../../models/user-model';
-import renderHeaderTemplate from '../../сomponents/Header/_renderHeaderTemplate';
+import renderHeaderTemplate from '../../components/Header/_renderHeaderTemplate';
 // eslint-disable-next-line import/no-cycle
 import AppModel from '../AppModel';
 import AuthModel from './AuthModel';

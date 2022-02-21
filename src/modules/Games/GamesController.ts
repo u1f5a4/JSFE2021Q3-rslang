@@ -10,17 +10,18 @@ class GamesController extends Controller {
   displayPage() {
     this.view.drawPage();
     this.bindButton();
+    this.model.logout();
   }
 
   // eslint-disable-next-line class-methods-use-this
   bindButton() {
     const buttonGoAudioGame = document.querySelector('#go-audio-game');
     buttonGoAudioGame?.addEventListener('click', () => {
-      document.location = '/#audioCall';
+      document.location = '/#audio-game';
     });
     const buttonGoSprintGame = document.querySelector('#go-sprint-game');
     buttonGoSprintGame?.addEventListener('click', () => {
-      document.location = '/#book';
+      // document.location = '/#book';
     });
   }
 }

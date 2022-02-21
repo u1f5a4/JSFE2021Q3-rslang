@@ -2,7 +2,7 @@ import { STATE } from '../core/constants/server-constants';
 import AppView from '../core/View';
 // eslint-disable-next-line import/no-cycle
 import IWord from '../models/word-model';
-import renderHeaderTemplate from '../сomponents/Header/_renderHeaderTemplate';
+import renderHeaderTemplate from '../components/Header/_renderHeaderTemplate';
 // eslint-disable-next-line import/no-cycle
 import AuthController from './Auth/AuthController';
 import AuthModel from './Auth/AuthModel';
@@ -28,65 +28,56 @@ type UserWord = {
   id?: string;
   wordId?: string;
 };
-export { UserWord };
 
-type UserWord2 = [
-  { paginatedResults: IWord[]; totalCount: [{ count: number }] }
-];
+type UserStat = { learnedWords: number; optional: { data: StatDate[] } };
+
+type GameStat = {
+  words: string[];
+  right: number;
+  wrong: number;
+  series: number;
+};
+
+type StatDate = {
+  date: string;
+  words: { words: number; easyQty: number };
+  audioGame: GameStat;
+  sprintGame: GameStat;
+};
 
 class AppModel {
   private domain = 'https://rslang-words.herokuapp.com';
 
-  // === Работа со словами при авторизации === //
+  // === Статистика === //
 
-  async rightWord(iWord: IWord) {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { _id, word } = iWord;
-
+  async updateGameStat(game: 'audioGame' | 'sprintGame', data: GameStat) {
     try {
-      const userWord = await this.getUserWord(String(_id));
-      const { answers, difficulty, easy } = userWord.optional;
-      const newAnswers = Number(answers) + 1;
-      if (easy) {
-        return;
-      }
-      if (difficulty) {
-        const correctAnswersToMoveWord = 5;
-        if (newAnswers === correctAnswersToMoveWord)
-          this.setWordEasy(String(_id), word);
-        else
-          this.updateUserWord(
-            String(_id),
-            word,
-            difficulty,
-            easy,
-            String(newAnswers)
-          );
-      }
-      if (!easy && !difficulty) {
-        const correctAnswersToMoveWord = 3;
-        if (newAnswers === correctAnswersToMoveWord)
-          this.setWordEasy(String(_id), word);
-        else
-          this.updateUserWord(
-            String(_id),
-            word,
-            difficulty,
-            easy,
-            String(newAnswers)
-          );
-      }
+      const stat = await this.getStat();
+
+      const date = new Date().toLocaleDateString(); // '18/02/2022'
+      const dayStat = stat.optional.data.find((elem) => elem.date === date);
+
+      const gameAudioStat = dayStat![game];
+      gameAudioStat.words = Array.from(
+        new Set(gameAudioStat.words.concat(data.words))
+      );
+      gameAudioStat.right += data.right;
+      gameAudioStat.wrong += data.wrong;
+      gameAudioStat.series =
+        gameAudioStat.series < data.series ? data.series : gameAudioStat.series;
+
+      this.writeStat(stat);
     } catch (error) {
-      this.createUserWord(String(_id), word);
-      this.rightWord(iWord);
+      this.createZeroStat();
+      this.updateGameStat(game, data);
     }
   }
 
-  async getUserWord(wordId: string): Promise<UserWord> {
+  async getStat(): Promise<UserStat> {
     const { userId, token } = this.getSetting('auth');
 
-    const response = await fetch(
-      `${this.domain}/users/${userId}/words/${wordId}`,
+    const rawResponse = await fetch(
+      `${this.domain}/users/${userId}/statistics`,
       {
         method: 'GET',
         headers: {
@@ -96,7 +87,204 @@ class AppModel {
       }
     );
 
-    return response.json();
+    const stat = await rawResponse.json();
+
+    // распаковывает статистику в массив из строки
+    const arrayDates = await JSON.parse(stat.optional.data);
+    const result: UserStat = Object.assign(stat, {
+      optional: { data: arrayDates },
+    });
+
+    // если есть статистика других дней, то создаём новый день
+    const dateNow = new Date().toLocaleDateString(); // '18/02/2022'
+    const dayStat = result.optional.data.find((elem) => elem.date === dateNow);
+    if (!dayStat) {
+      const dataStat = result.optional.data;
+      dataStat.push(await this.createDayZeroStat());
+    }
+    return result;
+  }
+
+  async countStat() {
+    const stat = await this.getStat();
+    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const dayStat = stat.optional.data.find((elem) => elem.date === date);
+
+    const audioGame = dayStat!.audioGame.words;
+    const sprintGame = dayStat!.sprintGame.words;
+
+    const words = Array.from(new Set([...sprintGame, ...audioGame]));
+
+    dayStat!.words.words = words.length;
+
+    stat.learnedWords = stat.optional.data.reduce(
+      (prev, curr) => prev + curr.words.easyQty,
+      0
+    );
+
+    this.writeStat(stat);
+    return stat;
+  }
+
+  private async writeStat(data: any) {
+    const { userId, token } = this.getSetting('auth');
+
+    const stat = { ...data };
+    stat.optional.data = JSON.stringify(data.optional.data);
+    delete stat.id;
+
+    const response = await fetch(`${this.domain}/users/${userId}/statistics`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(stat),
+    });
+
+    const content = await response.json();
+
+    return content;
+  }
+
+  private async createZeroStat() {
+    const data = {
+      learnedWords: 0,
+      optional: {
+        data: [this.createDayZeroStat()],
+      },
+    };
+
+    return this.writeStat(data);
+  }
+
+  private async createDayZeroStat() {
+    const date = new Date().toLocaleDateString(); // '18/02/2022'
+
+    return {
+      date,
+      words: { words: 0, easyQty: 0 },
+      audioGame: { words: [], right: 0, wrong: 0, series: 0 },
+      sprintGame: { words: [], right: 0, wrong: 0, series: 0 },
+    };
+  }
+
+  private async plusOneIntoEasyStat() {
+    const stat = await this.getStat();
+
+    const date = new Date().toLocaleDateString(); // '18/02/2022'
+    const dayStat = stat.optional.data.find((elem) => elem.date === date);
+
+    dayStat!.words.easyQty += 1;
+
+    this.writeStat(stat);
+  }
+  // === Работа со словами при авторизации === //
+
+  async getTwentyUserWordsWithoutEasy(
+    group: string,
+    page: number
+  ): Promise<IWord[]> {
+    const result: IWord[] = [];
+    const wordsPage = await this.getTwentyUserWords(group, page);
+    const wordsPageNotEasy = wordsPage.filter(
+      (word) => !word.userWord?.optional.easy
+    );
+    result.push(...wordsPageNotEasy);
+
+    let currentPage = 0;
+    const lastPage = 29;
+    while (result.length < 20) {
+      if (currentPage === lastPage + 1) currentPage = 0;
+
+      // eslint-disable-next-line no-await-in-loop
+      const words = await this.getTwentyUserWords(group, currentPage);
+      const wordsNotEasy = words.filter(
+        (word) => !word.userWord?.optional.easy
+      );
+      result.push(...wordsNotEasy);
+      currentPage += 1;
+    }
+
+    return result.slice(0, 20);
+  }
+
+  async wrongWord(iWord: IWord) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { id, word } = iWord;
+
+    try {
+      const userWord = await this.getUserWord(String(id));
+      if (userWord.optional.easy) this.deleteUserWord(String(id));
+    } catch (error) {
+      await this.createUserWord(String(id), word);
+    }
+  }
+
+  async rightWord(iWord: IWord) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { id, word } = iWord;
+
+    try {
+      const userWord = await this.getUserWord(String(id));
+      const { answers, difficulty, easy } = userWord.optional;
+      const newAnswers = Number(answers) + 1;
+      if (easy) {
+        return;
+      }
+      if (difficulty) {
+        const correctAnswersToMoveWord = 5;
+        if (newAnswers === correctAnswersToMoveWord) {
+          await this.setWordEasy(String(id), word);
+        } else
+          this.updateUserWord(
+            String(id),
+            word,
+            difficulty,
+            easy,
+            String(newAnswers)
+          );
+      }
+      if (!easy && !difficulty) {
+        const correctAnswersToMoveWord = 3;
+        if (newAnswers === correctAnswersToMoveWord) {
+          await this.setWordEasy(String(id), word);
+        } else
+          this.updateUserWord(
+            String(id),
+            word,
+            difficulty,
+            easy,
+            String(newAnswers)
+          );
+      }
+    } catch (error) {
+      await this.createUserWord(String(id), word);
+      await this.rightWord(iWord);
+    }
+  }
+
+  async getUserWord(wordId: string) {
+    try {
+      const { userId, token } = this.getSetting('auth');
+
+      const response = await fetch(
+        `${this.domain}/users/${userId}/words/${wordId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          },
+        }
+      );
+
+      return await response.json();
+    } catch (error) {
+      // console.log(error);
+      return null;
+    }
   }
 
   async getAllDifficultWords(page: number): Promise<IWord[]> {
@@ -147,6 +335,7 @@ class AppModel {
   async setWordEasy(wordId: string, word: string): Promise<void> {
     try {
       await this.updateUserWord(wordId, word, false, true);
+      await this.plusOneIntoEasyStat();
     } catch {
       await this.createUserWord(wordId, word);
       await this.updateUserWord(wordId, word, false, true);
@@ -154,14 +343,14 @@ class AppModel {
   }
 
   async getTwentyUserWords(group: string, page: number): Promise<IWord[]> {
-    const one = (await this.getUserWords(group, page * 2))[0].paginatedResults;
-
-    const two = (await this.getUserWords(group, page * 2 + 1))[0]
-      .paginatedResults;
-
-    const array = one.concat(two);
-
-    return array;
+    const words: IWord[] = await this.getWords(group, page);
+    const wordId = words.map((word) => word.id);
+    const promiseArray = wordId.map((id) => this.getUserWord(String(id)));
+    const userWords: UserWord[] = await Promise.all(promiseArray);
+    const result = words.map((word, index) =>
+      Object.assign(word, { userWord: userWords[index] })
+    );
+    return result;
   }
 
   async deleteUserWord(wordId: string) {
@@ -180,25 +369,7 @@ class AppModel {
     return response.json();
   }
 
-  private async getUserWords(group: string, page: number): Promise<UserWord2> {
-    const { userId, token } = this.getSetting('auth');
-
-    const rawResponse = await fetch(
-      `${this.domain}/users/${userId}/aggregatedWords?group=${group}&page=${page}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return rawResponse.json();
-  }
-
-  private async createUserWord(wordId: string, word: string): Promise<void> {
+  async createUserWord(wordId: string, word: string): Promise<void> {
     const { userId, token } = this.getSetting('auth');
     const data = {
       difficulty: word,
@@ -208,16 +379,20 @@ class AppModel {
         easy: false,
       },
     };
+    const response = await fetch(
+      `${this.domain}/users/${userId}/words/${wordId}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+    );
 
-    await fetch(`${this.domain}/users/${userId}/words/${wordId}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    return response.json();
   }
 
   private async updateUserWord(
@@ -348,4 +523,4 @@ class AppModel {
 }
 
 export default AppModel;
-export { emojiList };
+export { emojiList, UserWord, UserStat, StatDate };
