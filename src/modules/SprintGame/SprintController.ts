@@ -109,10 +109,10 @@ export default class SprintController {
 
   private async buttonsHandler(): Promise<void> {
     this.game.gameField.index += 1;
+    await this.switchOnNextPage();
     this.game.gameField.word.destroy();
     this.game.gameField.translation.destroy();
     this.game.gameField.gameButtons.destroy();
-    this.switchOnNextPage();
     this.game.gameField.renderWords();
     this.game.gameField.gameButtons.falseButton.node.disabled = false;
     this.game.gameField.gameButtons.trueButton.node.disabled = false;
@@ -158,7 +158,12 @@ export default class SprintController {
       this.game.gameField.answerArr.includes(
         this.game.gameField.dataWord.answers.word[this.game.gameField.index]
           .word
-      )
+      ) ||
+      this.game.gameField.dataWord.answers.translate[
+        this.game.gameField.index
+      ] ===
+        this.game.gameField.dataWord.answers.word[this.game.gameField.index]
+          .wordTranslate
     ) {
       this.getRightAnswer();
     } else {
@@ -324,10 +329,20 @@ export default class SprintController {
   }
 
   async genData(group: string, page: string) {
+    let getWords;
     if (page === 'random') {
       const randomPage = generateRandomNumber(0, 29);
-      return this.model.getWords(group, randomPage);
+      getWords = this.model.getWords(group, randomPage);
+    } else if (this.model.isUser()) {
+      getWords = await this.model.getTwentyUserWordsWithoutEasy(
+        group,
+        Number(page)
+      );
+      // eslint-disable-next-line no-underscore-dangle
+      getWords = getWords.map((elem) => ({ id: elem._id, ...elem }));
+    } else {
+      getWords = this.model.getWords(group, Number(page));
     }
-    return this.model.getWords(group, Number(page));
+    return getWords;
   }
 }
