@@ -26,6 +26,7 @@ class AudioCallController extends AppController {
     } else {
       this.showResultContainer();
     }
+    this.keyHandler();
   }
 
   async getAudio() {
@@ -163,9 +164,6 @@ class AudioCallController extends AppController {
     const showAnswerBtn = document.getElementById(
       'show-answer'
     ) as HTMLButtonElement;
-    const nextQuestionBtn = document.getElementById(
-      'next-question'
-    ) as HTMLButtonElement;
 
     showAnswerBtn.addEventListener('click', () => {
       this.qm.guessAnswer('wrong-answer');
@@ -173,61 +171,70 @@ class AudioCallController extends AppController {
 
       this.switchBtnState(true);
     });
+  }
 
+  keyHandler() {
     const gameOptionsBox = document.getElementById(
       'game-options-box'
     ) as HTMLDivElement;
 
-    window.addEventListener(
-      'keydown',
-      (event) => {
-        const gameOptionsFirstBtn = gameOptionsBox
-          .children[0] as HTMLButtonElement;
-        const gameOptionsSecondBtn = gameOptionsBox
-          .children[1] as HTMLButtonElement;
-        const gameOptionsThirdBtn = gameOptionsBox
-          .children[2] as HTMLButtonElement;
-        const gameOptionsFourthBtn = gameOptionsBox
-          .children[3] as HTMLButtonElement;
-        const gameOptionsFifthBtn = gameOptionsBox
-          .children[4] as HTMLButtonElement;
+    const nextQuestionBtn = document.getElementById(
+      'next-question'
+    ) as HTMLButtonElement;
 
-        switch (event.key) {
-          case '1':
+    const showAnswerBtn = document.getElementById(
+      'show-answer'
+    ) as HTMLButtonElement;
+
+    const playAudioBtn = document.getElementById(
+      'play-game-audio'
+    ) as HTMLButtonElement;
+
+    const gameOptionsFirstBtn = gameOptionsBox.children[0] as HTMLButtonElement;
+    const gameOptionsSecondBtn = gameOptionsBox
+      .children[1] as HTMLButtonElement;
+    const gameOptionsThirdBtn = gameOptionsBox.children[2] as HTMLButtonElement;
+    const gameOptionsFourthBtn = gameOptionsBox
+      .children[3] as HTMLButtonElement;
+    const gameOptionsFifthBtn = gameOptionsBox.children[4] as HTMLButtonElement;
+
+    document.onkeydown = (e) => {
+      if (
+        location.hash.slice(1, -2) === 'book' ||
+        location.hash.slice(1, -2) === 'audio-game'
+      ) {
+        switch (e.keyCode) {
+          case 49:
             gameOptionsFirstBtn.click();
             break;
-          case '2':
+          case 50:
             gameOptionsSecondBtn.click();
             break;
-          case '3':
+          case 51:
             gameOptionsThirdBtn.click();
             break;
-          case '4':
+          case 52:
             gameOptionsFourthBtn.click();
             break;
-          case '5':
+          case 53:
             gameOptionsFifthBtn.click();
             break;
-          case 'p':
-          case 'P':
-            playAudioBtn.click();
-            break;
-          case ' ':
+          case 32:
             if (nextQuestionBtn.style.display === 'none') {
               showAnswerBtn.click();
-              break;
             } else {
               nextQuestionBtn.click();
-              break;
             }
+            e.preventDefault();
+            break;
+          case 80:
+            playAudioBtn.click();
+            break;
           default:
-            return;
             break;
         }
-        event.preventDefault();
-      },
-      true
-    );
+      }
+    };
   }
 
   showResultContainer() {
