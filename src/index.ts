@@ -19,6 +19,8 @@ import StatController from './modules/Stat/StatController';
 import StatView from './modules/Stat/StatView';
 import SprintController from './modules/SprintGame/SprintController';
 import SprintView from './modules/SprintGame/SprintView';
+import AboutTeamView from './modules/AboutTeam/AboutTeamView';
+import AboutTeamController from './modules/AboutTeam/AboutTeamController';
 
 const audioCall = new AudioCallController(new AudioCallView(), new AppModel());
 const audioCallGame = new AudioCallGameController(
@@ -41,6 +43,7 @@ book.card = bookCard;
 bookCard.audioGame = audioCallGame;
 
 const home = new HomeController(new HomeView(), new AppModel());
+const team = new AboutTeamController(new AboutTeamView(), new AppModel());
 
 const router = new Router();
 router.init();
@@ -48,6 +51,7 @@ router.init();
 router.add('', () => home.displayPage());
 router.add('auth', () => auth.displayPage());
 router.add('stat', () => stat.displayPage());
+router.add('team', () => team.displayPage());
 
 router.add('book', () => book.displayPage());
 router.add('book/1', () => bookCard.displayPage('0'));

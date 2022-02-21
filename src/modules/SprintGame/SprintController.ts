@@ -136,6 +136,7 @@ export default class SprintController {
         this.getWordsPerPage()
       );
       this.renderPoints();
+      this.buttonsHandler();
     }
   }
 
@@ -265,7 +266,7 @@ export default class SprintController {
   private stopGame(): void {
     this.game.timer.onTimeOut = () => {
       this.game.sprintContainer.destroy();
-      this.saveStat();
+      if (this.model.isUser()) this.saveStat();
       this.result = new SprintResults(
         this.game.node,
         this.errorAnswersArr,
