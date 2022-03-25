@@ -1,0 +1,51 @@
+.game-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+
+  &__card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    gap: 16px;
+    width: 100%;
+    background: $color-white;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  &__emoji {
+  }
+
+  &__title {
+    color: $color-one;
+  }
+}
+
+.desc-list {
+  &__card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    gap: 16px;
+    width: 100%;
+    background: $color-white;
+    border-radius: 15px;
+  }
+
+  &__desc {
+    cursor: default;
+    text-align: center;
+    color: $color-one;
+  }
+}
+
+.wrapper {
+  min-height: 100vh;
+}

@@ -1,0 +1,129 @@
+.auth {
+  &__container {
+    display: flex;
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+
+  &__image {
+    background-image: url(../../assets/images/auth-bg.png);
+    background-position: left;
+    background-size: 50%;
+    background-repeat: no-repeat;
+  }
+
+  &__title {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    min-height: 90vh;
+    width: 60%;
+  }
+
+  .title {
+    display: flex;
+    flex-direction: column;
+    color: $color-black;
+    font-weight: 600;
+    width: 50%;
+
+    span {
+      color: $color-two;
+    }
+  }
+
+  &__error {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 10px 15px;
+    margin-top: 10px;
+    color: brown;
+    background: rgb(254, 215, 215);
+    border-radius: 4px;
+
+    .error__icon {
+      width: 25px;
+      height: 25px;
+      background-image: url(../../assets/svg/attention.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .error__list {
+      flex-direction: column;
+      margin: 0;
+      padding-left: 10px;
+    }
+  }
+}
+
+.form__container {
+  width: 45%;
+  position: relative;
+  padding: 60px 0 0 40px;
+}
+
+.form__header {
+  height: 115px;
+
+  .title-block {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .auth__button {
+    text-align: center;
+    padding: 0;
+    border: none;
+    color: $color-grey;
+    background-color: transparent;
+  }
+
+  .active-button {
+    color: #1a1a1a;
+  }
+
+  h2 {
+    text-align: center;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  input {
+    box-sizing: border-box;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 2px;
+    width: 100%;
+    padding: 10px 12px 12px;
+    border: 1px solid rgba(213, 215, 219, 0.6);
+    border-radius: 2px;
+    outline: none;
+    font-size: 14px;
+    line-height: 20px;
+    color: #1a1a1a;
+    background: transparent;
+  }
+
+  .login-button {
+    padding: 10px 0;
+    width: 100%;
+    line-height: 20px;
+    display: inline-block;
+    text-align: center;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    margin-top: 20px;
+    border-radius: 4px;
+    background-color: #6252d4;
+    cursor: pointer;
+  }
+}

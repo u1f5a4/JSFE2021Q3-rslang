@@ -1,0 +1,108 @@
+$main-font: 'Montserrat', sans-serif;
+$logo-font: 'Work Sans', sans-serif;
+$color-one: #463f66;
+$color-two: #6252d4;
+$color-black: #282e3e;
+$color-grey: #939bb4;
+$color-bg: #f6f7fb;
+$color-yellow: #fcac00;
+$color-white: #fff;
+$color-difficulty: #ff6347;
+$color-easy: #008000;
+
+.title-font {
+  font-family: $main-font;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 54px;
+}
+
+.text-font {
+  font-family: $main-font;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.header-font {
+  font-family: $main-font;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.body-font {
+  font-family: $main-font;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.02em;
+}
+
+.element-font {
+  font-family: $main-font;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+}
+
+.logo-font {
+  font-family: $logo-font;
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+}
+
+.body {
+  background-color: $color-bg;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.content {
+  max-width: 1140px;
+  margin: 32px auto;
+}
+
+.btn {
+  box-sizing: border-box;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: $color-white;
+  background: $color-two;
+  border-radius: 5px;
+  border: none;
+  padding: 16px 32px;
+
+  &:hover {
+    background: #443a92;
+  }
+
+  &:active {
+    background: $color-yellow;
+  }
+}
+
+.shadow-active {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:active {
+    transition: box-shadow ease 0.2s;
+    transform: translateX(2px);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
+}

@@ -1,0 +1,54 @@
+.container {
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 32px;
+  gap: 50px;
+  min-height: 400px;
+}
+
+.level {
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  &__item {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 2px 2px 4px rgb(0 0 0 / 10%);
+    min-height: 50px;
+    min-width: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 8px;
+  }
+
+  &__input {
+    cursor: pointer;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  &__label {
+    color: $color-one;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+}
+
+.wrapper {
+  min-height: 100vh;
+}

@@ -1,0 +1,96 @@
+.container {
+  max-width: 1140px;
+  margin: 0px auto;
+}
+
+.game {
+  display: flex;
+  min-height: 410px;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+
+  &__control-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__options-box {
+    // display: grid;
+    // grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    gap: 30px;
+  }
+}
+
+.audio-box {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: rgba(70, 63, 102, 0.65);
+  &__img {
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+}
+
+.wrapper {
+  min-height: 100vh;
+}
+
+.white-button {
+  text-align: center;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  background: $color-white;
+  color: $color-black;
+
+  &__success {
+    background-color: #008000;
+    color: $color-white;
+  }
+  &__wrong {
+    background-color: #ff6347;
+    color: $color-white;
+  }
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  gap: 16px;
+
+  &__title {
+    color: $color-one;
+  }
+
+  &__score {
+    color: $color-two;
+  }
+}
+
+.table {
+  min-width: 500px;
+  border: 2px solid #463f66;
+  border-radius: 50%;
+}
+
+.result-table-data {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.audio-controller {
+  cursor: pointer;
+}
